@@ -16,3 +16,22 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::prefix('sv')->group(function () {
+    Route::get('/', function () {
+        return view('index');
+    });
+});
+
+Route::prefix('admin')->group(function () {
+    Route::resource('DM_TieuChi', Admin\DM_TieuChi_Controller::class);
+});
+
+Auth::routes([
+    'register' => false, 
+    'verify' => false,
+    'reset' => false,
+    'confirm' => false,
+]);
+
+Route::get('/home', 'HomeController@index')->middleware('auth')->name('home');

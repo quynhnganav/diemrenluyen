@@ -34,6 +34,14 @@ services:
       MYSQL_ROOT_PASSWORD: secret
     ports:
         - "33061:3306"
+    
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
 
 volumes:
   dbdata:
