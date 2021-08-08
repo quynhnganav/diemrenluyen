@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Common\Constant;
 
 class DM_TieuChi_Controller extends Controller
 {
@@ -14,7 +15,7 @@ class DM_TieuChi_Controller extends Controller
      */
     public function index(Request $request)
     {
-        $request->session()->put('name', rand());
+        $request->session()->put('name', (new Constant())->API_DAOTAO_URI);
         return view('admin.DM_TieuChi.list');
     }
 
