@@ -20,7 +20,7 @@ services:
       - ./web/:/var/www/
       - ./app/public:/var/www/public
     ports:
-      - 80:80
+      - 8081:80
 
   # The Database
   database:
