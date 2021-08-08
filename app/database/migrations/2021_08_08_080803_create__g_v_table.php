@@ -14,8 +14,7 @@ class CreateGVTable extends Migration
     public function up()
     {
         Schema::create('GV', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_Id');
+            $table->string('id', 255)->primary();
             $table->timestamps();
         });
     }

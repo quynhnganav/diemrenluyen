@@ -15,13 +15,26 @@ class CreateDMDotDanhGiaTable extends Migration
     {
         Schema::create('DM_DotDanhGia', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('HocKy_Id');
-            $table->unsignedBigInteger('MauTieuChi_Id');
+            $table->unsignedBigInteger('HocKy_Id')->nullable();
+            $table->unsignedBigInteger('MauTieuChi_Id')->nullable();
             $table->string('TenDotDanhGia');
             $table->string('TenKhongDau')->default('');
             $table->boolean('PhatHanh')->default(false);
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('HocKy_Id')
+            ->references('id')
+            ->on('DM_HocKy')
+            ->onDelete('set null')
+            ->onUpdate('cascade');
+
+            $table->foreign('MauTieuChi_Id')
+            ->references('id')
+            ->on('DM_MauTieuChi')
+            ->onDelete('set null')
+            ->onUpdate('cascade');
+
         });
     }
 
@@ -32,6 +45,10 @@ class CreateDMDotDanhGiaTable extends Migration
      */
     public function down()
     {
+        // Schema::table('DM_DotDanhGia', function (Blueprint $table) {
+        //     $table->dropForeign(['HocKy_Id']);
+        //     $table->dropForeign(['MauTieuChi_Id']);
+        // });
         Schema::dropIfExists('DM_DotDanhGia');
     }
 }

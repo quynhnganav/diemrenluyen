@@ -15,8 +15,8 @@ class CreateDanhGiaChiTietTable extends Migration
     {
         Schema::create('DanhGiaChiTiet', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('DotDanhGia_Id');
-            $table->unsignedBigInteger('SinhVien_Id');
+            $table->unsignedBigInteger('DotDanhGia_Id')->nullable();
+            $table->string('SinhVien_Id')->nullable();
             $table->json('SinhVienDanhGia');
             $table->json('CanBoLopDanhGia');
             $table->unsignedBigInteger('TongSoDiem')->default(0);
@@ -31,6 +31,19 @@ class CreateDanhGiaChiTietTable extends Migration
             $table->string('GhiChu')->default(false);
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('DotDanhGia_Id')
+            ->references('id')
+            ->on('DM_DotDanhGia')
+            ->onDelete('set null')
+            ->onUpdate('cascade');
+
+            $table->foreign('SinhVien_Id')
+            ->references('id')
+            ->on('SV')
+            ->onDelete('set null')
+            ->onUpdate('cascade');
+
         });
     }
 
@@ -41,6 +54,10 @@ class CreateDanhGiaChiTietTable extends Migration
      */
     public function down()
     {
+        // Schema::table('DanhGiaChiTiet', function (Blueprint $table) {
+        //     $table->dropForeign(['DotDanhGia_Id']);
+        //     $table->dropForeign(['SinhVien_Id']);
+        // });
         Schema::dropIfExists('DanhGiaChiTiet');
     }
 }

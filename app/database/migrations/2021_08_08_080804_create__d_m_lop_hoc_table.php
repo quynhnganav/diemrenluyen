@@ -15,11 +15,25 @@ class CreateDMLopHocTable extends Migration
     {
         Schema::create('DM_LopHoc', function (Blueprint $table) {
             $table->id();
-            $table->string('Khoa_Id')->nullable();
+            $table->unsignedBigInteger('Khoa_Id')->nullable();
+            $table->string('GV_Id')->nullable();
             $table->string('TenLopHoc');
             $table->string('TenKhongDau')->default('');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('Khoa_Id')
+            ->references('id')
+            ->on('DM_Khoa')
+            ->onDelete('set null')
+            ->onUpdate('cascade');
+
+            $table->foreign('GV_Id')
+            ->references('id')
+            ->on('GV')
+            ->onDelete('set null')
+            ->onUpdate('cascade');
+
         });
     }
 
@@ -30,6 +44,9 @@ class CreateDMLopHocTable extends Migration
      */
     public function down()
     {
+        // Schema::table('DM_LopHoc', function (Blueprint $table) {
+        //     $table->dropForeign(['Khoa_Id']);
+        // });
         Schema::dropIfExists('DM_LopHoc');
     }
 }
