@@ -14,10 +14,16 @@ class CreateSVTable extends Migration
     public function up()
     {
         Schema::create('SV', function (Blueprint $table) {
-            $table->string('id');
-            $table->unsignedBigInteger('user_Id');
-            $table->unsignedBigInteger('LopHoc_Id');
+            $table->string('id', 255)->primary();
+            $table->unsignedBigInteger('LopHoc_Id')->nullable();
             $table->timestamps();
+
+            $table->foreign('LopHoc_Id')
+            ->references('id')
+            ->on('DM_LopHoc')
+            ->onDelete('set null')
+            ->onUpdate('cascade');
+
         });
     }
 
@@ -28,6 +34,9 @@ class CreateSVTable extends Migration
      */
     public function down()
     {
+        // Schema::table('SV', function (Blueprint $table) {
+        //     $table->dropForeign(['LopHoc_Id']);
+        // });
         Schema::dropIfExists('SV');
     }
 }

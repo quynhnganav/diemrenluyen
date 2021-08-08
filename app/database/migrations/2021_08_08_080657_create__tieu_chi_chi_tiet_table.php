@@ -23,6 +23,13 @@ class CreateTieuChiChiTietTable extends Migration
             $table->longText('Css')->nullable();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('MauTieuChi_Id')
+            ->references('id')
+            ->on('DM_MauTieuChi')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
         });
     }
 
@@ -33,6 +40,9 @@ class CreateTieuChiChiTietTable extends Migration
      */
     public function down()
     {
+        // Schema::table('TieuChiChiTiet', function (Blueprint $table) {
+        //     $table->dropForeign(['MauTieuChi_Id']);
+        // });
         Schema::dropIfExists('TieuChiChiTiet');
     }
 }
