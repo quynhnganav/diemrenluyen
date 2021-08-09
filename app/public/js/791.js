@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[791],{7969:(n,e,s)=>{s.d(e,{Z:()=>c});var t=s(3645),a=s.n(t)()((function(n){return n[1]}));a.push([n.id,".container{background:#ff0}",""]);const c=a},7791:(n,e,s)=>{s.r(e),s.d(e,{default:()=>u});var t=s(3379),a=s.n(t),c=s(7969),r={insert:"head",singleton:!1};a()(c.Z,r);const u=c.Z.locals||{}}}]);
