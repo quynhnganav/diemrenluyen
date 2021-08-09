@@ -1,12 +1,17 @@
-require('./bootstrap');
+require('./bootstrap')
+import React from "react";
+import ReactDOM from "react-dom";
+import AppRouter from "./routers";
+// import 'antd/dist/antd.less';
+// import './app.less'
+let props = {}
+const el = document.getElementById('app')
 
-import Vue from "vue";
-import 'ant-design-vue/dist/antd.min.css'
-import { Modal } from "ant-design-vue";
+if (el) {
+    const data = Object.assign({}, el.dataset)
+    Object.keys(data).forEach(d => {
+        props[d] = JSON.parse(data[d])
+    })
+}
 
-Vue.use(Modal)
-Vue.component('sv-page', require('./pages/sv/index.vue').default)
-
-const app = new Vue({
-    el: '#app'
-}).$mount('#app')
+ReactDOM.render(<AppRouter {...props} />, el)

@@ -17,9 +17,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('redirect/{driver}', 'Auth\LoginController@redirectToProvider')
+    ->name('login.provider')
+    ->where('driver', implode('|', config('auth.socialite.drivers')));
+
 Route::prefix('sv')->group(function () {
     Route::get('/', function () {
-        return view('index');
+        return view('sv.index', ['data' => [
+            'name' => "Văn Quang"
+        ]]);
     });
 });
 
