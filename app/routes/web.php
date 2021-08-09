@@ -23,7 +23,7 @@ Route::get('redirect/{driver}', 'Auth\LoginController@redirectToProvider')
 
 Route::prefix('sv')->group(function () {
     Route::get('/', function () {
-        return view('sv.index', ['data' => [
+        return view('index', ['data' => [
             'name' => "Văn Quang"
         ]]);
     });

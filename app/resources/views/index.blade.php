@@ -8,8 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     <link href="/css/cdn/bootstrap.min.css" type="text/css" rel="stylesheet" />
     <link href="{{ mix('css/app.css') }}" type="text/css" rel="stylesheet" />
-    <link href="/js/cdn/bootstrap.min.js" type="text/javascript" />
-    <link href="/js/cdn/popper.min.js" type="text/javascript" />
+    <script src="/js/cdn/bootstrap.bundle.min.js"></script>
     <meta name="csrf-token" value="{{ csrf_token() }}" />
 </head>
 
@@ -55,7 +54,6 @@
             </div>
         </div>
     </nav>
-    <div id="app"></div>
     <script src="{{ mix('js/app.js') }}" defer></script>
     <script src="{{ mix('js/manifest.js') }}" defer></script>
     <script src="{{ mix('js/vendor.js') }}" defer></script>

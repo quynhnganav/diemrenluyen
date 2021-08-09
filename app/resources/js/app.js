@@ -2,8 +2,7 @@ require('./bootstrap')
 import React from "react";
 import ReactDOM from "react-dom";
 import AppRouter from "./routers";
-// import 'antd/dist/antd.less';
-// import './app.less'
+
 let props = {}
 const el = document.getElementById('app')
 
