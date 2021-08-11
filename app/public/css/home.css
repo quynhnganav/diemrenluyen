@@ -1,0 +1,66 @@
+.site_title {
+    font-size: 24px;
+}
+
+.logo-container {
+    height: 70px;
+    background-color: rgba(0, 0, 0, 0.3)
+}
+.logo-container h3 a {
+    font-weight: 300;
+    line-height: 70px;
+    letter-spacing: 3px;
+    
+}
+.navbar {
+    transition: all .2s;
+    position: fixed; 
+    width: 100%; 
+    height: 70px; 
+    padding-left: 256px; 
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.navbar img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+} 
+.user-dropdown {
+    top: 50px;
+    right: 0;
+}
+.user-dropdown .dropdown-tag {
+    color: #5A738E !important
+}
+.nav-right {
+    cursor: pointer;
+}
+.togge-padding-left {
+    padding-left: 96px !important; 
+}
+.menu-wrap i {
+    font-size: 18px;
+}
+.menu-wrap ul {
+    background-color: transparent;
+}
+.menu-wrap li:hover span{
+    color: white !important    /* font-size: 18px; */
+}
+.sider {
+    transition: all .2s;
+}
+
+li:hover {
+    cursor: pointer;
+    color: white !important    /* font-size: 18px; */
+}
+.openSider {
+    flex: 0 0 240px;
+    max-width: 240px; min-width: 240px; width: 240px;
+}
+.closeSider {
+    flex: 0 0 80px;
+    max-width: 80px; min-width: 80px; width: 80px;
+}
