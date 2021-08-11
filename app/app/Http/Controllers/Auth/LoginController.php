@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -75,6 +76,7 @@ class LoginController extends Controller
             $newUser->email             = $user->getEmail();
             $newUser->username             = $user->getEmail();
             $newUser->email_verified_at = now();
+            $newUser->password = Hash::make("vanquang@vku.drl@3312");
             // $newUser->avatar            = $user->getAvatar();
             $newUser->save();
             auth()->login($newUser, true);

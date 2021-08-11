@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Kalnoy\Nestedset\NestedSet;
 
 class CreateTieuChiChiTietTable extends Migration
 {
@@ -21,6 +22,10 @@ class CreateTieuChiChiTietTable extends Migration
             $table->string('TenKhongDau')->default('');
             $table->integer('SoDiem')->default(0);
             $table->longText('Css')->nullable();
+
+            //tree
+            $table->nestedSet();
+
             $table->softDeletes();
             $table->timestamps();
 
@@ -40,9 +45,9 @@ class CreateTieuChiChiTietTable extends Migration
      */
     public function down()
     {
-        // Schema::table('TieuChiChiTiet', function (Blueprint $table) {
-        //     $table->dropForeign(['MauTieuChi_Id']);
-        // });
+        Schema::table('TieuChiChiTiet', function (Blueprint $table) {
+            $table->dropNestedSet();
+        });
         Schema::dropIfExists('TieuChiChiTiet');
     }
 }
