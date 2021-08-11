@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/sv');;
 })->name('index');
 
 Route::get('redirect/{driver}', 'Auth\LoginController@redirectToProvider')
@@ -24,7 +24,7 @@ Route::get('/callback/{driver}', 'Auth\LoginController@handleProviderCallback');
 
 Route::prefix('sv')->group(function () {
     Route::get('/', function () {
-        return view('index', ['data' => [
+        return view('sv.index', ['data' => [
             'name' => "Văn Quang"
         ]]);
     });
