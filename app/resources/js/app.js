@@ -1,7 +1,7 @@
 require('./bootstrap')
 import React from "react";
 import ReactDOM from "react-dom";
-import AppRouter from "./routers";
+import AppRoot from "./root";
 
 let props = {}
 const el = document.getElementById('app')
@@ -13,4 +13,4 @@ if (el) {
     })
 }
 
-ReactDOM.render(<AppRouter {...props} />, el)
+ReactDOM.render(<AppRoot {...props} />, el)
