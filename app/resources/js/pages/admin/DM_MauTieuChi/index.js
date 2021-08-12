@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Row, Table, Col, Space, Card } from "antd";
-import Grid from "antd/lib/card/Grid";
 import { useDataProps } from "../../..";
 import axios from "axios";
+import './index.scss'
 
 const data = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},]
 
@@ -68,27 +68,29 @@ const DM_TieuChi = () => {
             console.log(res)
         })
     }, [])
+
+    const getTableScroll = () => {
+        let scrollY = `calc(100vh - 700px)`
+        return scrollY
+    }
  
     return (
-        <div>
-            <Row>
-                <Col>
-                    <Row>
-                        <Col>
-                            <Button>Theem moi</Button>
-                        </Col>
-                    </Row>
+      <div class ='tieu-chi-wrapper' >
+            <Row className='bg-white p-3 content'>
+                <Col span={24}>
+                    <Button>Thêm mới</Button>
                 </Col>
-                <Col>
+                <Col span={24} className='mt-3'>
                     <Table
                         columns={columns}
+                        scroll={{x: 700, y: 'calc(100vh - 363px)'}}
                         dataSource={mauTieuChis}
-                        scroll={{ y: '80%' }}
                         rowKey={(v) => v?.id}
                     />
+                   
                 </Col>
             </Row>
-        </div>
+       </div>
     )
 }
 
