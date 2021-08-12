@@ -32,7 +32,23 @@ Route::prefix('sv')->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::get('DM_MauTieuChi/data', 'Admin\DM_MauTieuChi_Controller@getData')->middleware('auth');
+
     Route::resource('DM_MauTieuChi', Admin\DM_MauTieuChi_Controller::class);
+
+    Route::get('DM_LopHoc/sync-data', 'Admin\DM_LopHoc_Controller@syncLopHoc');
+    Route::resource('DM_LopHoc', Admin\DM_LopHoc_Controller::class);
+
+    Route::get('DM_HocKy/sync-data', 'Admin\DM_HocKy_Controller@syncHocKy');
+    
+    Route::resource('DM_HocKy', Admin\DM_HocKy_Controller::class);
+
+    Route::resource('DM_GiangVien', Admin\DM_GiangVien_Controller::class);
+
+    Route::resource('DM_SinhVien', Admin\DM_SinhVien_Controller::class);
+
+    Route::get('DM_SinhVien/{idLop}/sync-data', 'Admin\DM_SinhVien_Controller@syncSinhVienLop');
+    Route::get('DM_SinhVien/{idLop}/lop', 'Admin\DM_SinhVien_Controller@getSVLopID');
+    Route::get('DM_SinhVien/{tenLop}/ten-lop', 'Admin\DM_SinhVien_Controller@getSVLopTen');
 });
 
 Auth::routes([

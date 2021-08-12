@@ -12,16 +12,26 @@ class GV extends Model
     use SoftDeletes;
 
     protected $table = 'GV';
-    protected $keyType = 'string';
+
+    protected $fillable = [
+        'id',
+        'email',
+        'ChucDanh'
+    ];
 
     /**
      * Get all of the lopHocs for the GV
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function lopHocs(): HasMany
+    public function lopHocs()
     {
-        return $this->hasMany(DM_LopHoc::class, 'LopHoc_Id');
+        return $this->hasMany(DM_LopHoc::class, 'GV_Id');
+    }
+
+    public function user()
+    {
+        return $this->morphOne('App\Models\User', 'Profile');
     }
 
 }

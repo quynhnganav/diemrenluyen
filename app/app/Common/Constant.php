@@ -21,6 +21,6 @@ class Constant {
     public function __construct() {
         $this->API_DAOTAO_URI = env("API_DAOTAO_URI", "localhost");
         $this->API_DAOTAO_SECRET = env("API_DAOTAO_SECRET", "localhost");
-   } 
+    } 
 
 }

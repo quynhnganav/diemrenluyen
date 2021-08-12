@@ -14,7 +14,7 @@ class CreateDMDotDanhGiaTable extends Migration
     public function up()
     {
         Schema::create('DM_DotDanhGia', function (Blueprint $table) {
-            $table->id();
+            $table->id()->index();
             $table->unsignedBigInteger('HocKy_Id')->nullable();
             $table->unsignedBigInteger('MauTieuChi_Id')->nullable();
             $table->string('TenDotDanhGia');

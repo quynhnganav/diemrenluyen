@@ -14,9 +14,9 @@ class CreateDanhGiaChiTietTable extends Migration
     public function up()
     {
         Schema::create('DanhGiaChiTiet', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('DotDanhGia_Id')->nullable();
-            $table->string('SinhVien_Id')->nullable();
+            $table->id()->index();
+            $table->unsignedBigInteger('DotDanhGia_Id')->nullable()->index();
+            $table->unsignedBigInteger('SinhVien_Id')->nullable()->index();
             $table->json('SinhVienDanhGia');
             $table->json('CanBoLopDanhGia');
             $table->unsignedBigInteger('TongSoDiem')->default(0);
@@ -31,6 +31,8 @@ class CreateDanhGiaChiTietTable extends Migration
             $table->string('GhiChu')->default(false);
             $table->softDeletes();
             $table->timestamps();
+
+            $table->index(['DotDanhGia_Id', 'SinhVien_Id']);
 
             $table->foreign('DotDanhGia_Id')
             ->references('id')

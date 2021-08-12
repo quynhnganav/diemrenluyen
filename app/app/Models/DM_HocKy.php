@@ -14,8 +14,11 @@ class DM_HocKy extends Model
     protected $table = 'DM_HocKy';
  
     protected $fillable = [
-        'TenHocKy', 
-        'NamHoc'
+        'id',
+        'TenHocKy',
+        'NamBatDau',
+        'NamKetThuc',
+        'HienHanh'
     ];
 
     public function dotDanhGia() {

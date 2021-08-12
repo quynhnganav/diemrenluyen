@@ -14,8 +14,11 @@ class DM_LopHoc extends Model
     protected $table = 'DM_LopHoc';
 
     protected $fillable = [
+        "id",
         'Khoa_Id', 
+        'GV_Id', 
         'TenLopHoc',
+        'TenKhongDau',
         'KhoaHoc'
     ];
 
