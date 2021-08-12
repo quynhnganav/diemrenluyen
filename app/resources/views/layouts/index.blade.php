@@ -23,7 +23,7 @@
             <!-- SIDEBAR SECTION -->
             @yield('sidebar')
                 <!-- SIDEBAR SECTION -->
-            <div style='padding: 70px 0px 0px; width: 100%; height: 100%;'>
+            <div style='padding: 70px 0px 0px'>
                 @yield('content')
             </div>
         </section>

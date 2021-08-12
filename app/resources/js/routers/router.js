@@ -1,4 +1,5 @@
 export const routers = [
+    //sv
     {
         component: 'react',
         path: '/sv'
@@ -6,5 +7,12 @@ export const routers = [
     {
         component: 'vue',
         path: '/gv'
+    },
+    //gv
+
+    //admin
+    {
+        component: 'admin/DM_MauTieuChi',
+        path: '/admin/DM_MauTieuChi'
     }
 ]

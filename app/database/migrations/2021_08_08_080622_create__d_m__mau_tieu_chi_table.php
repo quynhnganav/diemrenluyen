@@ -17,7 +17,7 @@ class CreateDMMauTieuChiTable extends Migration
             $table->id();
             $table->string('TenMauTieuChi');
             $table->string('TenKhongDau')->default('');
-            $table->integer('TongSoDiem')->default(0);
+            $table->integer('TongSoDiem')->default(100);
             $table->boolean('PhatHanh')->default(false);
             $table->softDeletes();
             $table->timestamps();
