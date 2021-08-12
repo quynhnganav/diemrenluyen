@@ -10,7 +10,7 @@
                     <span>
                         @if (Auth::user())
                             {{ Auth::user()->name }}
-                        @endif Nga - 18IT5
+                        @endif - 18IT5
                     </span>
                 </div>
                 <div class='position-absolute user-dropdown'>

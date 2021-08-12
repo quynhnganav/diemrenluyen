@@ -9,12 +9,7 @@ routers.forEach(route => {
 })
 
 
-const AppRouter = ({
-    data
-}) => {
-
-    console.log(data)
-
+const AppRouter = () => {
     return (
         <BrowserRouter>
             <Suspense fallback="Loading...">

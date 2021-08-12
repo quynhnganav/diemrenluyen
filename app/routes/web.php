@@ -31,7 +31,8 @@ Route::prefix('sv')->group(function () {
 });
 
 Route::prefix('admin')->group(function () {
-    Route::resource('DM_TieuChi', Admin\DM_TieuChi_Controller::class);
+    Route::get('DM_MauTieuChi/data', 'Admin\DM_MauTieuChi_Controller@getData')->middleware('auth');
+    Route::resource('DM_MauTieuChi', Admin\DM_MauTieuChi_Controller::class);
 });
 
 Auth::routes([
