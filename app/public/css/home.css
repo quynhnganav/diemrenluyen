@@ -1,10 +1,15 @@
 .site_title {
     font-size: 24px;
 }
-
+:root {
+    --some-display: block;
+}
 .logo-container {
     height: 70px;
     background-color: rgba(0, 0, 0, 0.3)
+}
+.isDisplay {
+    display: var(--some-display);
 }
 .logo-container h3 a {
     font-weight: 300;
