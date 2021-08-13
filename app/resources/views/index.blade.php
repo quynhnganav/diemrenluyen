@@ -69,9 +69,9 @@
 
                 </div>
             </div>
-            <!-- SIDEBAR SECTION -->
-            <div style='padding: 70px 0px 0px; width: 100%; height: 100%;'>
-                <div id="app" style="width: 100%; height: 100%;"></div>
+            <!-- SIDEBAR SECTION END -->
+            <div class='content-wrap' >
+                <div id="app" style="width: 100%; height: 100%; background: '#fafafa';"></div>
             </div>
         </section>
     </section>

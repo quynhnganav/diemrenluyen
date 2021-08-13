@@ -19,13 +19,15 @@
 <body>
     <section class='w-100' style='height: 100vh'>
         @yield('header')
-        <section class='d-flex overflow-x-hidden' style='height: 100vh'>
+        <section class='d-flex' style='height: 100vh'>
             <!-- SIDEBAR SECTION -->
             @yield('sidebar')
                 <!-- SIDEBAR SECTION -->
-            <div style='padding: 70px 0px 0px'>
+           
+            <div style='padding: 70px 0px 0px; background: #fafafa; width: calc(100% - 80px); overflow-x: hidden; ' >
                 @yield('content')
             </div>
+           
         </section>
     </section>
     @yield('js')
