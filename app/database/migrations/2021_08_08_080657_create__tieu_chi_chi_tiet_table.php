@@ -15,7 +15,7 @@ class CreateTieuChiChiTietTable extends Migration
     public function up()
     {
         Schema::create('TieuChiChiTiet', function (Blueprint $table) {
-            $table->id();
+            $table->id()->index();
             $table->unsignedBigInteger('MauTieuChi_Id');
             $table->unsignedBigInteger('TieuChiChiTiet_Id')->nullable();
             $table->string('TenTieuChi');

@@ -14,9 +14,9 @@ class CreateDMLopHocTable extends Migration
     public function up()
     {
         Schema::create('DM_LopHoc', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id')->primary()->index();
             $table->unsignedBigInteger('Khoa_Id')->nullable();
-            $table->string('GV_Id')->nullable();
+            $table->unsignedBigInteger('GV_Id')->nullable();
             $table->string('TenLopHoc');
             $table->string('TenKhongDau')->default('');
             $table->softDeletes();
@@ -33,7 +33,6 @@ class CreateDMLopHocTable extends Migration
             ->on('GV')
             ->onDelete('set null')
             ->onUpdate('cascade');
-
         });
     }
 

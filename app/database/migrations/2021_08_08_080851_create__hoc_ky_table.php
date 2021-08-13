@@ -14,9 +14,11 @@ class CreateHocKyTable extends Migration
     public function up()
     {
         Schema::create('DM_HocKy', function (Blueprint $table) {
-            $table->id();
+            $table->id()->index();
             $table->string('TenHocKy');
-            $table->string('NamHoc');
+            $table->string('NamBatDau');
+            $table->string('NamKetThuc');
+            $table->boolean('HienHanh');
             $table->softDeletes();
             $table->timestamps();
         });

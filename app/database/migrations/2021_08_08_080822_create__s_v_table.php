@@ -14,8 +14,13 @@ class CreateSVTable extends Migration
     public function up()
     {
         Schema::create('SV', function (Blueprint $table) {
-            $table->string('id', 255)->primary();
-            $table->unsignedBigInteger('LopHoc_Id')->nullable();
+            $table->id()->index();
+            $table->string("MaSV", 255)->unique();
+            $table->string("TenNganh", 255);
+            $table->string("TrangThai", 255)->nullable();
+            $table->string("GhiChu", 255)->nullable();
+            $table->integer('LopHoc_Id')->nullable();
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('LopHoc_Id')

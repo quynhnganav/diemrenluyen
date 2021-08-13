@@ -14,7 +14,7 @@ class CreateDMKhoaTable extends Migration
     public function up()
     {
         Schema::create('DM_Khoa', function (Blueprint $table) {
-            $table->id();
+            $table->id()->index();
             $table->string('MaKhoa')->nullable();
             $table->string('TenKhoa');
             $table->string('TenKhongDau')->default('');

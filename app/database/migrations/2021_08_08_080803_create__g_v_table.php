@@ -14,7 +14,10 @@ class CreateGVTable extends Migration
     public function up()
     {
         Schema::create('GV', function (Blueprint $table) {
-            $table->string('id', 255)->primary();
+            $table->id()->index();
+            $table->string('email')->unique();
+            $table->string('ChucDanh', 255);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

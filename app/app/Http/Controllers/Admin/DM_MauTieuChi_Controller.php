@@ -147,4 +147,9 @@ class DM_MauTieuChi_Controller extends Controller
         return response()->json(["message" => "Xóa thành công"], 200);
     }
 
+    public function updateChiTiet(Request $request, $id)
+    {
+        # code...
+    }
+
 }

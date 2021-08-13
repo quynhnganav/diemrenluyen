@@ -18,7 +18,18 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'username', 'password',
+        'HocKyHienTai_Id',
+        'Profile_id', 
+        'Profile_type', 
+        'Ten', 
+        'HoDem',
+        'HoTenKhongDau',
+        'email', 
+        'username', 
+        'SoDienThoai',
+        'SoDienThoaiGiaDinh',
+        'NgaySinh',
+        'GioiTinh',
     ];
 
     /**
@@ -27,7 +38,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'Profile_type', 'HoTenKhongDau'
     ];
 
     /**
@@ -38,4 +49,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function chucVu()
+    {
+        return $this->morphTo(__FUNCTION__, 'Profile_Type', 'Profile_Id');
+    }
+
 }
