@@ -6,7 +6,7 @@
             </div>
             <div class='nav-right position-relative'>
                 <div>
-                    <img class='rounded-circle' src='http://daotao.vku.udn.vn/uploads/sinhvien/18IT285.jpg' />
+                    <img class='rounded-circle' src='/images/logo.png' />
                     <span>
                         @if (Auth::user())
                             {{ Auth::user()->name }}

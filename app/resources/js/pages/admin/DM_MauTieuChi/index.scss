@@ -1,5 +1,6 @@
 .tieu-chi-wrapper {
-    padding: 35px;
+    padding: 10px;
+    padding-bottom: 0;
     .ant-table-thead  {
         tr {
            th {
@@ -10,5 +11,11 @@
    }
    .content {
     border: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 0;
+
+    .ant-pagination {
+       margin-bottom: 0;
+    }
+
    }
 }
