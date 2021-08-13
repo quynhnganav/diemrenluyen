@@ -15,7 +15,7 @@ class DM_MauTieuChi_Controller extends Controller
 
     public function getData()
     {
-        $mauTieuChi = DM_MauTieuChi::paginate(15);
+        $mauTieuChi = DM_MauTieuChi::all();
         return $mauTieuChi;
     }
 
@@ -26,7 +26,7 @@ class DM_MauTieuChi_Controller extends Controller
      */
     public function index(Request $request)
     {
-        $mauTieuChi = DM_MauTieuChi::paginate(15); 
+        $mauTieuChi = DM_MauTieuChi::all(); 
         return view('admin.index', ["data" => [
             'mauTieuChi' => $mauTieuChi
         ]]);
