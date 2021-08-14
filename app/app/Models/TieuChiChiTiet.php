@@ -14,11 +14,16 @@ class TieuChiChiTiet extends Model
     protected $table = 'TieuChiChiTiet';
 
     protected $fillable = [
-        'MauTieuChiChiTiet_Id', 
+        'MauTieuChi_Id',
         'TieuChiChiTiet_Id',
         'TenTieuChi',
         'TenKhongDau',
         'SoDiem',
         'Css'
     ];
+
+    protected $hidden = [
+        'TenKhongDau', 'deleted_at', 'created_at', 'updated_at'
+    ];
+
 }

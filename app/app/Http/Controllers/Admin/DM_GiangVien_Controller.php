@@ -11,7 +11,8 @@ class DM_GiangVien_Controller extends Controller
 {
     public function index()
     {
-        $gv = GV::with('lopHocs', 'user')->get();
-        return $gv;
+        // $gv = GV::with('lopHocs', 'user')->get();
+        // return $gv;
+        return view('admin.index');
     }
 }
