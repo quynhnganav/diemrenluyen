@@ -22,7 +22,7 @@ class DM_HocKy_Controller extends Controller
 
     public function index()
     {
-       return DM_HocKy::all();
+       return view('admin.index');
     }
 
     public function syncHocKy()

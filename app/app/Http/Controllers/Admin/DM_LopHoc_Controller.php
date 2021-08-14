@@ -23,8 +23,7 @@ class DM_LopHoc_Controller extends Controller
     
     public function index()
     {
-        $lops = DM_LopHoc::all();
-        return response()->json($lops, 200);
+        return view('admin.index');
     }
 
     public function syncLopHoc()

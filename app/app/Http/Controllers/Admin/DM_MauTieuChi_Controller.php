@@ -3,15 +3,24 @@
 namespace App\Http\Controllers\Admin;
 
 
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+
+use App\Services\TieuChiService;
 
 use App\Common\Constant;
 use App\Models\DM_MauTieuChi;
+use App\Models\TieuChiChiTiet;
 
 class DM_MauTieuChi_Controller extends Controller
 {
+
+    private $tieuChiService;
+
+    public function __construct(TieuChiService $tieuChiService) {
+        $this->tieuChiService = $tieuChiService;
+    }
 
     public function getData()
     {
@@ -26,10 +35,7 @@ class DM_MauTieuChi_Controller extends Controller
      */
     public function index(Request $request)
     {
-        $mauTieuChi = DM_MauTieuChi::all(); 
-        return view('admin.index', ["data" => [
-            'mauTieuChi' => $mauTieuChi
-        ]]);
+        return view('admin.index');
     }
 
     /**
@@ -77,7 +83,7 @@ class DM_MauTieuChi_Controller extends Controller
         } catch (\Throwable $th) {
            abort(404, "Không tìm thấy mẫu tiêu chí");
         }
-        
+
         return response()->json(json_decode($mauTieuChi), 200);
     }
 
@@ -118,8 +124,8 @@ class DM_MauTieuChi_Controller extends Controller
            abort(404, "Không tìm thấy mẫu tiêu chí");
         }
 
-        if ($mauTieuChi->PhatHanh == true 
-            && ($request->PhatHanh != $mauTieuChi->PhatHanh 
+        if ($mauTieuChi->PhatHanh == true
+            && ($request->PhatHanh != $mauTieuChi->PhatHanh
             || $request->TongSoDiem != $mauTieuChi->TongSoDiem)
         ) {
             abort(403, "Mẫu danh mục đã được phát hành, không thể chỉnh sửa");
@@ -147,9 +153,28 @@ class DM_MauTieuChi_Controller extends Controller
         return response()->json(["message" => "Xóa thành công"], 200);
     }
 
-    public function updateChiTiet(Request $request, $id)
+    public function updateChiTiet(Request $request, $idMauTieuChi)
     {
-        # code...
+        try {
+            $mauTieuChi = DM_MauTieuChi::findOrFail($idMauTieuChi);
+        } catch (\Throwable $th) {
+           abort(404, "Không tìm thấy mẫu tiêu chí");
+        }
+        $input = $request->tree;
+        $result = $this->tieuChiService->updateTree($input, $mauTieuChi->id);
+        return $result;
+    }
+
+    public function getTieuChiChiTiet(Request $request, $idMauTieuChi)
+    {
+        try {
+            $mauTieuChi = DM_MauTieuChi::findOrFail($idMauTieuChi);
+        } catch (\Throwable $th) {
+           abort(404, "Không tìm thấy mẫu tiêu chí");
+        }
+        $nodes = TieuChiChiTiet::where('MauTieuChi_Id', $idMauTieuChi)->get()->toTree();
+        return $nodes;
+
     }
 
 }

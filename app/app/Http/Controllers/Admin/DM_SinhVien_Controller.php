@@ -24,9 +24,10 @@ class DM_SinhVien_Controller extends Controller
 
     public function index()
     {
-        $sv = SV::with('user', 'lopHoc')->paginate(20);
-        // $sv = $sv.map()
-       return response()->json($sv, 200);
+    //     $sv = SV::with('user', 'lopHoc')->paginate(20);
+    //     // $sv = $sv.map()
+    //    return response()->json($sv, 200);
+        return view('admin.index');
     }
 
     public function show($id)

@@ -9,6 +9,8 @@ services:
     working_dir: /var/www
     volumes:
       - ./app/:/var/www/
+    networks:
+      - app-network
 
   # The Web Server
   web:
@@ -21,6 +23,8 @@ services:
       - ./app/public:/var/www/public
     ports:
       - 8081:80
+    networks:
+      - app-network
 
   # The Database
   database:
@@ -34,6 +38,8 @@ services:
       MYSQL_ROOT_PASSWORD: secret
     ports:
         - "33061:3306"
+    networks:
+      - app-network
     
   phpmyadmin:
     image: phpmyadmin
@@ -42,6 +48,12 @@ services:
       - 8088:80
     environment:
       - PMA_ARBITRARY=1
+    networks:
+      - app-network
 
 volumes:
   dbdata:
+
+networks:
+  app-network:
+    driver: bridge
