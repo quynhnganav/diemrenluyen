@@ -14,5 +14,11 @@ export const routers = [
     {
         component: 'admin/DM_MauTieuChi',
         path: '/admin/DM_MauTieuChi'
+    },
+
+    //common
+    {
+        component: '404',
+        path: '*'
     }
 ]

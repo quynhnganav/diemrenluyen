@@ -5,6 +5,7 @@ import { useDataProps } from "../../..";
 import ModalForm from "./ModalForm";
 import { axios } from "../../../config";
 import './index.scss'
+import ModalChiTiet from "./ModalChiTiet";
 
 const { confirm } = Modal
 
@@ -16,6 +17,7 @@ const DM_TieuChi = () => {
     const [loading, setLoading] = useState(false)
 
     const refModal = useRef(null)
+    const refModalChiTiet = useRef(null)
 
     useEffect(() => {
         loadData()
@@ -29,7 +31,7 @@ const DM_TieuChi = () => {
             console.log(res?.data)
             setMauTieuChis(res?.data || [])
         })
-        .finally(() => setLoading(false))
+            .finally(() => setLoading(false))
     }
 
     const getTableScroll = () => {
@@ -37,36 +39,40 @@ const DM_TieuChi = () => {
         return scrollY
     }
 
+    const onEditChiTiet = useCallback((id) => {
+        refModalChiTiet.current?.showModal(id);
+    }, [])
+
     const onCreate = useCallback(() => {
         refModal?.current?.showModal()
     }, [])
 
     const showConfirm = (id, name) => {
         confirm({
-          title: `Bạn có muốn xóa mẫu tiêu chí ${name || ''}?`,
-          icon: <ExclamationCircleOutlined />,
-          content: 'Mẫu tiêu chí này sẽ được xóa vĩnh viễn.',
-          onOk() {
-            return new Promise((rel, rej) => {
-                axios.delete(`/admin/DM_MauTieuChi/${id}`)
-                .then((res) => {
-                    notification.success({
-                        message: 'Xóa thành công'
-                    })
-                    loadData && loadData()
+            title: `Bạn có muốn xóa mẫu tiêu chí ${name || ''}?`,
+            icon: <ExclamationCircleOutlined />,
+            content: 'Mẫu tiêu chí này sẽ được xóa vĩnh viễn.',
+            onOk() {
+                return new Promise((rel, rej) => {
+                    axios.delete(`/admin/DM_MauTieuChi/${id}`)
+                        .then((res) => {
+                            notification.success({
+                                message: 'Xóa thành công'
+                            })
+                            loadData && loadData()
+                        })
+                        .catch((err) => {
+                            notification.error({
+                                message: 'Lỗi khi xóa'
+                            })
+                        })
+                        .finally(() => rel(1))
                 })
-                .catch((err) => {
-                    notification.error({
-                        message: 'Lỗi khi xóa'
-                    })
-                })
-                .finally(() => rel(1))
-            })
-          },
-          okText: 'Xác nhận',
-          cancelText: 'Hủy'
+            },
+            okText: 'Xác nhận',
+            cancelText: 'Hủy'
         });
-      }
+    }
 
     const columns = useMemo(() => (
         [
@@ -86,21 +92,21 @@ const DM_TieuChi = () => {
                 title: 'Tổng số điểm',
                 dataIndex: 'TongSoDiem',
                 key: 'TongSoDiem',
-                width: 200,
-                render: (t, r, i) => i + 1
+                className: 'cell-center',
+                width: 200
             },
             {
                 title: 'Phát hành',
                 dataIndex: 'PhatHanh',
                 key: 'PhatHanh',
+                className: 'cell-center',
+                width: 200,
                 render: (t) => t ? "Đã phát hành" : "Chưa phát hành"
             },
             {
                 title: '',
                 dataIndex: 'action',
                 key: 'action',
-                // width: 300,
-                // fixed: 'right',
                 render: (text, record) => (
                     <Space size='middle'>
                         <Button
@@ -111,6 +117,7 @@ const DM_TieuChi = () => {
                         </Button>
                         <Button
                             type='primary'
+                            onClick={() => onEditChiTiet(record)}
                         >
                             Tiêu chí
                         </Button>
@@ -150,6 +157,9 @@ const DM_TieuChi = () => {
             <ModalForm
                 ref={refModal}
                 callback={loadData}
+            />
+            <ModalChiTiet
+                ref={refModalChiTiet}
             />
         </div>
     )

@@ -15,49 +15,48 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect('/sv');;
-})->name('index');
+})->name('index')->middleware('auth');
 
 Route::get('redirect/{driver}', 'Auth\LoginController@redirectToProvider')
     ->name('login.provider')
     ->where('driver', implode('|', config('auth.socialite.drivers')));
 Route::get('/callback/{driver}', 'Auth\LoginController@handleProviderCallback');
 
-Route::prefix('sv')->group(function () {
+Route::prefix('sv')->name('sv.')->group(function () {
+
     Route::get('/', function () {
-        return view('sv.index', ['data' => [
-            'name' => "Văn Quang"
-        ]]);
-    });
+        if (Auth::check()) {
+            return redirect()->route('sv.danh-gia.index');
+        }
+       return view('auth.sv.login');
+    })->name('login');
+
+    Route::resource('danh-gia', EndUser\DanhGiaController::class)->middleware('auth');
 });
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/', function () {
+        return view('auth.login');
+    })->name('login');
+
     Route::get('DM_MauTieuChi/data', 'Admin\DM_MauTieuChi_Controller@getData');
 
     Route::put('DM_MauTieuChi/{idMauTieuChi}/update-tieuchi', 'Admin\DM_MauTieuChi_Controller@updateChiTiet');
     Route::get('DM_MauTieuChi/{idMauTieuChi}/tieuchi-chitiet', 'Admin\DM_MauTieuChi_Controller@getTieuChiChiTiet');
 
-    Route::resource('DM_MauTieuChi', Admin\DM_MauTieuChi_Controller::class, [
-        'as' => 'admin'
-    ]);
+    Route::resource('DM_MauTieuChi', Admin\DM_MauTieuChi_Controller::class);
 
     Route::get('DM_LopHoc/sync-data', 'Admin\DM_LopHoc_Controller@syncLopHoc');
-    Route::resource('DM_LopHoc', Admin\DM_LopHoc_Controller::class, [
-        'as' => 'admin'
-    ]);
+    Route::resource('DM_LopHoc', Admin\DM_LopHoc_Controller::class);
 
     Route::get('DM_HocKy/sync-data', 'Admin\DM_HocKy_Controller@syncHocKy');
-    
-    Route::resource('DM_HocKy', Admin\DM_HocKy_Controller::class, [
-        'as' => 'admin'
-    ]);
 
-    Route::resource('DM_GiangVien', Admin\DM_GiangVien_Controller::class, [
-        'as' => 'admin'
-    ]);
+    Route::resource('DM_HocKy', Admin\DM_HocKy_Controller::class);
 
-    Route::resource('DM_SinhVien', Admin\DM_SinhVien_Controller::class, [
-        'as' => 'admin'
-    ]);
+    Route::resource('DM_GiangVien', Admin\DM_GiangVien_Controller::class);
+
+    Route::resource('DM_SinhVien', Admin\DM_SinhVien_Controller::class);
 
     Route::get('DM_SinhVien/{idLop}/sync-data', 'Admin\DM_SinhVien_Controller@syncSinhVienLop');
     Route::get('DM_SinhVien/{idLop}/lop', 'Admin\DM_SinhVien_Controller@getSVLopID');
@@ -65,7 +64,7 @@ Route::prefix('admin')->group(function () {
 });
 
 Auth::routes([
-    'register' => false, 
+    'register' => false,
     'verify' => false,
     'reset' => false,
     'confirm' => false,
