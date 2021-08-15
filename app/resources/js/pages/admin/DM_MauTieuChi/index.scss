@@ -10,12 +10,16 @@
         }
    }
    .content {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    padding-bottom: 0;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      padding-bottom: 0;
 
-    .ant-pagination {
-       margin-bottom: 0;
-    }
+      .ant-pagination {
+         margin-bottom: 0;
+      }
 
+   }
+
+   .cell-center {
+      text-align: center;
    }
 }

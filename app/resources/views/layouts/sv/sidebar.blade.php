@@ -8,7 +8,14 @@
         <div class='position-absolute top-0'
             style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; margin-right: 0px; margin-bottom: 0px;'>
             <ul class='py-4 ' id='siderbar'>
-            
+                <li class='d-block'>
+                    <a class='text-decoration-none text-white' href="{{ route('sv.danh-gia.index') }}">
+                        <span style='color: rgb(120, 129, 149)'>
+                            <i class='fa fa-street-view'></i>
+                            <span class='ps-2' id='menu-text'>Đánh giá điểm rèn luyện</span>
+                        </span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -41,37 +48,8 @@
         if (w < 768) {
             checkWidthToggle()
         }
-        var siderItems = [
-   {
-       key: '/',
-       title: 'Lí lịch sinh viên',
-       icon : 'fa-street-view'  
-   },
-   {
-        key: 'calendar',
-        title: 'Thời khoá biểu',
-        icon : 'fa-calendar' ,
-        childrens: [{
-        key: 'calendar-week',
-        title: 'Thời khoá biểu tuần',
-        icon : 'fa-calendar' , 
-        }]  
-   }
-]
-document.getElementById('siderbar').innerHTML = siderItems.map(item => 
-    `<li class='d-block py-2' key=${item.key}>
-    <a class='text-decoration-none text-white' href='${item.key}'>
-    <span style='color: rgb(120, 129, 149)'>
-    <i class='fa ${item.icon}'></i>
-    <span class='ps-2 isDisplay'>${item.title}</span>
-    </span>
-    </a>
-    </li>
-    ${item.children == undefined}  ? <p>a</p> : <p>b</p>}
-    `
-).join('')
     </script>
     <script>
-  
+
 </script>
 @endsection
