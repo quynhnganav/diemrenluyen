@@ -12,13 +12,18 @@ class DM_HocKy extends Model
     use SoftDeletes;
 
     protected $table = 'DM_HocKy';
- 
+    public static $snakeAttributes = false;
+
     protected $fillable = [
-        'id',
+        'idDaoTao',
         'TenHocKy',
         'NamBatDau',
         'NamKetThuc',
         'HienHanh'
+    ];
+
+    protected $hidden = [
+        'idDaoTao', 'deleted_at'
     ];
 
     public function dotDanhGia() {

@@ -12,9 +12,10 @@ class DM_DotDanhGia extends Model
     use SoftDeletes;
 
     protected $table = 'DM_DotDanhGia';
+    public static $snakeAttributes = false;
 
     protected $fillable = [
-        'HocKy_Id', 
+        'HocKy_Id',
         'MauTieuChi_Id',
         'TenDotDanhGia',
         'TenKhongDau',
@@ -29,6 +30,10 @@ class DM_DotDanhGia extends Model
 
     public function danhGiaChiTiet() {
         return $this->hasMany(DanhGiaChiTiet::class, 'DotDanhGia_Id');
+    }
+
+    public function mauTieuChi() {
+        return $this->belongsTo(DM_MauTieuChi::class, 'MauTieuChi_Id', 'id');
     }
 
 }

@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repositories\DM_DotDanhGia\DM_DotDanhGia_Repository;
+use App\Repositories\DM_HocKy\DM_HocKy_Repository;
+use App\Repositories\DM_MauTieuChi\DM_MauTieuChi_Repository;
+use App\Repositories\SV\SV_Repository;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use App\Services\DTAPIService;
@@ -13,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
     public $singletons = [
         DTAPIService::class => DTAPIService::class,
         TieuChiService::class => TieuChiService::class,
+        DM_DotDanhGia_Repository::class => DM_DotDanhGia_Repository::class,
+        DM_HocKy_Repository::class => DM_HocKy_Repository::class,
+        DM_MauTieuChi_Repository::class => DM_MauTieuChi_Repository::class,
+        SV_Repository::class => SV_Repository::class
     ];
 
     /**

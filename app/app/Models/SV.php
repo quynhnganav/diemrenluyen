@@ -13,6 +13,7 @@ class SV extends Model
     use SoftDeletes;
 
     protected $table = 'SV';
+    public static $snakeAttributes = false;
 
     protected $fillable = [
         'id',
@@ -37,5 +38,5 @@ class SV extends Model
     {
         return $this->belongsTo(DM_LopHoc::class, 'LopHoc_Id');
     }
-    
+
 }

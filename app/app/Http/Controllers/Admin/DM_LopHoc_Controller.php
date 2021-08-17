@@ -20,7 +20,9 @@ class DM_LopHoc_Controller extends Controller
     public function __construct(DTAPIService $daotaoAPI) {
         $this->apiDaoTao = $daotaoAPI;
     }
-    
+
+
+
     public function index()
     {
         return view('admin.index');

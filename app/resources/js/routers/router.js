@@ -15,6 +15,10 @@ export const routers = [
         component: 'admin/DM_MauTieuChi',
         path: '/admin/DM_MauTieuChi'
     },
+    {
+        component: 'admin/DM_DotDanhGia',
+        path: '/admin/DM_DotDanhGia'
+    },
 
     //common
     {

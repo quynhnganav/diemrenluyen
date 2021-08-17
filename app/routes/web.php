@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect('/sv');;
-})->name('index')->middleware('auth');
+})->name('index');
 
 Route::get('redirect/{driver}', 'Auth\LoginController@redirectToProvider')
     ->name('login.provider')
@@ -39,6 +39,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/', function () {
         return view('auth.login');
     })->name('login');
+    Route::get('DM_DotDanhGia/data', 'Admin\DM_DotDanhGia_Controller@getData');
+
+    Route::resource('DM_DotDanhGia', Admin\DM_DotDanhGia_Controller::class);
 
     Route::get('DM_MauTieuChi/data', 'Admin\DM_MauTieuChi_Controller@getData');
 
@@ -50,11 +53,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('DM_LopHoc/sync-data', 'Admin\DM_LopHoc_Controller@syncLopHoc');
     Route::resource('DM_LopHoc', Admin\DM_LopHoc_Controller::class);
 
+    Route::get('DM_HocKy/data', 'Admin\DM_HocKy_Controller@getData');
     Route::get('DM_HocKy/sync-data', 'Admin\DM_HocKy_Controller@syncHocKy');
 
     Route::resource('DM_HocKy', Admin\DM_HocKy_Controller::class);
 
     Route::resource('DM_GiangVien', Admin\DM_GiangVien_Controller::class);
+
+    Route::get('DM_SinhVien/data', 'Admin\DM_SinhVien_Controller@getData');
 
     Route::resource('DM_SinhVien', Admin\DM_SinhVien_Controller::class);
 
