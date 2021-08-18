@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\DM_HocKy;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Laravel\Socialite\Facades\Socialite;
@@ -64,23 +65,23 @@ class LoginController extends Controller
             return redirect()->route('login');
         }
 
-        $existingUser = User::where('email', $user->getEmail())->first();
+        $existingUser = User::where('email', $user->getEmail())->with('chucVu')->first();
 
-        if ($existingUser) {
-            auth()->login($existingUser, true);
-        } else {
-            $newUser                    = new User;
-            // $newUser->provider_name     = $driver;
-            // $newUser->provider_id       = $user->getId();
-            $newUser->name              = $user->getName();
-            $newUser->email             = $user->getEmail();
-            $newUser->username             = $user->getEmail();
-            $newUser->email_verified_at = now();
-            $newUser->password = Hash::make("vanquang@vku.drl@3312");
-            // $newUser->avatar            = $user->getAvatar();
-            $newUser->save();
-            auth()->login($newUser, true);
+        if (empty($existingUser)) {
+            return redirect()->route('sv');
         }
+
+        $hocKyHienHanhOfUser = $existingUser->HocKyHienTai_Id;
+        if (empty($hocKyHienHanhOfUser)) {
+            $hocKyHT = DM_HocKy::where('HienHanh', 1)->first();
+            if (empty($hocKyHT)) return redirect()->route('sv');
+            $existingUser->HocKyHienTai_Id = $hocKyHT->id;
+            $existingUser->save();
+            $hocKyHienHanhOfUser = $hocKyHT->id;
+        }
+
+        session(['HocKyHienTai_Id' => $hocKyHienHanhOfUser]);
+        auth()->login($existingUser, true);
 
         return redirect($this->redirectPath());
     }

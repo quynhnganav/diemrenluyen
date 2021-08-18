@@ -12,6 +12,8 @@ class User extends Authenticatable
 {
     use Notifiable;
     use HasRoles, SoftDeletes;
+
+    public static $snakeAttributes = false;
     /**
      * The attributes that are mass assignable.
      *
@@ -19,13 +21,13 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'HocKyHienTai_Id',
-        'Profile_id', 
-        'Profile_type', 
-        'Ten', 
+        'Profile_id',
+        'Profile_type',
+        'Ten',
         'HoDem',
         'HoTenKhongDau',
-        'email', 
-        'username', 
+        'email',
+        'username',
         'SoDienThoai',
         'SoDienThoaiGiaDinh',
         'NgaySinh',

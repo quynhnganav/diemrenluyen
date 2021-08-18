@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Repositories\SV\SV_Repository;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;    
+use Illuminate\Http\Request;
 
 use App\Helper\PhoneNumber;
 use App\Services\DTAPIService;
@@ -17,9 +18,16 @@ class DM_SinhVien_Controller extends Controller
 {
 
     private $apiDaoTao;
+    private $sv_Repository;
 
-    public function __construct(DTAPIService $daotaoAPI) {
+    public function __construct(DTAPIService $daotaoAPI, SV_Repository $sv_Repository) {
         $this->apiDaoTao = $daotaoAPI;
+        $this->sv_Repository = $sv_Repository;
+    }
+
+    public function getData() {
+        $svs = $this->sv_Repository->getPaginate(['user', 'lopHoc']);
+        return response()->json($svs, 200);
     }
 
     public function index()

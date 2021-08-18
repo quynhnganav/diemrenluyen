@@ -13,6 +13,7 @@ class DM_MauTieuChi extends Model
     use SoftDeletes;
 
     protected $table = 'DM_MauTieuChi';
+    public static $snakeAttributes = false;
 
     protected $fillable = [
         'TenMauTieuChi',

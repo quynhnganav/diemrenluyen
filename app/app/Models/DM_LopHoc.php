@@ -12,11 +12,12 @@ class DM_LopHoc extends Model
     use SoftDeletes;
 
     protected $table = 'DM_LopHoc';
+    public static $snakeAttributes = false;
 
     protected $fillable = [
         "id",
-        'Khoa_Id', 
-        'GV_Id', 
+        'Khoa_Id',
+        'GV_Id',
         'TenLopHoc',
         'TenKhongDau',
         'KhoaHoc'

@@ -8,6 +8,7 @@ routers.forEach(route => {
     Components[route.component] = lazy(() => import(`../pages/${route.component}`))
 })
 
+console.log(Components)
 
 const AppRouter = () => {
     return (

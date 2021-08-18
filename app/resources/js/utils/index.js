@@ -1,5 +1,13 @@
 import { differenceBy, isEmpty } from "lodash";
 
+export function reducer(prevState, state) {
+    return {
+        ...prevState,
+        ...state
+    }
+}
+
+
 const setIDTree = () => {
     let i = 0;
 
@@ -142,9 +150,65 @@ const setValuesTree = (trees, id, value, type) => {
     return trees;
 }
 
+const flattenTree = (trees) => {
+
+    const data = []
+    let point = 0
+    let SoDiemSV = 0
+    let SoDiemCBL = 0
+    const pointForm = {}
+
+    trees?.forEach((node, index) => {
+        const [p, sv, cbl] = handleNodeFlatten(node, true, 0, [index + 1], data, pointForm)
+        point += p
+        SoDiemSV += sv
+        SoDiemCBL += cbl
+    })
+
+
+    data.forEach(d => {
+        delete d.children
+    })
+
+    return [data, point, pointForm, SoDiemSV, SoDiemCBL]
+
+}
+
+const handleNodeFlatten = (node, root, level = 0, indexs, data, point) => {
+    const newNode = {
+        ...node,
+        root,
+        level: ++level,
+        index: indexs,
+        SoDiemSV: node?.SoDiemSV || 0,
+        SoDiemCBL: node?.SoDiemCBL || 0
+    }
+    data.push(newNode)
+    let myPoint = node?.SoDiem || 0
+    let SoDiemSV = node?.SoDiemSV || 0
+    let SoDiemCBL = node?.SoDiemCBL || 0
+    if (!isEmpty(node.children)) {
+        newNode.isParent = true
+        myPoint = 0
+        node?.children?.forEach((t, index) => {
+            const [p, sv, cbl] = handleNodeFlatten(t, false, level, [...indexs, index + 1], data, point)
+            myPoint += p
+            SoDiemSV += sv
+            SoDiemCBL += cbl
+        })
+    } else delete node.children
+    newNode.SoDiem = myPoint
+    newNode[`SoDiemSV-${node?.id}`] = SoDiemSV
+    newNode[`SoDiemCBL-${node?.id}`] = SoDiemCBL
+    point[`SoDiemSV-${node?.id}`] = SoDiemSV
+    point[`SoDiemCBL-${node?.id}`] = SoDiemCBL
+    return [myPoint, SoDiemSV, SoDiemCBL]
+}
+
 export {
     setIDTree,
     addNode,
     removeNode,
-    setValuesTree
+    setValuesTree,
+    flattenTree
 }

@@ -9,6 +9,14 @@
             style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; margin-right: 0px; margin-bottom: 0px;'>
             <ul class='py-4'>
                 <li class='d-block'>
+                    <a class='text-decoration-none text-white' href="{{ route('admin.DM_DotDanhGia.index') }}">
+                        <span style='color: rgb(120, 129, 149)'>
+                            <i class='fa fa-street-view'></i>
+                            <span class='ps-2' id='menu-text'>Danh mục Đợt đánh giá</span>
+                        </span>
+                    </a>
+                </li>
+                <li class='d-block'>
                     <a class='text-decoration-none text-white' href="{{ route('admin.DM_MauTieuChi.index') }}">
                         <span style='color: rgb(120, 129, 149)'>
                             <i class='fa fa-street-view'></i>

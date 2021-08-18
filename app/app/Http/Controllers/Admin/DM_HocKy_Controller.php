@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Repositories\DM_HocKy\DM_HocKy_Repository;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
@@ -14,11 +15,17 @@ class DM_HocKy_Controller extends Controller
 {
 
     private $apiDaoTao;
+    private $hocKy_Repository;
 
-    public function __construct(DTAPIService $daotaoAPI) {
+    public function __construct(DTAPIService $daotaoAPI, DM_HocKy_Repository $hocKy_Repository) {
         $this->apiDaoTao = $daotaoAPI;
+        $this->hocKy_Repository = $hocKy_Repository;
     }
-    
+
+    public function getData() {
+        $hocKys = $this->hocKy_Repository->getAll([], 'NamKetThuc desc');
+        return response()->json(json_decode($hocKys), 200);
+    }
 
     public function index()
     {
@@ -27,17 +34,7 @@ class DM_HocKy_Controller extends Controller
 
     public function syncHocKy()
     {
-       $hocKy = $this->apiDaoTao->getDanhSachHocKy();
-       collect($hocKy)->each(function ($item) {
-            $item = (object) $item;
-            DM_HocKy::updateOrCreate(['id' => $item->id], [
-                "id" => $item->id,
-                "TenHocKy" => $item->hocky,
-                "NamBatDau" => $item->nambatdau,
-                "NamKetThuc" => $item->namketthuc,
-                "HienHanh" => $item->hienhanh == 1
-            ]);
-       });
+        $this->hocKy_Repository->syncHocKy();
        return response()->json(["message" => "Đồng bộ thành công"], 200);
     }
 

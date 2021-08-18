@@ -11,9 +11,10 @@ class DM_Khoa extends Model
     use SoftDeletes;
 
     protected $table = 'DM_Khoa';
+    public static $snakeAttributes = false;
 
     protected $fillable = [
-        'MaKhoa', 
+        'MaKhoa',
         'TenKhoa',
         'TenKhongDau'
     ];

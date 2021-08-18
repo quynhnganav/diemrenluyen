@@ -12,6 +12,7 @@ class GV extends Model
     use SoftDeletes;
 
     protected $table = 'GV';
+    public static $snakeAttributes = false;
 
     protected $fillable = [
         'id',

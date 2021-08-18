@@ -6,6 +6,7 @@ import ModalForm from "./ModalForm";
 import { axios } from "../../../config";
 import './index.scss'
 import ModalChiTiet from "./ModalChiTiet";
+import LayoutWrapper from "../../../components/LayoutWrapper";
 
 const { confirm } = Modal
 
@@ -134,7 +135,7 @@ const DM_TieuChi = () => {
     ), [])
 
     return (
-        <div className='tieu-chi-wrapper' >
+        <LayoutWrapper className='tieu-chi-wrapper' >
             <Row className='bg-white p-3 content'>
                 <Col span={24}>
                     <Row>
@@ -161,7 +162,7 @@ const DM_TieuChi = () => {
             <ModalChiTiet
                 ref={refModalChiTiet}
             />
-        </div>
+        </LayoutWrapper>
     )
 }
 

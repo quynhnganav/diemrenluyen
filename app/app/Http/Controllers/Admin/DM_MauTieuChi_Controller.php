@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Repositories\DM_MauTieuChi\DM_MauTieuChi_Repository;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -17,14 +18,16 @@ class DM_MauTieuChi_Controller extends Controller
 {
 
     private $tieuChiService;
+    private $mauTieuChi_Repository;
 
-    public function __construct(TieuChiService $tieuChiService) {
+    public function __construct(TieuChiService $tieuChiService, DM_MauTieuChi_Repository $mauTieuChi_Repository) {
         $this->tieuChiService = $tieuChiService;
+        $this->mauTieuChi_Repository = $mauTieuChi_Repository;
     }
 
     public function getData()
     {
-        $mauTieuChi = DM_MauTieuChi::all();
+        $mauTieuChi = $this->mauTieuChi_Repository->getAll([], 'created_at DESC');
         return $mauTieuChi;
     }
 
@@ -60,7 +63,7 @@ class DM_MauTieuChi_Controller extends Controller
             'TenMauTieuChi' => 'required|max:255',
             'TongSoDiem' => 'required|numeric',
         ]);
-        $mauTieuChi = DM_MauTieuChi::create([
+        $mauTieuChi = $this->mauTieuChi_Repository->create([
             'TenMauTieuChi' => $request->TenMauTieuChi,
             'TenKhongDau' => Str::slug($request->TenMauTieuChi, ' '),
             'TongSoDiem' => $request->TongSoDiem,
@@ -79,7 +82,7 @@ class DM_MauTieuChi_Controller extends Controller
     public function show($id)
     {
         try {
-            $mauTieuChi = DM_MauTieuChi::findOrFail($id);
+            $mauTieuChi = $this->mauTieuChi_Repository->findOrFail($id);
         } catch (\Throwable $th) {
            abort(404, "Không tìm thấy mẫu tiêu chí");
         }
@@ -95,12 +98,7 @@ class DM_MauTieuChi_Controller extends Controller
      */
     public function edit(Request $request, $id)
     {
-        try {
-            $mauTieuChi = DM_MauTieuChi::findOrFail($id);
-        } catch (\Throwable $th) {
-           abort(404, "Không tìm thấy mẫu tiêu chí");
-        }
-        return response()->json(json_decode($mauTieuChi), 200);
+
     }
 
     /**
@@ -119,7 +117,7 @@ class DM_MauTieuChi_Controller extends Controller
         ]);
 
         try {
-            $mauTieuChi = DM_MauTieuChi::findOrFail($id);
+            $mauTieuChi = $this->mauTieuChi_Repository->findOrFail($id);
         } catch (\Throwable $th) {
            abort(404, "Không tìm thấy mẫu tiêu chí");
         }
@@ -131,10 +129,12 @@ class DM_MauTieuChi_Controller extends Controller
             abort(403, "Mẫu danh mục đã được phát hành, không thể chỉnh sửa");
         }
 
-        $mauTieuChi->TenMauTieuChi = $request->TenMauTieuChi;
-        $mauTieuChi->TenKhongDau = Str::slug($request->TenMauTieuChi);
-        $mauTieuChi->TongSoDiem = $request->TongSoDiem;
-        $mauTieuChi->PhatHanh = $request->PhatHanh;
+        $this->mauTieuChi_Repository->update($id, [
+            'TenMauTieuChi' => $request->TenMauTieuChi,
+            'TenKhongDau' => Str::slug($request->TenMauTieuChi),
+            'TongSoDiem' => $request->TongSoDiem,
+            'PhatHanh' => $request->PhatHanh,
+        ]);
 
         $mauTieuChi->save();
 
@@ -149,14 +149,14 @@ class DM_MauTieuChi_Controller extends Controller
      */
     public function destroy($id)
     {
-        $mauTieuChi = DM_MauTieuChi::where('id', $id)->delete();
-        return response()->json(["message" => "Xóa thành công"], 200);
+        $mauTieuChi = $this->mauTieuChi_Repository->delete($id);
+        return response()->json(["message" => $mauTieuChi[1]], $mauTieuChi[0]);
     }
 
     public function updateChiTiet(Request $request, $idMauTieuChi)
     {
         try {
-            $mauTieuChi = DM_MauTieuChi::findOrFail($idMauTieuChi);
+            $mauTieuChi = $this->mauTieuChi_Repository->findOrFail($idMauTieuChi);
         } catch (\Throwable $th) {
            abort(404, "Không tìm thấy mẫu tiêu chí");
         }
@@ -168,7 +168,7 @@ class DM_MauTieuChi_Controller extends Controller
     public function getTieuChiChiTiet(Request $request, $idMauTieuChi)
     {
         try {
-            $mauTieuChi = DM_MauTieuChi::findOrFail($idMauTieuChi);
+            $mauTieuChi = $this->mauTieuChi_Repository->findOrFail($idMauTieuChi);
         } catch (\Throwable $th) {
            abort(404, "Không tìm thấy mẫu tiêu chí");
         }
