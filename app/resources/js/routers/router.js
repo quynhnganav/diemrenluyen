@@ -8,6 +8,10 @@ export const routers = [
         component: 'vue',
         path: '/gv'
     },
+    {
+        component: 'sv/danh-gia',
+        path: '/sv/danh-gia'
+    },
     //gv
 
     //admin

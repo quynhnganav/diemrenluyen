@@ -30,7 +30,7 @@ class DM_HocKy_Repository extends BaseRepository implements DM_HocKy_RepositoryI
                 "TenHocKy" => $item->hocky,
                 "NamBatDau" => $item->nambatdau,
                 "NamKetThuc" => $item->namketthuc,
-                "HienHanh" => $item->hienhanh == 1
+                "DaoTaoHienHanh" => $item-> hienhanh == 1
             ]);
         });
     }

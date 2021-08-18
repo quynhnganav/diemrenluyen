@@ -13,4 +13,11 @@ class DM_DotDanhGia_Repository extends BaseRepository implements DM_DotDanhGia_R
     {
         return DM_DotDanhGia::class;
     }
+
+    public function findOneByHocKy($id)
+    {
+        $dotDanhGia = $this->model->where('HocKy_Id', $id)->with('mauTieuChi', 'hocKy')->first();
+        return $dotDanhGia;
+    }
+
 }

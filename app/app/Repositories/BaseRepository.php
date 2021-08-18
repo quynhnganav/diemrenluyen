@@ -54,6 +54,12 @@ abstract class BaseRepository implements RepositoryInterface
         return $result;
     }
 
+    public function findOne($where = [], $with = [])
+    {
+        $result = $this->model->where($where)->with($with)->first();
+        return $result;
+    }
+
     public function create($attributes = [])
     {
         return $this->model->create($attributes);

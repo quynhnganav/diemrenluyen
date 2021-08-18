@@ -30,7 +30,8 @@ Route::prefix('sv')->name('sv.')->group(function () {
         }
        return view('auth.sv.login');
     })->name('login');
-
+    Route::get('danh-gia/api', 'EndUser\DanhGiaController@sinhVienGetDotDanhGiaHienTai');
+    Route::get('danh-gia/api/dot-danh-gia', 'EndUser\DanhGiaController@sinhVienGetDotDanhGiaHienTai');
     Route::resource('danh-gia', EndUser\DanhGiaController::class)->middleware('auth');
 });
 

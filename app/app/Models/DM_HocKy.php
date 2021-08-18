@@ -19,6 +19,7 @@ class DM_HocKy extends Model
         'TenHocKy',
         'NamBatDau',
         'NamKetThuc',
+        'DaoTaoHienHanh',
         'HienHanh'
     ];
 

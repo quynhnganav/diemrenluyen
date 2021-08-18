@@ -26,6 +26,8 @@ interface RepositoryInterface
 
     public function findOrFail($id, $with = []);
 
+    public function findOne($where = [], $with = []);
+
     /**
      * Create
      * @param array $attributes

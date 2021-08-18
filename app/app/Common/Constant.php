@@ -4,6 +4,10 @@ namespace App\Common;
 
 class Constant {
 
+    const SESSION_KEY = [
+        'HocKyHienTai_Id' => 'HocKyHienTai_Id'
+    ];
+
     const PERMISSIONS = [
         'DANHGIA' => '',
         'CBL_DANHGIA' => '',
@@ -21,6 +25,6 @@ class Constant {
     public function __construct() {
         $this->API_DAOTAO_URI = env("API_DAOTAO_URI", "localhost");
         $this->API_DAOTAO_SECRET = env("API_DAOTAO_SECRET", "localhost");
-    } 
+    }
 
 }

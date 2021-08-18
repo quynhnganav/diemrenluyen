@@ -3,6 +3,7 @@
 namespace App\Repositories\DM_MauTieuChi;
 
 use App\Models\DM_MauTieuChi;
+use App\Models\TieuChiChiTiet;
 use App\Repositories\BaseRepository;
 
 
@@ -21,6 +22,11 @@ class DM_MauTieuChi_Repository extends BaseRepository implements DM_MauTieuChi_R
         if ($mauTieuChi->PhatHanh) return [403, "Mẫu tiêu chí đã được phát hành, không thể xóa"];
         $this->model->where('id', $id)->delete($id);
         return [200, "Xóa thành công"];
+    }
+
+    public function getTieuChiChiTietOfMau($id_Mau) {
+        $chiTiet = TieuChiChiTiet::where('MauTieuChi_Id', $id_Mau)->get()->toTree();
+        return $chiTiet;
     }
 
 }

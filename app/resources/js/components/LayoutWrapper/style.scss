@@ -1,0 +1,18 @@
+.dimark-wrapper {
+    padding: 10px;
+    padding-bottom: 0; 
+
+   .ant-table-thead  {
+        tr {
+           th {
+            background: #2A3F54;
+            color: white;
+           }
+        }
+   }
+   
+   .ant-pagination {
+      margin-bottom: 0;
+   }
+
+}

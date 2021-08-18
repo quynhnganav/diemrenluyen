@@ -5,6 +5,7 @@ import { useDataProps } from "../../..";
 import ModalForm from "./ModalForm";
 import { axios } from "../../../config";
 import './index.scss'
+import LayoutWrapper from "../../../components/LayoutWrapper";
 
 const { confirm } = Modal
 
@@ -142,7 +143,7 @@ const DM_DotDanhGia = () => {
     ), [])
 
     return (
-        <div className='tieu-chi-wrapper' >
+        <LayoutWrapper className='dot-danh-gia-wrapper' >
             <Row className='bg-white p-3 content'>
                 <Col span={24}>
                     <Row>
@@ -169,7 +170,7 @@ const DM_DotDanhGia = () => {
             {/* <ModalChiTiet
                 ref={refModalChiTiet}
             /> */}
-        </div>
+        </LayoutWrapper>
     )
 }
 

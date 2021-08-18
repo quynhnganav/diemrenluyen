@@ -19,7 +19,8 @@ class CreateHocKyTable extends Migration
             $table->string('TenHocKy');
             $table->string('NamBatDau');
             $table->string('NamKetThuc');
-            $table->boolean('HienHanh');
+            $table->boolean('DaoTaoHienHanh')->default(0);
+            $table->boolean('HienHanh')->default(0);
             $table->softDeletes();
             $table->timestamps();
 
