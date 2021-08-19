@@ -63,6 +63,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::get('DM_SinhVien/data', 'Admin\DM_SinhVien_Controller@getData');
 
+    Route::get('DM_SinhVien/sync-data', 'Admin\DM_SinhVien_Controller@syncAll');
+
     Route::resource('DM_SinhVien', Admin\DM_SinhVien_Controller::class);
 
     Route::get('DM_SinhVien/{idLop}/sync-data', 'Admin\DM_SinhVien_Controller@syncSinhVienLop');

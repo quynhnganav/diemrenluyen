@@ -21,6 +21,7 @@ class CreateTieuChiChiTietTable extends Migration
             $table->longText('TenTieuChi');
             $table->longText('TenKhongDau')->nullable();
             $table->integer('SoDiem')->default(0);
+            $table->boolean('isDiemHocTap')->default(0);
             $table->longText('Css')->nullable();
 
             //tree
