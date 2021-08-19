@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Jobs\ProcessSyncSinhVien;
+use App\Models\DM_LopHoc;
 use App\Repositories\SV\SV_Repository;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
@@ -42,6 +44,17 @@ class DM_SinhVien_Controller extends Controller
     {
         $sv = SV::with('user', 'lopHoc')->findOrFail($id);
        return response()->json($sv, 200);
+    }
+
+    public function syncAll() {
+        $lops = DM_LopHoc::all();
+        DM_LopHoc::update([
+           'isSync' => true
+        ]);
+        $lops->each(function ($lop, $index) {
+            ProcessSyncSinhVien::dispatch($lop->id)->onQueue('SyncSV')->delay(now()->addSeconds($index));
+        });
+        return response()->json(["message" => "In Progess"], 200);
     }
 
     public function syncSinhVienLop($idLop)

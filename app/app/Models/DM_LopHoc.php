@@ -20,7 +20,8 @@ class DM_LopHoc extends Model
         'GV_Id',
         'TenLopHoc',
         'TenKhongDau',
-        'KhoaHoc'
+        'KhoaHoc',
+        'isSync'
     ];
 
     /**

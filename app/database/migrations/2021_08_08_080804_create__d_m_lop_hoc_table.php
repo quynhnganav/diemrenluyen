@@ -19,6 +19,7 @@ class CreateDMLopHocTable extends Migration
             $table->unsignedBigInteger('GV_Id')->nullable();
             $table->string('TenLopHoc');
             $table->string('TenKhongDau')->default('');
+            $table->boolean('isSync')->default(0);
             $table->softDeletes();
             $table->timestamps();
 

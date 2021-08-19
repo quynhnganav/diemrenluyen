@@ -20,6 +20,7 @@ class TieuChiChiTiet extends Model
         'TenTieuChi',
         'TenKhongDau',
         'SoDiem',
+        'isDiemHocTap',
         'Css'
     ];
 
