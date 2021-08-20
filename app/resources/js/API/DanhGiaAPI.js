@@ -5,10 +5,13 @@ const getDanhGiaSV = (filter) => {
     const route = `/sv/danh-gia/api?${queryString.stringify(filter, { skipNull: true, skipEmptyString: true })}`;
     return axios.get(route);
 }
-// const createAdministrator = (payload) => {
-//     const route = `/core/admin/administrators`;
-//     return axios.post(route, payload);
-// }
+
+const postDanhGiaSV = (payload) => {
+    const route = `/sv/danh-gia`;
+    return axios.post(route, payload);
+}
+
+// const createAdministrator = 
 // const editAdministrator = (id, payload) => {
 //     const route = `/core/admin/administrators/${admin_id}`;
 //     return axios.put(route, payload);
@@ -19,5 +22,6 @@ const getDanhGiaSV = (filter) => {
 // }
 
 export {
-    getDanhGiaSV
+    getDanhGiaSV, 
+    postDanhGiaSV
 }

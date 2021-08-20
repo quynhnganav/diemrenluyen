@@ -48,7 +48,7 @@ class DM_SinhVien_Controller extends Controller
 
     public function syncAll() {
         $lops = DM_LopHoc::all();
-        DM_LopHoc::update([
+        DM_LopHoc::where('id', '>', -1)->update([
            'isSync' => true
         ]);
         $lops->each(function ($lop, $index) {
@@ -61,30 +61,33 @@ class DM_SinhVien_Controller extends Controller
     {
         $sv = $this->apiDaoTao->getDanhSachSVLop($idLop);
         collect($sv)->each(function ($item) use($idLop) {
-            $item = (object) $item;
+            try {
+                $item = (object) $item;
+                $newSv = SV::updateOrCreate(['id' => $item->id], [
+                    'id' => $item->id,
+                    'LopHoc_Id' => $idLop,
+                    'MaSV' => $item->masv,
+                    'TenNganh' => $item->tennganh,
+                    'TrangThai' => $item->trangthai,
+                    'GhiChu' => $item->ghichu,
+                ]);
 
-            $newSv = SV::updateOrCreate(['id' => $item->id], [
-                'id' => $item->id,
-                'LopHoc_Id' => $idLop,
-                'MaSV' => $item->masv,
-                'TenNganh' => $item->tennganh,
-                'TrangThai' => $item->trangthai,
-                'GhiChu' => $item->ghichu,
-            ]);
+                User::updateOrCreate(['email' => $item->email], [
+                    'Profile_id' => $newSv->id,
+                    'Profile_type' => 'App\Models\SV',
+                    'Ten' => $item->ten,
+                    'HoDem' => $item->hodem,
+                    'HoTenKhongDau' => Str::slug($item->hodem." ".$item->ten, " "),
+                    'email' => $item->email,
+                    'username' => $item->email,
+                    'SoDienThoai' => PhoneNumber::convert($item->dienthoai),
+                    'SoDienThoaiGiaDinh' => PhoneNumber::convert($item->dienthoaigiadinh),
+//                'NgaySinh' => $item->ngaysinh,
+                    'GioiTinh' => $item->gioitinh,
+                ]);
+            } catch (\Exception $exception){
 
-            User::updateOrCreate(['email' => $item->email], [
-                'Profile_id' => $newSv->id,
-                'Profile_type' => 'App\Models\SV',
-                'Ten' => $item->ten,
-                'HoDem' => $item->hodem,
-                'HoTenKhongDau' => Str::slug($item->hodem." ".$item->ten, " "),
-                'email' => $item->email,
-                'username' => $item->email,
-                'SoDienThoai' => PhoneNumber::convert($item->dienthoai),
-                'SoDienThoaiGiaDinh' => PhoneNumber::convert($item->dienthoaigiadinh),
-                'NgaySinh' => $item->ngaysinh,
-                'GioiTinh' => $item->gioitinh,
-            ]);
+            }
        });
        return response()->json(["message" => "Đồng bộ thành công"], 200);
     }

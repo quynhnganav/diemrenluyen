@@ -4,6 +4,7 @@ import LayoutWrapper from "../../../components/LayoutWrapper";
 import TableDanhGia from "../../../components/TableDanhGia";
 import * as DanhGiaAPI from "../../../API/DanhGiaAPI";
 import { reducer } from "../../../utils";
+import { axios } from "../../../config";
 
 const SVDanhGia = () => {
 
@@ -32,8 +33,8 @@ const SVDanhGia = () => {
                 })
             })
             .catch(err => {
-                notification.error({
-                    message: 'Lỗi khi tải dữ liệu'
+                notification.warning({
+                    message: err?.response?.data?.message || 'Lỗi khi tải dữ liệu'
                 })
             })
             .finally(() => setState({
@@ -43,11 +44,43 @@ const SVDanhGia = () => {
 
     const onSubmit = useCallback(() => {
         refTableDanhGia?.current?.submit()
-    })
+    }, [refTableDanhGia])
 
     const onSuccess = useCallback((values) => {
-        console.log(values)
-    }, [])
+        const payload = {}
+        Object.keys(values).forEach((key) => {
+            if (key.includes('SoDiemSV')) {
+                const id = key.split('-')[1];
+                payload[id] = values[key];
+            }
+        })
+        setState({
+            loading: true
+        })
+        DanhGiaAPI.postDanhGiaSV(payload)
+            .then(response => {
+                notification.success({
+                    message: 'Cập nhật thành công'
+                })
+            })
+            .catch(err => {
+                console.log(err?.response)
+                if (err?.response?.status == 422) {
+                    const data = err?.response?.data || []
+                    const errors = data.map((d) => ({
+                        name: `SoDiemSV-${d}`,
+                        errors: ['Lỗi']
+                    }))
+                    refTableDanhGia?.current?.setFieldsValue(errors)
+                }
+                else notification.error({
+                    message: 'Lỗi'
+                })
+            })
+            .finally(() => setState({
+                loading: false
+            }))
+    }, [refTableDanhGia])
 
     return (
         <LayoutWrapper className='danh-gia-page'>
@@ -61,7 +94,7 @@ const SVDanhGia = () => {
                         </Row>
                         <Row justify='end'>
                             <Col>
-                                <Button type='primary' disabled={state.loading} onClick={onSubmit} >Lưu</Button>
+                                <Button type='primary' disabled={state.loading} onClick={onSubmit} >Cập nhật</Button>
                             </Col>
                         </Row>
                     </Row>

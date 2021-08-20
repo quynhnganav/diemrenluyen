@@ -17,8 +17,8 @@ class CreateDanhGiaChiTietTable extends Migration
             $table->id()->index();
             $table->unsignedBigInteger('DotDanhGia_Id')->nullable()->index();
             $table->unsignedBigInteger('SinhVien_Id')->nullable()->index();
-            $table->json('SinhVienDanhGia');
-            $table->json('CanBoLopDanhGia');
+            $table->json('SinhVienDanhGia')->nullable();
+            $table->json('CanBoLopDanhGia')->nullable();
             $table->unsignedBigInteger('TongSoDiem')->default(0);
             $table->boolean('SinhVienDuyet')->default(false);
             $table->boolean('CanBoLopDuyet')->default(false);

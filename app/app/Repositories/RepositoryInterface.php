@@ -15,7 +15,7 @@ interface RepositoryInterface
      * Get all
      * @return mixed
      */
-    public function getAll($withRelation = [], $orderBy = '');
+    public function getAll($withRelation = [], $orderBy = '', $withCount = []);
 
     /**
      * Get one

@@ -29,16 +29,16 @@ abstract class BaseRepository implements RepositoryInterface
         );
     }
 
-    public function getPaginate($withRelation = [], $orderBy = '')
+    public function getPaginate($withRelation = [], $orderBy = '', $withCount = [])
     {
-        $query = $this->model->with($withRelation);
+        $query = $this->model->with($withRelation)->withCount($withCount);
         if (!empty($orderBy)) $query->orderByRaw($orderBy);
         return $query->paginate(20);
     }
 
-    public function getAll($withRelation = [], $orderBy = '')
+    public function getAll($withRelation = [], $orderBy = '', $withCount = [])
     {
-        $query = $this->model->with($withRelation);
+        $query = $this->model->with($withRelation)->withCount($withCount);
         if (!empty($orderBy)) $query->orderByRaw($orderBy);
         return $query->get();
     }

@@ -23,6 +23,14 @@ export const routers = [
         component: 'admin/DM_DotDanhGia',
         path: '/admin/DM_DotDanhGia'
     },
+    {
+        component: 'admin/DM_LopHoc',
+        path: '/admin/DM_LopHoc'
+    },
+    {
+        component: 'admin/DM_SinhVien',
+        path: '/admin/DM_SinhVien'
+    },
 
     //common
     {

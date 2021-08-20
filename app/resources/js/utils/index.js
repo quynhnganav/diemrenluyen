@@ -190,6 +190,8 @@ const handleNodeFlatten = (node, root, level = 0, indexs, data, point) => {
     if (!isEmpty(node.children)) {
         newNode.isParent = true
         myPoint = 0
+        SoDiemSV = 0
+        SoDiemCBL = 0
         node?.children?.forEach((t, index) => {
             const [p, sv, cbl] = handleNodeFlatten(t, false, level, [...indexs, index + 1], data, point)
             myPoint += p

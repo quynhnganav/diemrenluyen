@@ -29,9 +29,13 @@ class DM_LopHoc extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function GV(): BelongsTo
+    public function GV()
     {
-        return $this->belongsTo(GV::class, 'LopHoc_Id');
+        return $this->belongsTo(GV::class, 'GV_Id');
+    }
+
+    public function sinhViens() {
+        return $this->hasMany(SV::class, 'LopHoc_Id');
     }
 
 }
