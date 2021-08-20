@@ -24,9 +24,9 @@ class DM_MauTieuChi_Repository extends BaseRepository implements DM_MauTieuChi_R
         return [200, "Xóa thành công"];
     }
 
-    public function getTieuChiChiTietOfMau($id_Mau) {
-        $chiTiet = TieuChiChiTiet::where('MauTieuChi_Id', $id_Mau)->get()->toTree();
-        return $chiTiet;
+    public function getTieuChiChiTietOfMau($id_Mau, $tree = true) {
+        $chiTiet = TieuChiChiTiet::where('MauTieuChi_Id', $id_Mau)->get();
+        return $tree ? $chiTiet->toTree() : $chiTiet;
     }
 
 }

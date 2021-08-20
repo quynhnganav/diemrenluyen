@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Common\Constant;
 use App\Http\Controllers\Controller;
 use App\Models\DM_HocKy;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -65,10 +67,16 @@ class LoginController extends Controller
             return redirect()->route('login');
         }
 
-        $existingUser = User::where('email', $user->getEmail())->with('chucVu')->first();
+        $existingUser = User::where('email', $user->getEmail())->with('chucVu.lopHoc')->first();
 
         if (empty($existingUser)) {
             return redirect()->route('sv');
+        }
+        $existingUser->picture = $user->getAvatar();
+        $existingUser->save();
+
+        if (!empty($existingUser->chucVu->MaSV)) {
+            $existingUser->MaSv = $existingUser->chucVu->MaSV;
         }
 
         $hocKyHienHanhOfUser = $existingUser->HocKyHienTai_Id;
@@ -79,11 +87,13 @@ class LoginController extends Controller
             $existingUser->save();
             $hocKyHienHanhOfUser = $hocKyHT->id;
         }
+        $hocKys = DM_HocKy::orderBy('NamBatDau', 'desc')->orderBy('TenHocKy', 'desc')->get();
 
         session(['HocKyHienTai_Id' => $hocKyHienHanhOfUser]);
-        auth()->login($existingUser, true);
+        session([Constant::SESSION_KEY['HocKys'] => $hocKys]);
+        auth()->login($existingUser, false);
 
-        return redirect($this->redirectPath());
+        return redirect()->back();
     }
 
 }

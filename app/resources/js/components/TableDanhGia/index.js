@@ -51,14 +51,20 @@ const TableDanhGia = forwardRef(({
 
     const submit = useCallback(() => {
         form?.submit()
-    }, [])
+    }, [form])
+
+    const setFieldsValue = useCallback((values) => {
+        console.log(values)
+        form?.setFields(values)
+    }, [form])
 
     const onFinish = useCallback((values) => {
         onSuccess && onSuccess(values)
-    }, [])
+    }, [onSuccess])
 
     useImperativeHandle(ref, () => ({
-        submit
+        submit,
+        setFieldsValue
     }))
 
     const onChangeValue = useCallback((value, id, type) => {

@@ -22,6 +22,9 @@ Route::get('redirect/{driver}', 'Auth\LoginController@redirectToProvider')
     ->where('driver', implode('|', config('auth.socialite.drivers')));
 Route::get('/callback/{driver}', 'Auth\LoginController@handleProviderCallback');
 
+Route::get('doi-hoc-ky/{idHocKy}', 'Auth\AuthController@changeHocKy')
+    ->name('doiHocKy')->middleware('auth');
+
 Route::prefix('sv')->name('sv.')->group(function () {
 
     Route::get('/', function () {
@@ -51,7 +54,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('DM_MauTieuChi', Admin\DM_MauTieuChi_Controller::class);
 
-    Route::get('DM_LopHoc/sync-data', 'Admin\DM_LopHoc_Controller@syncLopHoc');
+    Route::get('DM_LopHoc/api/sync-data', 'Admin\DM_LopHoc_Controller@syncLopHoc');
+    Route::get('DM_LopHoc/api', 'Admin\DM_LopHoc_Controller@getData');
     Route::resource('DM_LopHoc', Admin\DM_LopHoc_Controller::class);
 
     Route::get('DM_HocKy/data', 'Admin\DM_HocKy_Controller@getData');
@@ -61,7 +65,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('DM_GiangVien', Admin\DM_GiangVien_Controller::class);
 
-    Route::get('DM_SinhVien/data', 'Admin\DM_SinhVien_Controller@getData');
+    Route::get('DM_SinhVien/api/data', 'Admin\DM_SinhVien_Controller@getData');
 
     Route::get('DM_SinhVien/sync-data', 'Admin\DM_SinhVien_Controller@syncAll');
 

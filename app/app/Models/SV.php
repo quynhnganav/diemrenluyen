@@ -29,11 +29,6 @@ class SV extends Model
         return $this->morphOne('App\Models\User', 'Profile');
     }
 
-    /**
-     * Get the lopHoc that owns the SV
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function lopHoc()
     {
         return $this->belongsTo(DM_LopHoc::class, 'LopHoc_Id');

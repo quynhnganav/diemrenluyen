@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('HoTenKhongDau')->index();
             $table->string('email')->unique();
             $table->string('username')->unique();
+            $table->string('picture')->nullable();
             $table->string('SoDienThoai')->nullable();
             $table->string('SoDienThoaiGiaDinh')->nullable();
             $table->date('NgaySinh')->nullable();

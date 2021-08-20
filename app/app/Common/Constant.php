@@ -5,7 +5,8 @@ namespace App\Common;
 class Constant {
 
     const SESSION_KEY = [
-        'HocKyHienTai_Id' => 'HocKyHienTai_Id'
+        'HocKyHienTai_Id' => 'HocKyHienTai_Id',
+        'HocKys' => 'HocKys'
     ];
 
     const PERMISSIONS = [

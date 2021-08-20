@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Repositories\DM_LopHoc\DM_LopHoc_Repository;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
@@ -15,13 +16,16 @@ use App\Models\User;
 class DM_LopHoc_Controller extends Controller
 {
 
-    private $apiDaoTao;
+    private $apiDaoTao, $lopHoc_Repository;
 
-    public function __construct(DTAPIService $daotaoAPI) {
+    public function __construct(DTAPIService $daotaoAPI, DM_LopHoc_Repository $lopHoc_Repository) {
         $this->apiDaoTao = $daotaoAPI;
+        $this->lopHoc_Repository = $lopHoc_Repository;
     }
 
-
+    public function getData() {
+        return $this->lopHoc_Repository->getAll(['GV.user'], '', ['sinhViens']);
+    }
 
     public function index()
     {
@@ -30,34 +34,7 @@ class DM_LopHoc_Controller extends Controller
 
     public function syncLopHoc()
     {
-        $lops = $this->apiDaoTao->getDanhSachLop();
-        $api = $this->apiDaoTao;
-        collect($lops)->each(function ($item) use ($api){
-            $item = (object) $item;
-            $gv = (object) $api->getGVLop($item->id);
-            // dd($gv->email);
-            $newGV = GV::updateOrCreate(['email' => $gv->email], [
-                'email' => $gv->email,
-                'ChucDanh' => $gv->chucdanh,
-            ]);
-
-            $newUser = User::updateOrCreate(['email' => $gv->email], [
-                'email' => $gv->email,
-                'username' => $gv->email,
-                'HoDem' => $gv->hodem,
-                'Ten' => $gv->ten,
-                'HoTenKhongDau' => Str::slug($gv->hodem." ".$gv->ten, " "),
-                'Profile_id' => $newGV->id,
-                'Profile_type' => "App\Models\GV",
-            ]);
-
-            DM_LopHoc::updateOrCreate(['id' => $item->id], [
-                "id" => $item->id,
-                'GV_Id' => $newGV->id,
-                "TenLopHoc" => $item->tenlop,
-                "TenKhongDau" => Str::slug($item->tenlop, " ")
-            ]);
-        });
+       $this->lopHoc_Repository->syncLopHoc();
        return response()->json(["message" => "Đồng bộ thành công"], 200);
     }
 

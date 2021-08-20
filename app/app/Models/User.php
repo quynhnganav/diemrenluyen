@@ -14,6 +14,9 @@ class User extends Authenticatable
     use HasRoles, SoftDeletes;
 
     public static $snakeAttributes = false;
+
+    protected $with = ['chucVu', 'hocKy'];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -28,6 +31,7 @@ class User extends Authenticatable
         'HoTenKhongDau',
         'email',
         'username',
+        'picture',
         'SoDienThoai',
         'SoDienThoaiGiaDinh',
         'NgaySinh',
@@ -54,7 +58,11 @@ class User extends Authenticatable
 
     public function chucVu()
     {
-        return $this->morphTo(__FUNCTION__, 'Profile_Type', 'Profile_Id');
+        return $this->morphTo(__FUNCTION__, 'Profile_type', 'Profile_id');
+    }
+
+    public function hocKy() {
+        return $this->belongsTo(DM_HocKy::class, 'HocKyHienTai_Id');
     }
 
 }

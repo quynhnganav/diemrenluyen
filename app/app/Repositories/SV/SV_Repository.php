@@ -28,30 +28,33 @@ class SV_Repository extends BaseRepository implements SV_RepositoryInterface
     {
         $sv = $this->apiDaoTao->getDanhSachSVLop($idLop);
         collect($sv)->each(function ($item) use($idLop) {
-            $item = (object) $item;
+            try {
+                $item = (object) $item;
+                $newSv = $this->model->updateOrCreate(['id' => $item->id], [
+                    'id' => $item->id,
+                    'LopHoc_Id' => $idLop,
+                    'MaSV' => $item->masv,
+                    'TenNganh' => $item->tennganh,
+                    'TrangThai' => $item->trangthai,
+                    'GhiChu' => $item->ghichu,
+                ]);
 
-            $newSv = $this->model->updateOrCreate(['id' => $item->id], [
-                'id' => $item->id,
-                'LopHoc_Id' => $idLop,
-                'MaSV' => $item->masv,
-                'TenNganh' => $item->tennganh,
-                'TrangThai' => $item->trangthai,
-                'GhiChu' => $item->ghichu,
-            ]);
+                User::updateOrCreate(['email' => $item->email], [
+                    'Profile_id' => $newSv->id,
+                    'Profile_type' => 'App\Models\SV',
+                    'Ten' => $item->ten,
+                    'HoDem' => $item->hodem,
+                    'HoTenKhongDau' => Str::slug($item->hodem." ".$item->ten, " "),
+                    'email' => $item->email,
+                    'username' => $item->email,
+                    'SoDienThoai' => PhoneNumber::convert($item->dienthoai),
+                    'SoDienThoaiGiaDinh' => PhoneNumber::convert($item->dienthoaigiadinh),
+//                'NgaySinh' => $item->ngaysinh,
+                    'GioiTinh' => $item->gioitinh,
+                ]);
+            } catch (\Exception $e) {
 
-            User::updateOrCreate(['email' => $item->email], [
-                'Profile_id' => $newSv->id,
-                'Profile_type' => 'App\Models\SV',
-                'Ten' => $item->ten,
-                'HoDem' => $item->hodem,
-                'HoTenKhongDau' => Str::slug($item->hodem." ".$item->ten, " "),
-                'email' => $item->email,
-                'username' => $item->email,
-                'SoDienThoai' => PhoneNumber::convert($item->dienthoai),
-                'SoDienThoaiGiaDinh' => PhoneNumber::convert($item->dienthoaigiadinh),
-                'NgaySinh' => $item->ngaysinh,
-                'GioiTinh' => $item->gioitinh,
-            ]);
+            }
         });
         return "Đồng bộ thành công";
     }
