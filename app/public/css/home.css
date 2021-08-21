@@ -8,8 +8,27 @@
     height: 70px;
     background-color: rgba(0, 0, 0, 0.3)
 }
+
+.children-item {
+    height: 40px;
+    line-height: 40px;
+}
 .isDisplay {
     display: var(--some-display);
+}
+.children-menu-item {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+}
+.accordion-item:last-of-type .accordion-collapse, .accordion-item:first-of-type .accordion-button {
+    border: unset;
+}
+
+.closeSider .children-menu-item {
+    padding-left: 1.25rem !important;
+}
+
+.children-menu-item button {
+    height: 40px;
 }
 .content-wrap {
     padding: 70px 0px 0px; 
@@ -20,6 +39,24 @@
     line-height: 70px;
     letter-spacing: 3px;
     
+}
+.accordion-item:first-of-type {
+    border-radius: unset !important;
+}
+.menu-item-selected {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+}
+.menu-item-inline button {
+    height: 40px;
+}
+.menu-item-inline .menu-tille {
+   font-size: 15px;
+}
+.menu-item-inline .menu-children-title {
+    font-size: 15px;
+ }
+.menu-item-selected span{
+    color: white !important;
 }
 .navbar {
     z-index: 100 !important;
@@ -40,20 +77,51 @@
     top: 50px;
     right: 0;
 }
+.accordion-item {
+    background-color: unset;
+    border: none;
+}
+.accordion-button {
+    background-color: transparent;
+}
+.accordion-button:not(.collapsed) {
+    background-color: unset;
+    box-shadow: unset;
+    color: #fff;
+
+}
+.accordion-button:not(.collapsed)::after {
+    background-image: url(../images/icon/arrow-down-sign-to-navigate.png)
+}
+.accordion-button::after {
+    width: .75rem;
+    height: .75rem;
+    background-size: .75rem;
+    background-image: url(../images/icon/upload.png);
+}
+.accordion-button:focus {
+    border-color: unset; 
+    outline: 0;
+    box-shadow: unset;
+}
 .user-dropdown .dropdown-tag {
     color: #5A738E !important
 }
 .nav-right {
     cursor: pointer;
 }
-.togge-padding-left {
-    padding-left: 96px !important; 
+.nav-right .btn:focus {
+    box-shadow: unset;
 }
-.menu-wrap i {
+
+.menu-wrap span i {
     font-size: 18px;
 }
 .menu-wrap ul {
     background-color: transparent;
+}
+.menu-item-inline:hover span{
+    color: white !important 
 }
 .menu-wrap li:hover span{
     color: white !important    /* font-size: 18px; */
@@ -61,20 +129,35 @@
 .sider {
     transition: all .2s;
     z-index: 101;
+    flex: 0 0 240px;
+    max-width: 240px; 
+    min-width: 240px; 
+    width: 240px !important;
 }
+.sider:hover {
+    transition: all .2s;
+    z-index: 101;
+    flex: 0 0 240px;
+    max-width: 240px; 
+    min-width: 240px; 
+    width: 240px !important;
+}
+.closeSider:hover .menu-inline-text {
+    display: unset;
+}
+.closeSider:hover .children-menu-item {
+    padding-left: 3rem !important;
+}
+.closeSider:hover .children-menu-item {
+    padding-left: 3rem !important;
+}
+
 
 li:hover {
     cursor: pointer;
     color: white !important    /* font-size: 18px; */
 }
-.openSider {
-    flex: 0 0 240px;
-    max-width: 240px; min-width: 240px; width: 240px;
-}
-.closeSider {
-    flex: 0 0 80px;
-    max-width: 80px; min-width: 80px; width: 80px;
-}
+
 
 .sidebar-left {
     overflow: auto;
@@ -88,4 +171,83 @@ li:hover {
     /* display: flex; */
     width: 100%;
     height: 100%;
+}
+
+.closeSider {
+    flex: 0 0 80px;
+    max-width: 80px; 
+    min-width: 80px; 
+    width: 80px ;
+}
+.closeSider .menu-item div .down-icon{
+    display: none;
+}
+.closeSider .accordion-button:not(.collapsed)::after {
+    background-image: unset
+}
+.closeSider .accordion-button::after {
+    background-image: unset;
+}
+.closeSider:hover .accordion-button:not(.collapsed)::after {
+    background-image: url(../images/icon/arrow-down-sign-to-navigate.png)
+}
+
+.closeSider:hover .accordion-button::after {
+    background-image: url(../images/icon/upload.png);
+}
+
+.closeSider .menu-inline-text {
+    display: none;
+}
+.closeSider .menu-item ul {
+    display: none;
+}
+.closeSider  .menu-item {
+    padding-left: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.togge-padding-left {
+  padding-left: 96px;  
+}
+
+@media only screen and (max-width: 768px){
+    .sider {
+        max-width: 0px; 
+        min-width: 0px; 
+        width: 0px !important;
+    }
+    .menu-inline-text {
+        display: none;
+    }
+    .closeSider {
+        max-width: 80px; 
+        min-width: 80px; 
+        width: 80px !important;
+    }
+    .menu-item {
+        padding-left: 0 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .menu-item div .down-icon {
+        display: none;
+    }
+    .menu-item ul {
+        display: none;
+    }
+    .navbar {
+        padding-left: 10px;
+    }
+    .openSider {
+        flex: 0 0 80px;
+        max-width: 80px; 
+        min-width: 80px; 
+        width: 80px !important;
+    }
+    .togge-padding-left {
+        padding-left: 96px !important; 
+    }
 }

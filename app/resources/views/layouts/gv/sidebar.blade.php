@@ -26,25 +26,9 @@
     <script>
         function openSider() {
             document.getElementById("sider")?.classList.toggle('openSider');
-            document.getElementById("sider")?.classList.toggle('closeSider');
-            document.getElementById("menu-text")?.classList.toggle('d-none');
-            document.getElementById("nav")?.classList.toggle('togge-padding-left');
+           
+           
         }
-        function checkWidthToggle() {
-            document.getElementById("sider")?.classList.remove('openSider');
-            document.getElementById("sider")?.classList.add('closeSider');
-            document.getElementById("menu-text")?.classList.add('d-none');
-            document.getElementById("nav")?.classList.add('togge-padding-left');
-        }
-        window.addEventListener("resize", function () {
-            var w = window.innerWidth;
-            if (w < 768) {
-                checkWidthToggle()
-            }
-        })
-        var w = window.innerWidth;
-        if (w < 768) {
-            checkWidthToggle()
-        }
+       
     </script>
 @endsection
