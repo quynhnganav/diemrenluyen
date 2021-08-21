@@ -17,10 +17,11 @@ class CreateTieuChiChiTietTable extends Migration
         Schema::create('TieuChiChiTiet', function (Blueprint $table) {
             $table->id()->index();
             $table->unsignedBigInteger('MauTieuChi_Id');
-            $table->unsignedBigInteger('TieuChiChiTiet_Id')->nullable();
-            $table->string('TenTieuChi');
-            $table->string('TenKhongDau')->default('');
+//            $table->unsignedBigInteger('TieuChiChiTiet_Id')->nullable();
+            $table->longText('TenTieuChi');
+            $table->longText('TenKhongDau')->nullable();
             $table->integer('SoDiem')->default(0);
+            $table->boolean('isDiemHocTap')->default(0);
             $table->longText('Css')->nullable();
 
             //tree

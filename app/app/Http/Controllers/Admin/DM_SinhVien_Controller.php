@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Jobs\ProcessSyncSinhVien;
+use App\Models\DM_LopHoc;
+use App\Repositories\SV\SV_Repository;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;    
+use Illuminate\Http\Request;
 
 use App\Helper\PhoneNumber;
 use App\Services\DTAPIService;
@@ -17,9 +20,16 @@ class DM_SinhVien_Controller extends Controller
 {
 
     private $apiDaoTao;
+    private $sv_Repository;
 
-    public function __construct(DTAPIService $daotaoAPI) {
+    public function __construct(DTAPIService $daotaoAPI, SV_Repository $sv_Repository) {
         $this->apiDaoTao = $daotaoAPI;
+        $this->sv_Repository = $sv_Repository;
+    }
+
+    public function getData() {
+        $svs = $this->sv_Repository->getPaginate(['user', 'lopHoc']);
+        return response()->json($svs, 200);
     }
 
     public function index()
@@ -36,34 +46,48 @@ class DM_SinhVien_Controller extends Controller
        return response()->json($sv, 200);
     }
 
+    public function syncAll() {
+        $lops = DM_LopHoc::all();
+        DM_LopHoc::where('id', '>', -1)->update([
+           'isSync' => true
+        ]);
+        $lops->each(function ($lop, $index) {
+            ProcessSyncSinhVien::dispatch($lop->id)->onQueue('SyncSV')->delay(now()->addSeconds($index));
+        });
+        return response()->json(["message" => "In Progess"], 200);
+    }
+
     public function syncSinhVienLop($idLop)
     {
         $sv = $this->apiDaoTao->getDanhSachSVLop($idLop);
         collect($sv)->each(function ($item) use($idLop) {
-            $item = (object) $item;
+            try {
+                $item = (object) $item;
+                $newSv = SV::updateOrCreate(['id' => $item->id], [
+                    'id' => $item->id,
+                    'LopHoc_Id' => $idLop,
+                    'MaSV' => $item->masv,
+                    'TenNganh' => $item->tennganh,
+                    'TrangThai' => $item->trangthai,
+                    'GhiChu' => $item->ghichu,
+                ]);
 
-            $newSv = SV::updateOrCreate(['id' => $item->id], [
-                'id' => $item->id,
-                'LopHoc_Id' => $idLop,
-                'MaSV' => $item->masv,
-                'TenNganh' => $item->tennganh,
-                'TrangThai' => $item->trangthai,
-                'GhiChu' => $item->ghichu,
-            ]);
+                User::updateOrCreate(['email' => $item->email], [
+                    'Profile_id' => $newSv->id,
+                    'Profile_type' => 'App\Models\SV',
+                    'Ten' => $item->ten,
+                    'HoDem' => $item->hodem,
+                    'HoTenKhongDau' => Str::slug($item->hodem." ".$item->ten, " "),
+                    'email' => $item->email,
+                    'username' => $item->email,
+                    'SoDienThoai' => PhoneNumber::convert($item->dienthoai),
+                    'SoDienThoaiGiaDinh' => PhoneNumber::convert($item->dienthoaigiadinh),
+//                'NgaySinh' => $item->ngaysinh,
+                    'GioiTinh' => $item->gioitinh,
+                ]);
+            } catch (\Exception $exception){
 
-            User::updateOrCreate(['email' => $item->email], [
-                'Profile_id' => $newSv->id,
-                'Profile_type' => 'App\Models\SV',
-                'Ten' => $item->ten,
-                'HoDem' => $item->hodem,
-                'HoTenKhongDau' => Str::slug($item->hodem." ".$item->ten, " "),
-                'email' => $item->email,
-                'username' => $item->email,
-                'SoDienThoai' => PhoneNumber::convert($item->dienthoai),
-                'SoDienThoaiGiaDinh' => PhoneNumber::convert($item->dienthoaigiadinh),
-                'NgaySinh' => $item->ngaysinh,
-                'GioiTinh' => $item->gioitinh,
-            ]);
+            }
        });
        return response()->json(["message" => "Đồng bộ thành công"], 200);
     }

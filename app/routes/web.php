@@ -15,12 +15,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect('/sv');;
-})->name('index')->middleware('auth');
+})->name('index');
 
 Route::get('redirect/{driver}', 'Auth\LoginController@redirectToProvider')
     ->name('login.provider')
     ->where('driver', implode('|', config('auth.socialite.drivers')));
 Route::get('/callback/{driver}', 'Auth\LoginController@handleProviderCallback');
+
+Route::get('doi-hoc-ky/{idHocKy}', 'Auth\AuthController@changeHocKy')
+    ->name('doiHocKy')->middleware('auth');
 
 Route::prefix('sv')->name('sv.')->group(function () {
 
@@ -30,7 +33,8 @@ Route::prefix('sv')->name('sv.')->group(function () {
         }
        return view('auth.sv.login');
     })->name('login');
-
+    Route::get('danh-gia/api', 'EndUser\DanhGiaController@sinhVienGetDotDanhGiaHienTai');
+    Route::get('danh-gia/api/dot-danh-gia', 'EndUser\DanhGiaController@sinhVienGetDotDanhGiaHienTai');
     Route::resource('danh-gia', EndUser\DanhGiaController::class)->middleware('auth');
 });
 
@@ -39,6 +43,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/', function () {
         return view('auth.login');
     })->name('login');
+    Route::get('DM_DotDanhGia/data', 'Admin\DM_DotDanhGia_Controller@getData');
+
+    Route::resource('DM_DotDanhGia', Admin\DM_DotDanhGia_Controller::class);
 
     Route::get('DM_MauTieuChi/data', 'Admin\DM_MauTieuChi_Controller@getData');
 
@@ -47,14 +54,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('DM_MauTieuChi', Admin\DM_MauTieuChi_Controller::class);
 
-    Route::get('DM_LopHoc/sync-data', 'Admin\DM_LopHoc_Controller@syncLopHoc');
+    Route::get('DM_LopHoc/api/sync-data', 'Admin\DM_LopHoc_Controller@syncLopHoc');
+    Route::get('DM_LopHoc/api', 'Admin\DM_LopHoc_Controller@getData');
     Route::resource('DM_LopHoc', Admin\DM_LopHoc_Controller::class);
 
+    Route::get('DM_HocKy/data', 'Admin\DM_HocKy_Controller@getData');
     Route::get('DM_HocKy/sync-data', 'Admin\DM_HocKy_Controller@syncHocKy');
 
     Route::resource('DM_HocKy', Admin\DM_HocKy_Controller::class);
 
     Route::resource('DM_GiangVien', Admin\DM_GiangVien_Controller::class);
+
+    Route::get('DM_SinhVien/api/data', 'Admin\DM_SinhVien_Controller@getData');
+
+    Route::get('DM_SinhVien/sync-data', 'Admin\DM_SinhVien_Controller@syncAll');
 
     Route::resource('DM_SinhVien', Admin\DM_SinhVien_Controller::class);
 

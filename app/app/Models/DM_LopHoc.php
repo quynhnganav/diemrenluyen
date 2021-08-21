@@ -12,14 +12,16 @@ class DM_LopHoc extends Model
     use SoftDeletes;
 
     protected $table = 'DM_LopHoc';
+    public static $snakeAttributes = false;
 
     protected $fillable = [
         "id",
-        'Khoa_Id', 
-        'GV_Id', 
+        'Khoa_Id',
+        'GV_Id',
         'TenLopHoc',
         'TenKhongDau',
-        'KhoaHoc'
+        'KhoaHoc',
+        'isSync'
     ];
 
     /**
@@ -27,9 +29,13 @@ class DM_LopHoc extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function GV(): BelongsTo
+    public function GV()
     {
-        return $this->belongsTo(GV::class, 'LopHoc_Id');
+        return $this->belongsTo(GV::class, 'GV_Id');
+    }
+
+    public function sinhViens() {
+        return $this->hasMany(SV::class, 'LopHoc_Id');
     }
 
 }

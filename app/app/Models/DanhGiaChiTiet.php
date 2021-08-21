@@ -12,9 +12,10 @@ class DanhGiaChiTiet extends Model
     use SoftDeletes;
 
     protected $table = 'DanhGiaChiTiet';
+    public static $snakeAttributes = false;
 
     protected $fillable = [
-        'DotDanhGia_Id', 
+        'DotDanhGia_Id',
         'SinhVien_Id',
         'SinhVienDanhGia',
         'CanBoLopDanhGia',

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Common\Constant;
 use App\Http\Controllers\Controller;
+use App\Models\DM_HocKy;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -64,25 +67,33 @@ class LoginController extends Controller
             return redirect()->route('login');
         }
 
-        $existingUser = User::where('email', $user->getEmail())->first();
+        $existingUser = User::where('email', $user->getEmail())->with('chucVu.lopHoc')->first();
 
-        if ($existingUser) {
-            auth()->login($existingUser, true);
-        } else {
-            $newUser                    = new User;
-            // $newUser->provider_name     = $driver;
-            // $newUser->provider_id       = $user->getId();
-            $newUser->name              = $user->getName();
-            $newUser->email             = $user->getEmail();
-            $newUser->username             = $user->getEmail();
-            $newUser->email_verified_at = now();
-            $newUser->password = Hash::make("vanquang@vku.drl@3312");
-            // $newUser->avatar            = $user->getAvatar();
-            $newUser->save();
-            auth()->login($newUser, true);
+        if (empty($existingUser)) {
+            return redirect()->route('sv');
+        }
+        $existingUser->picture = $user->getAvatar();
+        $existingUser->save();
+
+        if (!empty($existingUser->chucVu->MaSV)) {
+            $existingUser->MaSv = $existingUser->chucVu->MaSV;
         }
 
-        return redirect($this->redirectPath());
+        $hocKyHienHanhOfUser = $existingUser->HocKyHienTai_Id;
+        if (empty($hocKyHienHanhOfUser)) {
+            $hocKyHT = DM_HocKy::where('HienHanh', 1)->first();
+            if (empty($hocKyHT)) return redirect()->route('sv');
+            $existingUser->HocKyHienTai_Id = $hocKyHT->id;
+            $existingUser->save();
+            $hocKyHienHanhOfUser = $hocKyHT->id;
+        }
+        $hocKys = DM_HocKy::orderBy('NamBatDau', 'desc')->orderBy('TenHocKy', 'desc')->get();
+
+        session(['HocKyHienTai_Id' => $hocKyHienHanhOfUser]);
+        session([Constant::SESSION_KEY['HocKys'] => $hocKys]);
+        auth()->login($existingUser, false);
+
+        return redirect()->back();
     }
 
 }

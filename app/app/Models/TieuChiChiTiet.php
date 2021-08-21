@@ -12,18 +12,20 @@ class TieuChiChiTiet extends Model
     use SoftDeletes, NodeTrait;
 
     protected $table = 'TieuChiChiTiet';
+    public static $snakeAttributes = false;
 
     protected $fillable = [
         'MauTieuChi_Id',
-        'TieuChiChiTiet_Id',
+//        'TieuChiChiTiet_Id',
         'TenTieuChi',
         'TenKhongDau',
         'SoDiem',
+        'isDiemHocTap',
         'Css'
     ];
 
     protected $hidden = [
-        'TenKhongDau', 'deleted_at', 'created_at', 'updated_at'
+        'TenKhongDau', 'deleted_at', 'created_at', 'updated_at', 'parent_id', '_lft', '_rgt', 'MauTieuChi_Id'
     ];
 
 }

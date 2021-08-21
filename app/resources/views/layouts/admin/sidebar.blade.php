@@ -74,64 +74,7 @@
       
    
 </div>  
-          
-            {{-- <ul class='py-4 list-unstyled menu-item-inline' id='menu-sider'>
-            <li class='menu-item'>
-                <div class='children-item d-flex align-items-center justify-content-between ps-4 pe-4 ' onClick='openMenu()'>
-                        <span class='d-flex align-items-center' style='color: rgb(120, 129, 149)'>
-                            <i class='fa fa-street-view'></i>
-                            <span class='ps-2 menu-inline-text' id='menu-text'>Danh mục mẫu tiêu chí</span>
-                        </span>
-              
-                <i class='fa fa-chevron-down text-white down-icon '></i>
-                </div>
-                <ul class='list-unstyled children-menu-item' id='id1'>
-                <li class='ps-5 children-item' >
-                    <a class='text-decoration-none text-white' href="{{ route('admin.DM_MauTieuChi.index') }}">
-                        <span style='color: rgb(120, 129, 149)'>
-                            <i class='fa fa-street-view'></i>
-                            <span class='ps-2 menu-inline-text' id='menu-text'>Danh mục Điểm rèn luyện</span>
-                        </span>
-                    </a>
-                </li>
-                </ul>
-                </li>
-                <li class='menu-item  ps-4 children-item' id='DM_MauTieuChi'>
-                    <a class='text-decoration-none text-white' href="{{ route('admin.DM_MauTieuChi.index') }}">
-                        <span style='color: rgb(120, 129, 149)'>
-                            <i class='fa fa-street-view'></i>
-                            <span class='ps-2 menu-inline-text' id='menu-text'>Danh mục Điểm rèn luyện</span>
-                        </span>
-                    </a>
-                </li>
-                <li class='menu-item ps-4 children-item' id='DM_LopHoc'>
-                    
-                </li>
-                <li class='menu-item ps-4 children-item' id='DM_HocKy'>
-                    <a class='text-decoration-none text-white' href="{{ route('admin.DM_HocKy.index') }}">
-                        <span style='color: rgb(120, 129, 149)'>
-                            <i class='fa fa-street-view'></i>
-                            <span class='ps-2 menu-inline-text' id='menu-text'>Danh mục Học kỳ</span>
-                        </span>
-                    </a>
-                </li>
-                <li class='menu-item ps-4 children-item'>
-                    <a class='text-decoration-none text-white' href="{{ route('admin.DM_SinhVien.index') }}">
-                        <span style='color: rgb(120, 129, 149)'>
-                            <i class='fa fa-street-view'></i>
-                            <span class='ps-2 menu-inline-text' id='menu-text'>Danh mục Sinh viên</span>
-                        </span>
-                    </a>
-                </li>
-                <li class='ps-4 menu-item children-item' >
-                    <a class='text-decoration-none text-white' href="{{ route('admin.DM_GiangVien.index') }}">
-                        <span style='color: rgb(120, 129, 149)'>
-                            <i class='fa fa-street-view'></i>
-                            <span class='ps-2 menu-inline-text' id='menu-text'>Danh mục giảng viên</span>
-                        </span>
-                    </a>
-                </li>
-            </ul> --}}
+
         </div>
     </div>
 </div>
