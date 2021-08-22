@@ -19,7 +19,7 @@ const AppRouter = () => {
                         routers.map((r, index) => (
                             <Route
                                 key={index}
-                                exact
+                                exact={r.exact}
                                 path={r.path}
                                 component={Components[r.component]}
                             />

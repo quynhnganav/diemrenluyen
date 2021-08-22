@@ -19,7 +19,12 @@ class DanhGiaChiTiet extends Model
         'SinhVien_Id',
         'SinhVienDanhGia',
         'CanBoLopDanhGia',
-        'TongSoDiem'
+        'TongSoDiem',
+        'TongSoDiemSinhVien'
+    ];
+
+    protected $hidden = [
+        'deleted_at', 'created_at', 'updated_at'
     ];
 
     public function dotDanhGia() {
