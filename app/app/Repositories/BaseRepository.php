@@ -29,6 +29,10 @@ abstract class BaseRepository implements RepositoryInterface
         );
     }
 
+    public function getModelEq() {
+        return $this->model;
+    }
+
     public function getPaginate($withRelation = [], $orderBy = '', $withCount = [])
     {
         $query = $this->model->with($withRelation)->withCount($withCount);

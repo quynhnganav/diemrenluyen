@@ -20,6 +20,7 @@ class CreateDanhGiaChiTietTable extends Migration
             $table->json('SinhVienDanhGia')->nullable();
             $table->json('CanBoLopDanhGia')->nullable();
             $table->unsignedBigInteger('TongSoDiem')->default(0);
+            $table->unsignedBigInteger('TongSoDiemSinhVien')->default(0);
             $table->boolean('SinhVienDuyet')->default(false);
             $table->boolean('CanBoLopDuyet')->default(false);
             $table->boolean('GiangVienDuyet')->default(false);
@@ -32,7 +33,8 @@ class CreateDanhGiaChiTietTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->index(['DotDanhGia_Id', 'SinhVien_Id']);
+//            $table->index(['DotDanhGia_Id', 'SinhVien_Id']);
+            $table->unique(['DotDanhGia_Id', 'SinhVien_Id']);
 
             $table->foreign('DotDanhGia_Id')
             ->references('id')

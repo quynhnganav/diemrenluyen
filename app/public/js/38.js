@@ -1,1 +1,1 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[38],{38:(e,u,n)=>{n.r(u),n.d(u,{default:()=>s});n(7294);const s=function(){return 404}}}]);
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[38],{38:(e,n,a)=>{a.r(n),a.d(n,{default:()=>t});a(7294);var s=a(5977);const t=function(){var e=(0,s.TH)();return console.log(e.pathname),404}}}]);

@@ -15,7 +15,7 @@ class User extends Authenticatable
 
     public static $snakeAttributes = false;
 
-    protected $with = ['chucVu', 'hocKy'];
+//    protected $with = ['chucVu', 'hocKy'];
 
     /**
      * The attributes that are mass assignable.
@@ -44,7 +44,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'Profile_type', 'HoTenKhongDau'
+        'password', 'remember_token', 'Profile_type', 'HoTenKhongDau', 'email_verified_at', 'deleted_at', 'created_at', 'updated_at'
     ];
 
     /**

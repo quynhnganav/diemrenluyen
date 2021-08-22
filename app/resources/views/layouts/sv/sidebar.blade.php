@@ -16,6 +16,14 @@
                         </span>
                     </a>
                 </li>
+                <li class='d-block'>
+                    <a class='text-decoration-none text-white' href="{{ route('sv.danh-gia.index') }}">
+                        <span style='color: rgb(120, 129, 149)'>
+                            <i class='fa fa-street-view'></i>
+                            <span class='ps-2' id='menu-text'>Danh sách điểm rèn luyện</span>
+                        </span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

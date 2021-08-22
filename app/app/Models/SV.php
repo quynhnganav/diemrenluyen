@@ -24,6 +24,10 @@ class SV extends Model
         'GhiChu'
     ];
 
+    protected $hidden = [
+        'deleted_at', 'created_at', 'updated_at'
+    ];
+
     public function user()
     {
         return $this->morphOne('App\Models\User', 'Profile');
@@ -32,6 +36,10 @@ class SV extends Model
     public function lopHoc()
     {
         return $this->belongsTo(DM_LopHoc::class, 'LopHoc_Id');
+    }
+
+    public function danhGia() {
+        return $this->hasOne(DanhGiaChiTiet::class, 'SinhVien_Id');
     }
 
 }

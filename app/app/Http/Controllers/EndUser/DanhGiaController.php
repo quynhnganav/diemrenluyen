@@ -47,7 +47,7 @@ class DanhGiaController extends Controller
             'DotDanhGia_Id' => $dotDanhGia->id,
             'SinhVien_Id' => $user->chucVu->id,
             'SinhVienDanhGia' => json_encode($input),
-            'TongSoDiem' => $validate[2]
+            'TongSoDiemSinhVien' => $validate[2]
         ]);
         return $validate;
     }

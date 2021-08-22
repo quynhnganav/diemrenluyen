@@ -25,17 +25,27 @@ Route::get('/callback/{driver}', 'Auth\LoginController@handleProviderCallback');
 Route::get('doi-hoc-ky/{idHocKy}', 'Auth\AuthController@changeHocKy')
     ->name('doiHocKy')->middleware('auth');
 
-Route::prefix('sv')->name('sv.')->group(function () {
+Route::get('/sv', function () {
+    if (Auth::check()) {
+        return redirect()->route('sv.danh-gia.index');
+    }
+    return view('auth.sv.login');
+})->name('sv.login');
 
-    Route::get('/', function () {
-        if (Auth::check()) {
-            return redirect()->route('sv.danh-gia.index');
-        }
-       return view('auth.sv.login');
-    })->name('login');
+Route::prefix('sv')->name('sv.')->middleware('auth')->group(function () {
+
     Route::get('danh-gia/api', 'EndUser\DanhGiaController@sinhVienGetDotDanhGiaHienTai');
     Route::get('danh-gia/api/dot-danh-gia', 'EndUser\DanhGiaController@sinhVienGetDotDanhGiaHienTai');
-    Route::resource('danh-gia', EndUser\DanhGiaController::class)->middleware('auth');
+    Route::resource('danh-gia', EndUser\DanhGiaController::class);
+
+    Route::prefix('cbl')->group(function () {
+
+        Route::get('danh-gia/api', 'EndUser\CBLQuanLyController@getDSDanhGia');
+        Route::get('danh-gia/api/sinh-vien/{id}', 'EndUser\CBLQuanLyController@sinhVienGetDotDanhGiaHienTai');
+        Route::post('danh-gia/api/sinh-vien/{id}', 'EndUser\CBLQuanLyController@sinhVienDanhGiaDotDanhGiaHienTai');
+        Route::resource('danh-gia', EndUser\CBLQuanLyController::class);
+    });
+
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {
