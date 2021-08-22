@@ -21,8 +21,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="/css/cdn/bootstrap.min.css" type="text/css" rel="stylesheet" />
-    <script src="/js/cdn/bootstrap.bundle.min.js"></script>
+    
 </head>
 <body>
     <div id="app">
@@ -57,11 +56,11 @@
 
                             <li class="nav-item dropdown">
 
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                <a  onClick='dropdown()' class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     {{ Auth::user()->name }}
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown" id='avatar-dropdown' >
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
@@ -82,5 +81,11 @@
             @yield('content')
         </main>
     </div>
+
+    <script>
+        function dropdown() {
+            console.log('avatar-dropdown')
+        }
+    </script>
 </body>
 </html>

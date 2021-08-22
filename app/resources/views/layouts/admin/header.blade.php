@@ -4,16 +4,28 @@
             <div>
                 <i class='fa fa-bars' style='font-size: 26px; cursor: pointer' onClick='openSider()'> </i>
             </div>
+           
             <div class='nav-right position-relative'>
-                <div>
-                    <img class='rounded-circle' src='/images/logo.png' />
-                    <span>
-                        @if (Auth::user())
-                            {{ Auth::user()->name }}
-                        @endif - 18IT5
-                    </span>
-                </div>
-                <div class='position-absolute user-dropdown'>
+                <div class="dropdown">
+                    <button class="btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class='rounded-circle' src='/images/logo.png' />
+                        <span>
+                            @if (Auth::user())
+                                {{ Auth::user()->name }}
+                            @endif - 18IT5
+                        </span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                <span><i class='fa fa-sign-out'></i></span>
+                <span>Logout</span>
+            </a></li>
+                     
+                    </ul>
+                  </div>
+                {{-- <div class='position-absolute user-dropdown'>
                     <div>
                         <div class='dropdown-arrow'></div>
                         <div class='user-dropdown-content bg-white ' 
@@ -22,7 +34,7 @@
                                 <span><i class='fa fa-sign-out'></i></span>
                                 <span>Logout</span>
                             </a> --}}
-                            <a class="dropdown-item" href="{{ route('logout') }}"
+                            {{-- <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
                                 <span><i class='fa fa-sign-out'></i></span>
@@ -32,9 +44,15 @@
                                 @csrf
                             </form>
                         </div>
-                    </div>
-                </div>
+                    </div> --}}
+                {{-- </div> --}} 
             </div>
         </div>
     </nav>
 </div>
+<script>
+
+    function openMenu() {
+        console.log('sss')
+    }
+</script>
