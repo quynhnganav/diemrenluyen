@@ -21,7 +21,11 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    
+    <link href="/css/cdn/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="/js/cdn/bootstrap.min.js" type="text/javascript" />
+    <link href="/js/cdn/popper.min.js" type="text/javascript"rel="stylesheet" />
+    <link href="/css/home.css" type="text/css" rel="stylesheet">
+
 </head>
 <body>
     <div id="app">
