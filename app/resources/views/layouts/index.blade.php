@@ -29,7 +29,7 @@
             @yield('sidebar')
                 <!-- SIDEBAR SECTION -->
 
-            <div style='padding: 70px 0px 0px; background: #fafafa; width: calc(100% - 80px); overflow-x: hidden; ' >
+            <div style='padding: 70px 0px 0px; background: #fafafa; width: calc(100%); overflow-x: hidden; ' >
                 @yield('content')
             </div>
 
