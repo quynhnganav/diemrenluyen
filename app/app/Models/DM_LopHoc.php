@@ -24,6 +24,11 @@ class DM_LopHoc extends Model
         'isSync'
     ];
 
+    protected $casts = [
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+    ];
+
     /**
      * Get the GV that owns the DM_LopHoc
      *

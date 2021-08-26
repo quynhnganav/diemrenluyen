@@ -18,4 +18,9 @@ class DM_Khoa extends Model
         'TenKhoa',
         'TenKhongDau'
     ];
+
+    protected $casts = [
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+    ];
 }

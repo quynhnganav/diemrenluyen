@@ -27,8 +27,13 @@ class DM_SinhVien_Controller extends Controller
         $this->sv_Repository = $sv_Repository;
     }
 
-    public function getData() {
-        $svs = $this->sv_Repository->getPaginate(['user', 'lopHoc']);
+    public function getData(Request $request) {
+        $search = null;
+        if ($request->has('search')) {
+            $search = $request->input('search');
+        }
+        if (!empty($search)) $svs = $this->sv_Repository->search($search);
+        else $svs = $this->sv_Repository->getPaginate(['user', 'lopHoc']);
         return response()->json($svs, 200);
     }
 

@@ -16,16 +16,8 @@
                         </span>
                     </a>
                 </li>
-                <li class='d-block'>
-                    <a class='text-decoration-none text-white' href="{{ route('sv.danh-gia.index') }}">
-                        <span style='color: rgb(120, 129, 149)'>
-                            <i class='fa fa-street-view'></i>
-                            <span class='ps-2' id='menu-text'>Đánh giá điểm rèn luyện</span>
-                        </span>
-                    </a>
-                </li>
                  <li class='d-block'>
-                    <a class='text-decoration-none text-white' href="{{ route('sv.danh-gia.index') }}">
+                    <a class='text-decoration-none text-white' href="{{ route('sv.cbl.danh-gia.index') }}">
                         <span style='color: rgb(120, 129, 149)' class='d-flex '>
                             <i class='fa fa-street-view'></i>
                             <span class='ps-2 d-none d-sm-none d-md-block d-lg-block d-xl-block' id='menu-text'>Đánh giá điểm rèn luyện</span>
@@ -42,10 +34,10 @@
     <script>
         function openSider() {
             document.getElementById("sider")?.classList.toggle('openSider');
-            
-           
+
+
         }
-       
+
     </script>
     <script>
 

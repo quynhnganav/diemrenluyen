@@ -23,6 +23,11 @@ class DanhGiaChiTiet extends Model
         'TongSoDiemSinhVien'
     ];
 
+    protected $casts = [
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+    ];
+
     protected $hidden = [
         'deleted_at', 'created_at', 'updated_at'
     ];

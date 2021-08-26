@@ -24,6 +24,11 @@ class DM_DotDanhGia extends Model
         'HanCuoi',
     ];
 
+    protected $casts = [
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+    ];
+
     public function hocKy() {
         return $this->belongsTo(DM_HocKy::class, 'HocKy_Id');
     }

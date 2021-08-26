@@ -58,6 +58,7 @@ const SVDanhGia = () => {
         {
             title: 'Họ tên SV',
             dataIndex: 'user',
+            width: 200,
             key: 'HoTenSinhVien',
             render: (text) =>
                 <Tooltip placement='top' title={text?.email}>
@@ -108,6 +109,7 @@ const SVDanhGia = () => {
             title: '',
             dataIndex: 'id',
             key: 'id',
+            className: 'cell-center',
             render: (text, record, index) => (
                 <Space size='middle'>
                     <Button
@@ -133,7 +135,7 @@ const SVDanhGia = () => {
                             Số lượng sinh viên: {state?.sinhViens?.length}
                         </Col>
                         <Col>
-                            <Row gutter={[5, 5]}>  
+                            <Row gutter={[5, 5]}>
                                 <Col>
                                     <Button type='primary' onClick={() => window.print()}>In bản thống kê</Button>
                                 </Col>

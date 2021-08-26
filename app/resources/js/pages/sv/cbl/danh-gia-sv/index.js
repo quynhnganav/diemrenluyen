@@ -3,7 +3,7 @@ import React, { useReducer, useEffect, useCallback, useRef } from "react";
 import LayoutWrapper from "../../../../components/LayoutWrapper";
 import TableDanhGia from "../../../../components/TableDanhGia";
 import * as DanhGiaAPI from "../../../../API/DanhGiaAPI";
-import { reducer } from "../../../../utils";
+import { reducer, toUnsigned } from "../../../../utils";
 import { axios } from "../../../../config";
 import { useListSinhVien } from "../../../..";
 import { useHistory, useParams } from "react-router-dom";
@@ -22,7 +22,7 @@ const SVDanhGia = () => {
     });
     const { idSV } = useParams()
     const history = useHistory()
-    const { gotoSV, nextSV, prevSV, next, prev, dsSinhViens } = useListSinhVien();
+    const { gotoSV, current, next, prev, dsSinhViens } = useListSinhVien();
 
     const refTableDanhGia = useRef(null)
 
@@ -104,6 +104,11 @@ const SVDanhGia = () => {
         history.push(`/sv/cbl/danh-gia/${prev?.id}?masv=${next?.MaSV}`)
     }, [prev])
 
+    const gotoSVChange = useCallback((id) => {
+        if (!id) return
+        history.push(`/sv/cbl/danh-gia/${id}`)
+    }, [])
+
     console.log(next, prev)
 
     return (
@@ -114,32 +119,38 @@ const SVDanhGia = () => {
                         <Col span={12}>
                             <Row>
                                 <Col>
-                                    <p>{`${state?.sinhVien?.user?.HoDem || ''} ${state?.sinhVien?.user?.Ten || ''} - ${state?.sinhVien?.MaSV || ''}`}</p>
+                                    <p>{`${current?.user?.HoDem || ''} ${current?.user?.Ten || ''} - ${current?.MaSV || ''}`}</p>
                                 </Col>
                             </Row>
                         </Col>
                         <Col span={12}>
                             <Row justify='end' gutter={[5, 5]}>
-                                <Col span={10}>
-                                    <Select
-                                        showSearch
-                                        placeholder='Chọn sinh viên'
-                                        notFoundContent='Không có sinh viên'
-                                        // value={idSV}
-                                        defaultValue={idSV}
-                                        style={{
-                                            width: '100%',
-                                        }}
-                                    >
-                                        {
-                                            dsSinhViens?.map(d => (
-                                                <Option value={d?.id} key={d?.id}>
-                                                    {`${d?.MaSV || ''} - ${d?.user?.HoDem || ''} ${d?.user?.Ten || ''}`}
-                                                </Option>
-                                            ))
-                                        }
-                                    </Select>
-                                </Col>
+                                {
+                                    dsSinhViens && dsSinhViens.length > 0 &&
+                                    <Col span={10}>
+                                        <Select
+                                            showSearch
+                                            placeholder='Chọn sinh viên'
+                                            notFoundContent='Không có sinh viên'
+                                            value={Number(idSV)}
+                                            filterOption={(input, option) =>
+                                                toUnsigned(option.children.toLowerCase()).indexOf(toUnsigned(input.toLowerCase())) >= 0
+                                            }
+                                            style={{
+                                                width: '100%',
+                                            }}
+                                            onChange={gotoSVChange}
+                                        >
+                                            {
+                                                dsSinhViens?.map(d => (
+                                                    <Option value={d?.id} key={d?.id}>
+                                                        {`${d?.MaSV || ''} - ${d?.user?.HoDem || ''} ${d?.user?.Ten || ''}`}
+                                                    </Option>
+                                                ))
+                                            }
+                                        </Select>
+                                    </Col>
+                                }
                                 <Col>
                                     <Button
                                         type='primary'
