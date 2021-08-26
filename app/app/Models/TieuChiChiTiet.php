@@ -24,6 +24,11 @@ class TieuChiChiTiet extends Model
         'Css'
     ];
 
+    protected $casts = [
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+    ];
+
     protected $hidden = [
         'TenKhongDau', 'deleted_at', 'created_at', 'updated_at', 'parent_id', '_lft', '_rgt', 'MauTieuChi_Id'
     ];

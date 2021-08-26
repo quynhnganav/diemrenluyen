@@ -38,7 +38,7 @@ Route::prefix('sv')->name('sv.')->middleware('auth')->group(function () {
     Route::get('danh-gia/api/dot-danh-gia', 'EndUser\DanhGiaController@sinhVienGetDotDanhGiaHienTai');
     Route::resource('danh-gia', EndUser\DanhGiaController::class);
 
-    Route::prefix('cbl')->group(function () {
+    Route::prefix('cbl')->name('cbl.')->group(function () {
 
         Route::get('danh-gia/api', 'EndUser\CBLQuanLyController@getDSDanhGia');
         Route::get('danh-gia/api/sinh-vien/{id}', 'EndUser\CBLQuanLyController@sinhVienGetDotDanhGiaHienTai');
@@ -68,8 +68,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('DM_LopHoc/api', 'Admin\DM_LopHoc_Controller@getData');
     Route::resource('DM_LopHoc', Admin\DM_LopHoc_Controller::class);
 
-    Route::get('DM_HocKy/data', 'Admin\DM_HocKy_Controller@getData');
-    Route::get('DM_HocKy/sync-data', 'Admin\DM_HocKy_Controller@syncHocKy');
+    Route::get('DM_HocKy/api', 'Admin\DM_HocKy_Controller@getData');
+    Route::get('DM_HocKy/api/sync-data', 'Admin\DM_HocKy_Controller@syncHocKy');
 
     Route::resource('DM_HocKy', Admin\DM_HocKy_Controller::class);
 

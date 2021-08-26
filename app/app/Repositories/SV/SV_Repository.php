@@ -24,6 +24,15 @@ class SV_Repository extends BaseRepository implements SV_RepositoryInterface
         return SV::class;
     }
 
+    public function search($text)
+    {
+        $text = Str::slug($text, " ");
+        $source = $this->model->whereHas('user', function ($query) use ($text) {
+            $query->where('HoTenKhongDau', 'like', '%' . $text . '%');
+        })->with(['user', 'lopHoc'])->paginate(20);
+        return $source;
+    }
+
     public function syncSinhVienLop($idLop)
     {
         $sv = $this->apiDaoTao->getDanhSachSVLop($idLop);

@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
-import { Button, Row, Table, Col, Space, Modal, notification, Tooltip, Select } from "antd";
+import { Button, Row, Table, Col, Space, Modal, notification, Tooltip, Select, Input } from "antd";
 import { useDataProps } from "../../..";
 import './style.scss'
 import LayoutWrapper from "../../../components/LayoutWrapper";
-import { reducer } from "../../../utils/index";
+import { delaySearch, reducer } from "../../../utils/index";
 import * as DM_SinhVienAPI from "../../../API/DM_SinhVienAPI";
 import * as DM_LopHocAPI from "../../../API/DM_LopHocAPI";
 
 const { Option } = Select
+
+let idQuery = 0
 
 const DM_LopHoc = () => {
 
@@ -27,13 +29,17 @@ const DM_LopHoc = () => {
         loadLopHoc()
     }, [])
 
-    const loadData = (pageNumber) => {
+    const loadData = (pageNumber, search) => {
         setState({
             loading: true
         })
+        const currentQuery = Date.now()
+        idQuery = currentQuery
         DM_SinhVienAPI.getPaginateSinhVien({
-            page: pageNumber || state.pageNumber
+            page: pageNumber || state.pageNumber,
+            search
         }).then((res) => {
+            if (idQuery !== currentQuery) return
             setState({
                 data: res?.data?.data || [],
                 pageNumber: res?.data?.current_page || 0,
@@ -73,6 +79,10 @@ const DM_LopHoc = () => {
     const onChange = useCallback((page, pageSize) => {
         loadData(page)
     }, [loadData])
+
+    const onSearch = useCallback((e) => {
+        loadData(null, e.target.value)
+    } ,[state, loadData])
 
     const columns = useMemo(() => (
         [
@@ -149,6 +159,9 @@ const DM_LopHoc = () => {
                         </Col>
                         <Col>
                             <Button type='primary' onClick={onSync}>Cập nhật</Button>
+                        </Col>
+                        <Col>
+                            <Input onChange={delaySearch(onSearch, 300)} />
                         </Col>
                     </Row>
                 </Col>

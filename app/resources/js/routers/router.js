@@ -48,6 +48,11 @@ export const routers = [
         exact: true,
         path: '/admin/DM_SinhVien'
     },
+    {
+        component: 'admin/DM_HocKy',
+        exact: true,
+        path: '/admin/DM_HocKy'
+    },
 
     //common
     {

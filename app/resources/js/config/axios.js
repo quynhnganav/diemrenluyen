@@ -1,6 +1,8 @@
 
 import * as Axios from "axios";
 
+let token = document.head.querySelector('meta[name="csrf-token"]');
+
 const axios = Axios.default.create({
     baseURL: '/',
     responseType: 'json',

@@ -23,6 +23,13 @@ class DM_HocKy extends Model
         'HienHanh'
     ];
 
+    protected $casts = [
+        'DaoTaoHienHanh' => 'boolean',
+        'HienHanh' => 'boolean',
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+    ];
+
     protected $hidden = [
         'idDaoTao', 'deleted_at'
     ];

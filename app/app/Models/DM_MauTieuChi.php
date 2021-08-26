@@ -22,6 +22,11 @@ class DM_MauTieuChi extends Model
         'PhatHanh'
     ];
 
+    protected $casts = [
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+    ];
+
     protected $hidden = [
         'TenKhongDau', 'deleted_at'
     ];

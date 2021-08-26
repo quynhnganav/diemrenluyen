@@ -25,8 +25,8 @@
                     </a>
                   </div>
                 </div>
-            </div> 
-            <div class="ps-2 pe-2 menu-item-inline" id='DM_LopHoc'>  
+            </div>
+            <div class="ps-2 pe-2 menu-item-inline" id='DM_LopHoc'>
                     <button  type="button" class="btn d-flex align-items-center justify-content-center">
                         <a class='text-decoration-none text-white' href="{{ route('admin.DM_LopHoc.index') }}">
                             <span style='color: rgb(120, 129, 149)' class="children-item">
@@ -35,10 +35,8 @@
                             </span>
                         </a>
                     </button>
-                  
-               
-            </div>  
-            <div class="ps-2 pe-2 menu-item-inline" id='DM_HocKy'>  
+            </div>
+            <div class="ps-2 pe-2 menu-item-inline" id='DM_HocKy'>
                 <button  type="button" class="btn d-flex align-items-center justify-content-center">
                     <a class='text-decoration-none text-white' href="{{ route('admin.DM_HocKy.index') }}">
                         <span style='color: rgb(120, 129, 149)' class="children-item">
@@ -47,10 +45,10 @@
                         </span>
                     </a>
                 </button>
-              
-           
-        </div>  
-        <div class="ps-2 pe-2 menu-item-inline" id='DM_SinhVien'>  
+
+
+        </div>
+        <div class="ps-2 pe-2 menu-item-inline" id='DM_SinhVien'>
             <button  type="button" class="btn d-flex align-items-center justify-content-center">
                 <a class='text-decoration-none text-white' href="{{ route('admin.DM_SinhVien.index') }}">
                     <span style='color: rgb(120, 129, 149)' class="children-item">
@@ -59,21 +57,21 @@
                     </span>
                 </a>
             </button>
-          
-       
-    </div>  
-    <div class="ps-2 pe-2 menu-item-inline" id='DM_GiangVien'>  
-        <button  type="button" class="btn d-flex align-items-center justify-content-center">
-            <a class='text-decoration-none text-white' href="{{ route('admin.DM_GiangVien.index') }}">
-                <span style='color: rgb(120, 129, 149)' class="children-item">
-                    <i class='fa fa-street-view'></i>
-                    <span class='ps-3 menu-inline-text menu-tille' id='menu-text'>Giảng viên</span>
-                </span>
-            </a>
-        </button>
-      
-   
-</div>  
+
+
+    </div>
+{{--    <div class="ps-2 pe-2 menu-item-inline" id='DM_GiangVien'>--}}
+{{--        <button  type="button" class="btn d-flex align-items-center justify-content-center">--}}
+{{--            <a class='text-decoration-none text-white' href="{{ route('admin.DM_GiangVien.index') }}">--}}
+{{--                <span style='color: rgb(120, 129, 149)' class="children-item">--}}
+{{--                    <i class='fa fa-street-view'></i>--}}
+{{--                    <span class='ps-3 menu-inline-text menu-tille' id='menu-text'>Giảng viên</span>--}}
+{{--                </span>--}}
+{{--            </a>--}}
+{{--        </button>--}}
+
+
+{{--</div>--}}
 
         </div>
     </div>
@@ -107,8 +105,8 @@
                 document.getElementById(id[key])?.classList.toggle('d-none');
             }
         }
-        
+
 
     </script>
-    
+
 @endsection

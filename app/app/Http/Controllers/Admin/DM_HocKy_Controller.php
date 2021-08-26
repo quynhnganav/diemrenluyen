@@ -22,8 +22,8 @@ class DM_HocKy_Controller extends Controller
         $this->hocKy_Repository = $hocKy_Repository;
     }
 
-    public function getData() {
-        $hocKys = $this->hocKy_Repository->getAll([], 'NamKetThuc desc');
+    public function getData(Request $request) {
+        $hocKys = $this->hocKy_Repository->getAll([], 'NamKetThuc desc, TenHocKy desc');
         return response()->json(json_decode($hocKys), 200);
     }
 
