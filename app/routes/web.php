@@ -32,14 +32,13 @@ Route::get('/sv', function () {
     return view('auth.sv.login');
 })->name('sv.login');
 
-Route::prefix('sv')->name('sv.')->middleware('auth')->group(function () {
+Route::prefix('sv')->name('sv.')->middleware(['auth', 'permission:sv-page'])->group(function () {
 
     Route::get('danh-gia/api', 'EndUser\DanhGiaController@sinhVienGetDotDanhGiaHienTai');
     Route::get('danh-gia/api/dot-danh-gia', 'EndUser\DanhGiaController@sinhVienGetDotDanhGiaHienTai');
     Route::resource('danh-gia', EndUser\DanhGiaController::class);
 
-    Route::prefix('cbl')->name('cbl.')->group(function () {
-
+    Route::prefix('cbl')->name('cbl.')->middleware(['role:cbl'])->group(function () {
         Route::get('danh-gia/api', 'EndUser\CBLQuanLyController@getDSDanhGia');
         Route::get('danh-gia/api/sinh-vien/{id}', 'EndUser\CBLQuanLyController@sinhVienGetDotDanhGiaHienTai');
         Route::post('danh-gia/api/sinh-vien/{id}', 'EndUser\CBLQuanLyController@sinhVienDanhGiaDotDanhGiaHienTai');
@@ -48,11 +47,16 @@ Route::prefix('sv')->name('sv.')->middleware('auth')->group(function () {
 
 });
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::get('/admin', function () {
+    if (Auth::check()) {
+        return redirect()->route('admin.DM_DotDanhGia.index');
+    }
+    return view('auth.login');
+})->name('admin.login');
 
-    Route::get('/', function () {
-        return view('auth.login');
-    })->name('login');
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'permission:admin-page'])->group(function () {
+
+
     Route::get('DM_DotDanhGia/data', 'Admin\DM_DotDanhGia_Controller@getData');
 
     Route::resource('DM_DotDanhGia', Admin\DM_DotDanhGia_Controller::class);
