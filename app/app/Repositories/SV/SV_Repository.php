@@ -48,7 +48,7 @@ class SV_Repository extends BaseRepository implements SV_RepositoryInterface
                     'GhiChu' => $item->ghichu,
                 ]);
 
-                User::updateOrCreate(['email' => $item->email], [
+                $user = User::updateOrCreate(['email' => $item->email], [
                     'Profile_id' => $newSv->id,
                     'Profile_type' => 'App\Models\SV',
                     'Ten' => $item->ten,
@@ -61,6 +61,7 @@ class SV_Repository extends BaseRepository implements SV_RepositoryInterface
 //                'NgaySinh' => $item->ngaysinh,
                     'GioiTinh' => $item->gioitinh,
                 ]);
+                $user->assignRole('sv');
             } catch (\Exception $e) {
 
             }

@@ -27,112 +27,92 @@ class PermissionSeeder extends Seeder
                 'show_name' => 'Cán bộ lớp'
             ],
             [
-                'name' => 's',
+                'name' => 'sv',
                 'show_name' => 'Sinh viên'
             ],
         ];
 
         foreach ($roles as $key => $role) {
-            Role::create(['name' => $role["name"], 'show_name' => $role["show_name"]]);
+            Role::create(['name' => $role["name"], 'show_name' => $role["show_name"], 'is_show' => false, 'is_delete' => false]);
         }
 
         $permissions = [
             [
                 'name' => 'admin-page',
-                'show_name' => 'Access Admin Page'
+                'show_name' => 'Admin Page'
             ],
             [
                 'name' => 'role-list',
-                'show_name' => 'List Role'
+                'show_name' => 'Danh sách chức vụ'
             ],
             [
                 'name' => 'role-create',
-                'show_name' => 'Create Role'
+                'show_name' => 'Thêm mới chức vụ'
             ],
             [
                 'name' => 'role-edit',
-                'show_name' => 'Edit Role'
+                'show_name' => 'Chỉnh sửa chức vụ'
             ],
             [
                 'name' => 'role-delete',
-                'show_name' => 'Edit Role'
+                'show_name' => 'Edit chức vụ'
             ],
             [
-                'name' => 'post-list',
-                'show_name' => 'List Post'
+                'name' => 'dot-danh-gia-list',
+                'show_name' => 'Danh sách đợt đánh giá'
             ],
             [
-                'name' => 'post-list-all',
-                'show_name' => 'List All Post'
+                'name' => 'dot-danh-gia-create',
+                'show_name' => 'Thêm mới đợt đánh giá'
             ],
             [
-                'name' => 'post-create',
-                'show_name' => 'Create Post'
+                'name' => 'dot-danh-gia-edit',
+                'show_name' => 'Chỉnh sửa đợt đánh giá'
             ],
             [
-                'name' => 'post-edit',
-                'show_name' => 'Edit Post'
-            ],
-            [
-                'name' => 'post-edit-all',
-                'show_name' => 'Edit All Post'
-            ],
-            [
-                'name' => 'post-delete',
-                'show_name' => 'Delete Post'
-            ],
-            [
-                'name' => 'post-delete-all',
-                'show_name' => 'Delete All Post'
+                'name' => 'dot-danh-gia-delete',
+                'show_name' => 'Xóa đợt đánh giá'
             ],
             [
                 'name' => 'user-create',
-                'show_name' => 'Create User'
+                'show_name' => 'Thêm mới User'
             ],
             [
                 'name' => 'user-edit',
-                'show_name' => 'Edit User'
-            ],
-            [
-                'name' => 'user-edit-all',
-                'show_name' => 'Edit All User'
+                'show_name' => 'Chỉnh sửa User'
             ],
             [
                 'name' => 'user-list-all',
-                'show_name' => 'List All User'
+                'show_name' => 'Danh sách user'
             ],
             [
-                'name' => 'user-delete-all',
-                'show_name' => 'Delele All User'
+                'name' => 'gv-page',
+                'show_name' => 'Vào trang giảng viên'
             ],
             [
-                'name' => 'hastag-create',
-                'show_name' => 'Create Hastag'
+                'name' => 'gv-xem-danhsach-danhgia',
+                'show_name' => 'Giảng viên xem danh sách đánh giá'
             ],
             [
-                'name' => 'code-create',
-                'show_name' => 'Create Code Invitation'
+                'name' => 'gv-danhgia-sv',
+                'show_name' => 'Giảng viên đánh giá sv'
             ],
             [
-                'name' => 'code-edit',
-                'show_name' => 'Edit Code Invitation'
+                'name' => 'gv-report',
+                'show_name' => 'Giảng viên xem report'
             ],
             [
-                'name' => 'code-delete',
-                'show_name' => 'Delete Code Invitation'
+                'name' => 'cbl-danhgia',
+                'show_name' => 'Cán bộ lớp đánh giá cho sinh viên'
             ],
             [
-                'name' => 'code-send',
-                'show_name' => 'Send Code Invitation'
+                'name' => 'cbv-baocao',
+                'show_name' => 'Cán bộ lớp xem báo cáo'
             ],
             [
-                'name' => 'like-post',
-                'show_name' => 'Like Post'
-            ],
-            [
-                'name' => 'comment-post',
-                'show_name' => 'Comment Post'
-            ],
+                'name' => 'sv-page',
+                'show_name' => 'Trang sinh viên'
+            ]
         ];
 
         $role = Role::findByName('super_admin');
@@ -142,5 +122,34 @@ class PermissionSeeder extends Seeder
             $role->givePermissionTo($permiss);
         }
 
+        $role_gv = Role::findByName('gvcn');
+
+        $permis_gv = [
+            'gv-page',
+            'gv-xem-danhsach-danhgia',
+            'gv-danhgia-sv',
+            'gv-report'
+        ];
+        $permiss_gv = Permission::whereIn('name', $permis_gv)->get();
+
+        foreach ($permiss_gv as $permission) {
+            $role_gv->givePermissionTo($permission);
+        }
+
+        $permis_cbl = [
+            'cbl-danhgia',
+            'cbv-baocao'
+        ];
+        $permiss_cbl = Permission::whereIn('name', $permis_gv)->get();
+
+        $permiss_sv = Permission::findByName('sv-page');
+
+        $role_cbl = Role::findByName('cbl');
+        foreach ($permiss_cbl as $permission) {
+            $role_cbl->givePermissionTo($permission);
+        }
+        $role_cbl->givePermissionTo($permiss_sv);
+        $role_sv = Role::findByName('sv');
+        $role_sv->givePermissionTo($permiss_sv);
     }
 }
