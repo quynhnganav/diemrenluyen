@@ -1,14 +1,13 @@
 import { Col, notification, Row, Button, Select } from "antd";
 import React, { useReducer, useEffect, useCallback, useRef } from "react";
-import LayoutWrapper from "../../../../components/LayoutWrapper";
-import TableDanhGia from "../../../../components/TableDanhGia";
-import * as DanhGiaAPI from "../../../../API/DanhGiaAPI";
-import { reducer, toUnsigned } from "../../../../utils";
-import { axios } from "../../../../config";
-import { useListSinhVien } from "../../../..";
+import LayoutWrapper from "../../../components/LayoutWrapper";
+import TableDanhGia from "../../../components/TableDanhGia";
+import * as DanhGiaAPI from "../../../API/DanhGiaAPI";
+import { reducer, toUnsigned } from "../../../utils";
+import { axios } from "../../../config";
+import { useListSinhVien } from "../../..";
 import { useHistory, useParams } from "react-router-dom";
 import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
-import ModalGhiChu from "../../../../components/ModalGhiChu";
 
 const { Option } = Select
 
@@ -26,7 +25,6 @@ const SVDanhGia = () => {
     const { gotoSV, current, next, prev, dsSinhViens } = useListSinhVien();
 
     const refTableDanhGia = useRef(null)
-    const refModalGhiChu = useRef(null)
 
     useEffect(() => {
         if (!idSV) return
@@ -111,10 +109,7 @@ const SVDanhGia = () => {
         history.push(`/sv/cbl/danh-gia/${id}`)
     }, [])
 
-    const onOpenGhiChu = useCallback(() => {
-        refModalGhiChu.current?.showModal()
-        console.log(refModalGhiChu.current)
-    }, [])
+    console.log(next, prev)
 
     return (
         <LayoutWrapper className='danh-gia-page'>
@@ -173,10 +168,7 @@ const SVDanhGia = () => {
                                     />
                                 </Col>
                                 <Col>
-                                    <Button type='primary' disabled={state.loading} onClick={onOpenGhiChu} >Ghi chú</Button>
-                                </Col>
-                                <Col>
-                                    <Button type='primary' disabled={state.loading} onClick={onSubmit} >Cập nhật</Button>
+                                    <Button type='primary' disabled={state.loading} onClick={onSubmit} >Duyệt</Button>
                                 </Col>
                             </Row>
                         </Col>
@@ -192,9 +184,6 @@ const SVDanhGia = () => {
                     />
                 </Col>
             </Row>
-            <ModalGhiChu 
-                ref={refModalGhiChu}
-            />
         </LayoutWrapper>
     )
 };

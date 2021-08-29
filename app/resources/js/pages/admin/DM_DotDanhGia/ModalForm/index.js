@@ -3,6 +3,9 @@ import { useForm } from "antd/lib/form/Form";
 import Modal from "antd/lib/modal/Modal";
 import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useState } from "react";
 import { axios } from "../../../../config";
+import * as DM_DotDanhGiaAPI from "../../../../API/DM_DotDanhGiaAPI";
+import * as DM_HocKyAPI from "../../../../API/DM_HocKyAPI";
+import * as DM_MauTieuChiAPI from "../../../../API/DM_MauTieuChiAPI";
 
 const { Option } = Select
 
@@ -31,7 +34,7 @@ const ModalForm = forwardRef(({
     }, [])
 
     const loadHocKy = useCallback(() => {
-        axios.get('admin/DM_HocKy/data')
+        DM_HocKyAPI.getAllHocKy()
             .then(res => {
                 setHocKys(res?.data)
             })
@@ -41,7 +44,7 @@ const ModalForm = forwardRef(({
     }, [])
 
     const loadMauTieuChi = useCallback(() => {
-        axios.get('admin/DM_MauTieuChi/data')
+        DM_MauTieuChiAPI.getAllMauTieuChi()
             .then(res => {
                 setMauTieuChis(res?.data)
             })
@@ -62,13 +65,14 @@ const ModalForm = forwardRef(({
     const hiddenModal = useCallback(() => {
         setVisible(false)
         setItem(null)
+        setLoading(false)
         form?.resetFields()
     }, [])
 
     const onFinish = useCallback((values) => {
         setLoading(true)
         if (item) {
-            axios.put(`/admin/DM_MauTieuChi/${item?.id}`, { ...values, PhatHanh: false })
+            DM_DotDanhGiaAPI.updateDotDanhGia(item?.id, values)
                 .then(res => {
                     console.log(res)
                     notification.success({
@@ -86,7 +90,7 @@ const ModalForm = forwardRef(({
                 .finally(() => setLoading(false))
         }
         else
-            axios.post('/admin/DM_MauTieuChi', { ...values })
+            DM_DotDanhGiaAPI.createDotDanhGia(values)
                 .then(res => {
                     console.log(res)
                     notification.success({
@@ -117,7 +121,7 @@ const ModalForm = forwardRef(({
                 loading: loading
             }}
             centered
-            title={item?.TenDotDanhGia || 'Thêm mới mẫu tiêu chí'}
+            title={item?.TenDotDanhGia || 'Thêm mới đợt đánh giá'}
             okText={item ? 'Cập nhật' : 'Thêm mới'}
             cancelText='Hủy'
         >
@@ -129,9 +133,9 @@ const ModalForm = forwardRef(({
                 form={form}
             >
                 <Form.Item
-                    label='Tên mẫu tiêu chí'
+                    label='Tên đợt đánh giá'
                     name='TenDotDanhGia'
-                    rules={[{ required: true, message: 'Nhập tên mẫu tiêu chí' }]}
+                    rules={[{ required: true, message: 'Nhập tên đợt đánh giá' }]}
                 >
                     <Input />
                 </Form.Item>
@@ -148,6 +152,7 @@ const ModalForm = forwardRef(({
                         filterOption={(input, option) =>
                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
+                        disabled={item?.PhatHanh}
                     >
                         {
                             hocKys?.map(h => (
@@ -169,6 +174,7 @@ const ModalForm = forwardRef(({
                         filterOption={(input, option) =>
                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
+                        disabled={item?.PhatHanh}
                     >
                         {
                             mauTieuChis?.map(h => (

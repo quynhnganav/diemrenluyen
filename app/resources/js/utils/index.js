@@ -1,5 +1,7 @@
 import { differenceBy, isEmpty } from "lodash";
 
+export const renderXepLoai = (diem) => ''
+
 export const delaySearch = (func, time) => {
     let idTimeout = 0
     console.log(idTimeout)
@@ -50,6 +52,7 @@ export function reducer(prevState, state) {
 
 const setIDTree = () => {
     let i = 0;
+    let diemHocTap = 0;
 
     const handleNode = (node, root, replaceID, level = 0, indexs, text, point) => {
         if (replaceID) node['id'] = ++i;
@@ -57,6 +60,7 @@ const setIDTree = () => {
         node['root'] = root;
         node['level'] = ++level;
         node['indexs'] = indexs;
+        if (node?.isDiemHocTap) diemHocTap= node?.id
         text[`TenTieuChi-${node.id}`] = node?.TenTieuChi || ''
         let myPoint = node?.SoDiem || 0
         if (!isEmpty(node.children)) {
@@ -77,7 +81,7 @@ const setIDTree = () => {
             trees?.forEach((node, index) => {
                 myPoint += handleNode(node, true, replaceID, 0, [index + 1], text, point)
             })
-            return [trees, text, point, myPoint]
+            return [trees, text, point, myPoint, diemHocTap]
         },
         getIdCurrent: () => ++i
     }

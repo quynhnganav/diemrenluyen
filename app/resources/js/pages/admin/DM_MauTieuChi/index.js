@@ -7,6 +7,8 @@ import { axios } from "../../../config";
 import './index.scss'
 import ModalChiTiet from "./ModalChiTiet";
 import LayoutWrapper from "../../../components/LayoutWrapper";
+import ModalViewChiTiet from "../../../components/ModalViewChiTiet";
+import * as DM_MauTieuChiAPI from "../../../API/DM_MauTieuChiAPI";
 
 const { confirm } = Modal
 
@@ -19,6 +21,7 @@ const DM_TieuChi = () => {
 
     const refModal = useRef(null)
     const refModalChiTiet = useRef(null)
+    const refModalViewChiTiet = useRef(null)
 
     useEffect(() => {
         loadData()
@@ -26,22 +29,20 @@ const DM_TieuChi = () => {
 
     const loadData = () => {
         setLoading(true)
-        axios.get("/admin/DM_MauTieuChi/data", {
-
-        }).then((res) => {
-            console.log(res?.data)
-            setMauTieuChis(res?.data || [])
-        })
+        DM_MauTieuChiAPI.getAllMauTieuChi()
+            .then((res) => {
+                console.log(res?.data)
+                setMauTieuChis(res?.data || [])
+            })
             .finally(() => setLoading(false))
     }
 
-    const getTableScroll = () => {
-        let scrollY = `calc(100vh - 700px)`
-        return scrollY
-    }
-
-    const onEditChiTiet = useCallback((id) => {
-        refModalChiTiet.current?.showModal(id);
+    const onEditChiTiet = useCallback((item) => {
+        if (item?.PhatHanh) {
+            refModalViewChiTiet.current?.showModal(item)
+            return
+        }
+        refModalChiTiet.current?.showModal(item);
     }, [])
 
     const onCreate = useCallback(() => {
@@ -74,6 +75,22 @@ const DM_TieuChi = () => {
             cancelText: 'Hủy'
         });
     }
+
+    const onPhatHanh = useCallback((record) => {
+        setLoading(true)
+        DM_MauTieuChiAPI.updateMauTieuChi(record?.id, {
+            ...record,
+            PhatHanh: true
+        }).then((res) => {
+            notification.success({
+                message: 'Cập nhật thành công'
+            })
+        }).catch((err) => {
+            notification.error({
+                message: 'Lỗi khi cập nhật'
+            })
+        }).finally(() => setLoading(false))
+    })
 
     const columns = useMemo(() => (
         [
@@ -110,6 +127,13 @@ const DM_TieuChi = () => {
                 key: 'action',
                 render: (text, record) => (
                     <Space size='middle'>
+                        <Button
+                            type='primary'
+                            disabled={record?.PhatHanh}
+                            onClick={() => onPhatHanh(record)}
+                        >
+                            Phát hành
+                        </Button>
                         <Button
                             type='primary'
                             onClick={() => refModal?.current?.showModal(record)}
@@ -161,6 +185,9 @@ const DM_TieuChi = () => {
             />
             <ModalChiTiet
                 ref={refModalChiTiet}
+            />
+            <ModalViewChiTiet
+                ref={refModalViewChiTiet}
             />
         </LayoutWrapper>
     )

@@ -49,7 +49,7 @@ const ModalForm = forwardRef(({
         }
         setLoading(true)
         if (item) {
-            axios.put(`/admin/DM_MauTieuChi/${item?.id}`, {...values, PhatHanh: false})
+            axios.put(`/admin/DM_MauTieuChi/${item?.id}`, {...values, PhatHanh: item?.PhatHanh ? true : false})
             .then(res => {
                 console.log(res)
                 notification.success({
@@ -122,7 +122,7 @@ const ModalForm = forwardRef(({
                     name='TongSoDiem'
                     rules={[{ required: true, message: 'Nhập tổng số điểm' }]}
                 >
-                    <InputNumber />
+                    <InputNumber disabled={item?.PhatHanh} />
                 </Form.Item>
             </Form>
         </Modal>

@@ -1,14 +1,15 @@
-import { Col, notification, Row, Button, Table, Space, Tooltip, Badge } from "antd";
+import { Col, notification, Row, Button, Table, Space, Tooltip, Badge, Select } from "antd";
 import React, { useReducer, useEffect, useCallback, useRef, useMemo } from "react";
-import LayoutWrapper from "../../../../components/LayoutWrapper";
-import { localeTable } from "../../../../constant";
-import { reducer, renderXepLoai } from "../../../../utils";
-import * as DanhGiaAPI from "../../../../API/DanhGiaAPI";
+import LayoutWrapper from "../../../components/LayoutWrapper";
+import { localeTable } from "../../../constant";
+import { reducer, renderXepLoai } from "../../../utils";
+import * as DanhGiaAPI from "../../../API/DanhGiaAPI";
 import { useHistory } from "react-router-dom";
-import { useListSinhVien } from "../../../..";
-import ModalGhiChu from "../../../../components/ModalGhiChu";
+import { useListSinhVien } from "../../..";
 
-const SVDanhGia = () => {
+const { Option } = Select
+
+const GVDRL = () => {
 
 
     const [state, setState] = useReducer(reducer, {
@@ -19,7 +20,7 @@ const SVDanhGia = () => {
     const history = useHistory()
     const { setIdsSv } = useListSinhVien();
 
-    const refModalGhiChu = useRef(null)
+    const refTableDanhGia = useRef(null)
 
     useEffect(() => {
         loadData()
@@ -46,10 +47,6 @@ const SVDanhGia = () => {
                 })
             })
             .finally(() => setState({ loading: false }))
-    }, [])
-
-    const onOpenGhiChu = useCallback((item) => {
-        refModalGhiChu.current?.showModal(item)
     }, [])
 
     const columns = useMemo(() => ([
@@ -126,15 +123,18 @@ const SVDanhGia = () => {
             className: 'cell-center',
             render: (text, record, index) => (
                 <Space size='middle'>
+                    <Button type='primary'>
+                        Duyệt
+                    </Button>
                     <Button
                         type='primary'
                         onClick={() =>
-                            history.push(`/sv/cbl/danh-gia/${text}?prev=${state.sinhViens[index - 1]?.id}&next=${state.sinhViens[index + 1]?.id}&masv=${record?.MaSV}`)
+                            history.push(`/gv/danh-gia/${text}?prev=${state.sinhViens[index - 1]?.id}&next=${state.sinhViens[index + 1]?.id}&masv=${record?.MaSV}`)
                         }
                     >
-                        Đánh giá
+                        Xem Đánh giá
                     </Button>
-                    <Button type='primary' onClick={() => onOpenGhiChu(record)}>Ghi chú</Button>
+                    <Button type='primary'>Ghi chú</Button>
                 </Space>
             )
         }
@@ -151,13 +151,17 @@ const SVDanhGia = () => {
                         <Col>
                             <Row gutter={[5, 5]}>
                                 <Col>
+                                    <Select
+                                        placeholder='Chọn lớp nào'
+                                    >
+
+                                    </Select>
+                                </Col>
+                                <Col>
                                     <Button type='primary' onClick={() => window.print()}>In bản thống kê</Button>
                                 </Col>
                                 <Col>
                                     <Button type='primary'>Xem thống kê</Button>
-                                </Col>
-                                <Col>
-                                    <Button type='primary'>Nhắc nhở</Button>
                                 </Col>
                             </Row>
                         </Col>
@@ -179,11 +183,8 @@ const SVDanhGia = () => {
                     />
                 </Col>
             </Row>
-            <ModalGhiChu 
-                ref={refModalGhiChu}
-            />
         </LayoutWrapper>
     )
 };
 
-export default SVDanhGia
+export default GVDRL

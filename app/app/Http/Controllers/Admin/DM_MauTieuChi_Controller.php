@@ -38,6 +38,7 @@ class DM_MauTieuChi_Controller extends Controller
      */
     public function index(Request $request)
     {
+//        return $this->
         return view('admin.index');
     }
 
@@ -112,8 +113,7 @@ class DM_MauTieuChi_Controller extends Controller
     {
         $validated = $request->validate([
             'TenMauTieuChi' => 'required|max:255',
-            'TongSoDiem' => 'required|numeric',
-            'PhatHanh' => 'required|boolean',
+            'TongSoDiem' => 'required|numeric'
         ]);
 
         try {
@@ -122,18 +122,27 @@ class DM_MauTieuChi_Controller extends Controller
            abort(404, "Không tìm thấy mẫu tiêu chí");
         }
 
+        $PhatHanh = $request->PhatHanh;
+        $TongSoDiem = $request->TongSoDiem;
+
+        if (empty($request->PhatHanh)) $PhatHanh = false;
+
         if ($mauTieuChi->PhatHanh == true
-            && ($request->PhatHanh != $mauTieuChi->PhatHanh
+            && ($PhatHanh != $mauTieuChi->PhatHanh
             || $request->TongSoDiem != $mauTieuChi->TongSoDiem)
         ) {
             abort(403, "Mẫu danh mục đã được phát hành, không thể chỉnh sửa");
         }
 
+        if ($mauTieuChi->PhatHanh) {
+            $TongSoDiem = $mauTieuChi->TongSoDiem;
+        }
+
         $this->mauTieuChi_Repository->update($id, [
             'TenMauTieuChi' => $request->TenMauTieuChi,
             'TenKhongDau' => Str::slug($request->TenMauTieuChi),
-            'TongSoDiem' => $request->TongSoDiem,
-            'PhatHanh' => $request->PhatHanh,
+            'TongSoDiem' => $TongSoDiem,
+            'PhatHanh' => $PhatHanh,
         ]);
 
         $mauTieuChi->save();
@@ -160,8 +169,10 @@ class DM_MauTieuChi_Controller extends Controller
         } catch (\Throwable $th) {
            abort(404, "Không tìm thấy mẫu tiêu chí");
         }
+        if ($mauTieuChi->PhatHanh) abort(403, "Mẫu tiêu chí đang được sử dụng, không được sửa");
         $input = $request->tree;
-        $result = $this->tieuChiService->updateTree($input, $mauTieuChi->id);
+        $diemHocTap = $request->diemHocTap;
+        $result = $this->tieuChiService->updateTree($input, $mauTieuChi->id, $diemHocTap);
         return $result;
     }
 

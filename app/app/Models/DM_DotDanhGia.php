@@ -27,6 +27,7 @@ class DM_DotDanhGia extends Model
     protected $casts = [
         'created_at' => 'timestamp',
         'updated_at' => 'timestamp',
+        'PhatHanh' => 'boolean'
     ];
 
     public function hocKy() {
