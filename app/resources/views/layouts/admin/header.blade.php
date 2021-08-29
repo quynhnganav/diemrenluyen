@@ -8,12 +8,12 @@
             <div class='nav-right position-relative'>
                 <div class="dropdown">
                     <button class="btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img class='rounded-circle' src='/images/logo.png' />
                         <span>
                             @if (Auth::user())
-                                {{ Auth::user()->name }}
-                            @endif - 18IT5
+                                {{ Auth::user()->HoDem }} {{ Auth::user()->Ten }} - {{ Auth::user()->roles->first()->name  }}
+                            @endif
                         </span>
+                        <img class='rounded-circle' src="{{  empty(Auth::user()->picture) ?'/images/logo.png' : Auth::user()->picture }}"  />
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                       <li>

@@ -6,6 +6,7 @@ import ModalForm from "./ModalForm";
 import { axios } from "../../../config";
 import './index.scss'
 import LayoutWrapper from "../../../components/LayoutWrapper";
+import ModalViewChiTiet from "../../../components/ModalViewChiTiet";
 
 const { confirm } = Modal
 
@@ -17,6 +18,7 @@ const DM_DotDanhGia = () => {
     const [loading, setLoading] = useState(false)
 
     const refModal = useRef(null)
+    const refModalViewChiTiet= useRef(null)
     // const refModalChiTiet = useRef(null)
 
     useEffect(() => {
@@ -39,8 +41,8 @@ const DM_DotDanhGia = () => {
         return scrollY
     }
 
-    const onEditChiTiet = useCallback((id) => {
-        refModalChiTiet.current?.showModal(id);
+    const onEditChiTiet = useCallback((item) => {
+        refModalViewChiTiet.current?.showModal(item);
     }, [])
 
     const onCreate = useCallback(() => {
@@ -126,13 +128,14 @@ const DM_DotDanhGia = () => {
                         </Button>
                         <Button
                             type='primary'
-                            onClick={() => onEditChiTiet(record)}
+                            onClick={() => onEditChiTiet(record?.mauTieuChi)}
                         >
                             Tiêu chí
                         </Button>
                         <Button
                             danger
                             onClick={() => showConfirm(record?.id, record?.TenMauTieuChi)}
+                            disabled={record?.PhatHanh}
                         >
                             Xóa
                         </Button>
@@ -167,9 +170,9 @@ const DM_DotDanhGia = () => {
                 ref={refModal}
                 callback={loadData}
             />
-            {/* <ModalChiTiet
-                ref={refModalChiTiet}
-            /> */}
+            <ModalViewChiTiet
+                ref={refModalViewChiTiet}
+            />
         </LayoutWrapper>
     )
 }

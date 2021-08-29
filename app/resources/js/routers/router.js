@@ -1,15 +1,15 @@
 export const routers = [
     //sv
-    {
-        component: 'react',
-        exact: true,
-        path: '/sv'
-    },
-    {
-        component: 'vue',
-        exact: true,
-        path: '/gv'
-    },
+    // {
+    //     component: 'react',
+    //     exact: true,
+    //     path: '/sv'
+    // },
+    // {
+    //     component: 'vue',
+    //     exact: true,
+    //     path: '/gv'
+    // },
     {
         component: 'sv/danh-gia',
         exact: true,
@@ -26,7 +26,16 @@ export const routers = [
         path: '/sv/cbl/danh-gia/:idSV'
     },
     //gv
-
+    {
+        component: 'gv/danh-gia',
+        exact: true,
+        path: '/gv/danh-gia'
+    },
+    {
+        component: 'gv/danh-gia-sv',
+        exact: true,
+        path: '/gv/danh-gia/:idSV'
+    },
     //admin
     {
         component: 'admin/DM_MauTieuChi',

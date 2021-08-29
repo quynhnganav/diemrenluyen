@@ -27,6 +27,7 @@ class TieuChiChiTiet extends Model
     protected $casts = [
         'created_at' => 'timestamp',
         'updated_at' => 'timestamp',
+        'isDiemHocTap' => 'boolean'
     ];
 
     protected $hidden = [

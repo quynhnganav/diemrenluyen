@@ -54,7 +54,7 @@ class DM_DotDanhGia_Controller extends Controller
             'TenDotDanhGia' => 'required|max:255',
             'HocKy_Id' => 'required|exists:DM_HocKy,id|unique:DM_DotDanhGia,HocKy_Id,NULL,id,deleted_at,NULL',
             'MauTieuChi_Id' => 'required|exists:DM_MauTieuChi,id,PhatHanh,1,deleted_at,NULL',
-            'PhatHanh' => 'required|boolean',
+            // 'PhatHanh' => 'required|boolean',
 //            'HanCuoi' => 'required|after:yesterday',
         ]);
         $dotDanhGia = $this->dotDanhGia_Repository->create([
@@ -62,7 +62,7 @@ class DM_DotDanhGia_Controller extends Controller
             'TenKhongDau' => Str::slug($request->TenDotDanhGia, " "),
             'HocKy_Id' => $request->HocKy_Id,
             'MauTieuChi_Id' => $request->MauTieuChi_Id,
-            'PhatHanh' => $request->PhatHanh,
+            'PhatHanh' => false,
 //            'HanCuoi' => $request->HanCuoi,
         ]);
 

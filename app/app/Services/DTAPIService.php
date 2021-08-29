@@ -5,7 +5,7 @@ namespace App\Services;
 use GuzzleHttp\Client;
 
 class DTAPIService {
-    
+
     private $API_DAOTAO_URI;
     private $API_DAOTAO_SECRET;
     private $client;
@@ -19,7 +19,7 @@ class DTAPIService {
             // You can set any number of default request options.
             // 'timeout'  => 2.0,
         ]);
-    } 
+    }
 
     public function getDanhSachHocKy()
     {
@@ -42,6 +42,11 @@ class DTAPIService {
     public function getGVLop($id)
     {
         $response = $this->client->request('GET', 'gvcn_info/'.$id);
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
+    public function getDiemSV($namhoc, $hocky, $masv) {
+        $response = $this->client->request('GET', "diem_sv_t4?namhoc=".$namhoc."&hocky=".$hocky."&masv=".$masv);
         return json_decode($response->getBody()->getContents(), true);
     }
 

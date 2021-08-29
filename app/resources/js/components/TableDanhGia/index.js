@@ -118,7 +118,7 @@ const TableDanhGia = forwardRef(({
                     ]}
                 >
                     <InputNumber
-                        disabled={record.isParent || type === 'CBL'}
+                        disabled={record.isParent || type === 'CBL' || record.isDiemHocTap}
                         min={0}
                         max={record.SoDiem}
                         onChange={value => onChangeValue(value, record?.id, 'SoDiemSV')}
@@ -145,7 +145,7 @@ const TableDanhGia = forwardRef(({
                     ]}
                 >
                     <InputNumber
-                        disabled={record.isParent || type === "SV"}
+                        disabled={record.isParent || type === "SV" || record.isDiemHocTap}
                         min={0}
                         max={record.SoDiem}
                         onChange={value => onChangeValue(value, record?.id, 'SoDiemCBL')}

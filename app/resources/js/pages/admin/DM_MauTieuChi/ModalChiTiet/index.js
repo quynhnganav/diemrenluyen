@@ -1,5 +1,5 @@
 import React, { forwardRef, memo, useCallback, useImperativeHandle, useMemo, useState } from "react";
-import { Button, Col, Form, Input, InputNumber, Modal, notification, Row, Space, Table, Tooltip } from "antd";
+import { Button, Col, Form, Input, InputNumber, Modal, notification, Radio, Row, Space, Table, Tooltip } from "antd";
 import useForm from "antd/lib/form/hooks/useForm";
 import { axios } from "../../../../config";
 import { isEmpty, range, set } from "lodash-es";
@@ -20,15 +20,17 @@ const ModalChiTiet = forwardRef(({
     const [item, setItem] = useState(null);
     const [editable, setEditable] = useState(false);
     const [total, setTotal] = useState(0)
+    const [diemHocTap, setDiemHocTap] = useState(null)
     const [form] = useForm()
 
     const loadData = useCallback((id) => {
         setLoading(true)
         axios.get(`admin/DM_MauTieuChi/${id}/tieuchi-chitiet`)
             .then(res => {
-                const [newData, text, point, total] = genarateID.renderTree(res?.data || [], true)
+                const [newData, text, point, total, diemHocTap] = genarateID.renderTree(res?.data || [], true)
                 setDataChiTiet(newData)
                 setTotal(total)
+                setDiemHocTap(diemHocTap)
                 form?.setFieldsValue({
                     ...text,
                     ...point
@@ -53,10 +55,16 @@ const ModalChiTiet = forwardRef(({
         setDataChiTiet([])
     }, [])
 
-    const onSubmit = useCallback(() => {
+    const onSubmit = useCallback(async () => {
+        try {
+            await form?.validateFields()
+        } catch (error) {
+            return
+        }
         setLoading(true)
         axios.put(`admin/DM_MauTieuChi/${item?.id}/update-tieuchi`, {
-            tree: dataChiTiet
+            tree: dataChiTiet,
+            diemHocTap
         })
             .then(res => {
                 console.log(res)
@@ -71,7 +79,7 @@ const ModalChiTiet = forwardRef(({
                 })
             })
             .finally(() => setLoading(false))
-    }, [item, dataChiTiet])
+    }, [item, dataChiTiet, diemHocTap])
 
     const onAddNode = useCallback((id) => {
         setEditable(true)
@@ -131,7 +139,7 @@ const ModalChiTiet = forwardRef(({
                             </p>
                         </Col>
                         <Col span={22}>
-                            <Form.Item name={`TenTieuChi-${record?.id}`} style={{ margin: 0 }}>
+                            <Form.Item name={`TenTieuChi-${record?.id}`} style={{ margin: 0 }} rules={[ {required: true, message: 'Nhập tiêu chí'} ]}>
                                 <Input onChange={(value) => onChangeValue(record?.id, value?.target?.value, 'TenTieuChi')} />
                             </Form.Item>
                         </Col>
@@ -229,6 +237,16 @@ const ModalChiTiet = forwardRef(({
                         expandIcon: null,
                         indentSize: 20
                     }}
+                    rowSelection={{
+                        type: 'radio',
+                        columnTitle: 'Điểm học tập',
+                        selectedRowKeys: [diemHocTap],
+                        onSelect: (record) => {
+                            if (record.children && record.children.length > 0) return
+                            setDiemHocTap(record.id);
+                            // console.log(record);
+                        }
+                    }}
                     rowKey={(v) => v?.id}
                     bordered
                     columns={columns}
@@ -241,7 +259,7 @@ const ModalChiTiet = forwardRef(({
                     pagination={false}
                     scroll={{
                         x: 800,
-                        y: 'calc(100vh - 250px)'
+                        y: 'calc(100vh - 300px)'
                     }}
                 />
             </Form>
