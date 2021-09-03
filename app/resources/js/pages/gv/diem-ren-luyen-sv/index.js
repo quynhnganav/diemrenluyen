@@ -3,11 +3,14 @@ import React, { useReducer, useEffect, useCallback, useRef } from "react";
 import LayoutWrapper from "../../../components/LayoutWrapper";
 import TableDanhGia from "../../../components/TableDanhGia";
 import * as DanhGiaAPI from "../../../API/DanhGiaAPI";
+import * as GVAPI from "../../../API/GVAPI";
 import { reducer, toUnsigned } from "../../../utils";
 import { axios } from "../../../config";
 import { useListSinhVien } from "../../..";
 import { useHistory, useParams } from "react-router-dom";
 import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
+import ModalGhiChu from "../../../components/ModalGhiChu";
+import { isEmpty } from "lodash";
 
 const { Option } = Select
 
@@ -18,13 +21,15 @@ const SVDanhGia = () => {
         tree: [],
         dotDanhGia: null,
         sinhVien: null,
-        loading: false
+        loading: false,
+        danhGia: null,
     });
     const { idSV } = useParams()
     const history = useHistory()
     const { gotoSV, current, next, prev, dsSinhViens } = useListSinhVien();
 
     const refTableDanhGia = useRef(null)
+    const refModalGhiChu = useRef(null)
 
     useEffect(() => {
         if (!idSV) return
@@ -36,13 +41,24 @@ const SVDanhGia = () => {
         setState({
             loading: true
         })
-        DanhGiaAPI.getCBLDanhGiaSv(id)
+        GVAPI.getGVDanhGiaSv(id)
             .then(res => {
                 setState({
                     tree: res?.data?.tieuChi || [],
                     dotDanhGia: res?.data?.dotDanhGia,
-                    sinhVien: res?.data?.sinhVien
+                    sinhVien: res?.data?.sinhVien,
+                    danhGia: res?.data?.danhGia
                 })
+                if (!res?.data?.danhGia?.SinhVienDanhGia) {
+                    notification.warn({
+                        message: 'Sinh viên chưa đánh giá'
+                    })
+                }
+                if (!res?.data?.danhGia?.CanBoLopDanhGia) {
+                    notification.warn({
+                        message: 'Cán bộ lớp chưa đánh giá'
+                    })
+                }
             })
             .catch(err => {
                 notification.warning({
@@ -53,10 +69,6 @@ const SVDanhGia = () => {
                 loading: false
             }))
     }, [])
-
-    const onSubmit = useCallback(() => {
-        refTableDanhGia?.current?.submit()
-    }, [refTableDanhGia])
 
     const onSuccess = useCallback((values) => {
         const payload = {}
@@ -109,7 +121,66 @@ const SVDanhGia = () => {
         history.push(`/sv/cbl/danh-gia/${id}`)
     }, [])
 
-    console.log(next, prev)
+    const onOpenGhiChu = useCallback((item) => {
+        refModalGhiChu?.current?.showModal(item, state.danhGia?.GiangVienNhanXet)
+    }, [state.danhGia])
+
+    const onSubmitNhanXet = useCallback((value, cb) => {
+        console.log(state?.danhGia)
+        if (!state.danhGia?.id) {
+            notification.error({
+                message: 'Cán bộ lớp chưa đánh giá'
+            })
+            return
+        }
+        setState({ loading: true })
+        GVAPI.putGVNhanXet(state.danhGia?.id, {
+            nhanXet: value
+        }).then((res) => {
+            setState({ 
+                loading: false,
+                danhGia: res?.data
+            })
+            notification.success({
+                message: 'Đã nhận xét'
+            })
+        })
+        .catch((err) => {
+            console.log(err?.response)
+            notification.error({
+                message: err?.response?.data?.message
+            })
+            setState({ loading: false })
+        })
+        .finally(cb)
+    }, [state.danhGia])
+
+    const duyet = useCallback(() => {
+        if (!state.danhGia?.id) {
+            notification.error({
+                message: 'Cán bộ lớp chưa đánh giá'
+            })
+            return
+        }
+        setState({ loading: true })
+        GVAPI.putGVDuyet(state.danhGia?.id)
+            .then((res) => {
+                setState({ 
+                    loading: false,
+                    danhGia: res?.data
+                })
+                notification.success({
+                    message: 'Đã duyệt'
+                })
+            })
+            .catch((err) => {
+                notification.error({
+                    message: err?.response?.data?.message
+                })
+                setState({ loading: false })
+            })
+
+    }, [state.danhGia])
 
     return (
         <LayoutWrapper className='danh-gia-page'>
@@ -119,7 +190,9 @@ const SVDanhGia = () => {
                         <Col span={12}>
                             <Row>
                                 <Col>
-                                    <p>{`${current?.user?.HoDem || ''} ${current?.user?.Ten || ''} - ${current?.MaSV || ''}`}</p>
+                                    <p>
+                                        {`${current?.user?.HoDem || state?.sinhVien?.user?.HoDem || ''} ${current?.user?.Ten || state?.sinhVien?.user?.Ten || ''} - ${current?.MaSV || state?.sinhVien?.MaSV ||''}`}
+                                    </p>
                                 </Col>
                             </Row>
                         </Col>
@@ -168,7 +241,12 @@ const SVDanhGia = () => {
                                     />
                                 </Col>
                                 <Col>
-                                    <Button type='primary' disabled={state.loading} onClick={onSubmit} >Duyệt</Button>
+                                    <Button type='primary' disabled={state.loading} onClick={onOpenGhiChu}>Nhận xét</Button>
+                                </Col>
+                                <Col>
+                                    <Button type={state.danhGia?.GiangVienDuyet ? 'dashed' : 'primary'} disabled={state.loading || isEmpty(state?.danhGia?.CanBoLopDanhGia)} onClick={duyet}>
+                                      {state.danhGia?.GiangVienDuyet ? 'Bỏ duyệt' : 'Duyệt'}  
+                                    </Button>
                                 </Col>
                             </Row>
                         </Col>
@@ -178,12 +256,15 @@ const SVDanhGia = () => {
                     <TableDanhGia
                         tree={state.tree}
                         loading={state.loading}
-                        type='CBL'
                         ref={refTableDanhGia}
                         onSuccess={onSuccess}
                     />
                 </Col>
             </Row>
+            <ModalGhiChu 
+                ref={refModalGhiChu}
+                onSubmit={onSubmitNhanXet}
+            />
         </LayoutWrapper>
     )
 };

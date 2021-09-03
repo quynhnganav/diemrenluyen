@@ -45,6 +45,11 @@ const SVDanhGia = () => {
                     dotDanhGia: res?.data?.dotDanhGia,
                     sinhVien: res?.data?.sinhVien
                 })
+                if (!res?.data?.danhGia?.SinhVienDanhGia) {
+                    notification.warn({
+                        message: 'Sinh viên chưa đánh giá'
+                    })
+                }
             })
             .catch(err => {
                 notification.warning({

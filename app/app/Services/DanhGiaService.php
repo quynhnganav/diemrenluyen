@@ -2,13 +2,31 @@
 
 namespace App\Services;
 
+use App\Repositories\DanhGiaChiTiet\DanhGiaChiTiet_Repository;
+
 class DanhGiaService
 {
-    public function __construct() {
+    private $danhGiaChiTiet_Repository;
+
+    public function __construct(
+        DanhGiaChiTiet_Repository $danhGiaChiTiet_Repository
+    ) {
+        $this->danhGiaChiTiet_Repository = $danhGiaChiTiet_Repository;
     }
 
-    public function saveDanhGia() {
+    public function saveNhanXet($id, $text, $rule) {
+        if (empty($rule)) return;
+        return $this->danhGiaChiTiet_Repository->update($id, [$rule => $text]);
+    }
 
+    public function saveDuyet($id, $rule) {
+        if (empty($rule)) return;
+        return $this->danhGiaChiTiet_Repository->update($id, [$rule => TRUE]);
+    }
+
+    public function saveBoDuyet($id, $rule) {
+        if (empty($rule)) return;
+        return $this->danhGiaChiTiet_Repository->update($id, [$rule => FALSE]);
     }
 
     public function validateDanhGia($input, $tieuChi, $diemHocTap = 0) {

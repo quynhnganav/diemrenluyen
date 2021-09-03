@@ -1,6 +1,15 @@
 import { differenceBy, isEmpty } from "lodash";
 
-export const renderXepLoai = (diem) => ''
+export const renderXepLoai = (diem) => {
+    if (!diem && diem !=0) return ''
+    if (diem < 35) return 'Kém'
+    if (diem < 50) return 'Yếu'
+    if (diem < 50) return 'Trung bình'
+    if (diem < 65) return 'Trung bình'
+    if (diem < 80) return 'Khá'
+    if (diem < 90) return 'Tốt'
+    if (diem <= 100) return 'Xuất sắc'
+}
 
 export const delaySearch = (func, time) => {
     let idTimeout = 0

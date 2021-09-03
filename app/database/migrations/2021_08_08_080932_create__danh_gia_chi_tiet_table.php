@@ -32,9 +32,10 @@ class CreateDanhGiaChiTietTable extends Migration
             $table->string('GhiChu')->default(false);
             $table->softDeletes();
             $table->timestamps();
+            $table->timestamp('n_deleted_at')->virtualAs("COALESCE(deleted_at, '1980-01-01')");
 
 //            $table->index(['DotDanhGia_Id', 'SinhVien_Id']);
-            $table->unique(['DotDanhGia_Id', 'SinhVien_Id']);
+            $table->unique(['DotDanhGia_Id', 'SinhVien_Id', 'n_deleted_at']);
 
             $table->foreign('DotDanhGia_Id')
             ->references('id')

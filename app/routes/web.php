@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect('/sv');;
+//    return Excel::download(new \App\Exports\DanhGiaTheoLopExports(), 'lophoc.pdf', Excel::DOMPDF);
+     return redirect('/sv');
 })->name('index');
 
 Route::get('redirect/{driver}', 'Auth\LoginController@redirectToProvider')
@@ -47,18 +48,22 @@ Route::prefix('sv')->name('sv.')->middleware(['auth', 'role:sv|cbl'])->group(fun
 
 });
 
-Route::prefix('gv')->name('gv.')->middleware(['auth', 'role:sv|cbl'])->group(function () {
+Route::get('/gv', function () {
+    if (Auth::check()) {
+        return redirect()->route('gv.diem-ren-luyen.index');
+    }
+    return view('auth.gv.login');
+})->name('gv.login');
 
-    Route::get('danh-gia/api', 'EndUser\DanhGiaController@sinhVienGetDotDanhGiaHienTai');
-    Route::get('danh-gia/api/dot-danh-gia', 'EndUser\DanhGiaController@sinhVienGetDotDanhGiaHienTai');
-    Route::resource('danh-gia', EndUser\DanhGiaController::class);
+Route::prefix('gv')->name('gv.')->middleware(['auth', 'role:gvcn'])->group(function () {
 
-    Route::prefix('cbl')->name('cbl.')->middleware(['role:cbl'])->group(function () {
-        Route::get('danh-gia/api', 'EndUser\CBLQuanLyController@getDSDanhGia');
-        Route::get('danh-gia/api/sinh-vien/{id}', 'EndUser\CBLQuanLyController@sinhVienGetDotDanhGiaHienTai');
-        Route::post('danh-gia/api/sinh-vien/{id}', 'EndUser\CBLQuanLyController@sinhVienDanhGiaDotDanhGiaHienTai');
-        Route::resource('danh-gia', EndUser\CBLQuanLyController::class);
-    });
+    Route::get('diem-ren-luyen/api/lop', 'EndUser\GVController@getLop');
+    Route::get('diem-ren-luyen/api/sinh-vien/{id}', 'EndUser\GVController@GVGetDotDanhGiaHienTai');
+    Route::put('diem-ren-luyen/api/nhan-xet/{id}', 'EndUser\GVController@nhanXetSV');
+    Route::put('diem-ren-luyen/api/duyet/{id}', 'EndUser\GVController@duyetSV');
+    Route::get('diem-ren-luyen/api', 'EndUser\GVController@danhSachDiemRenLuyenLop');
+
+    Route::resource('diem-ren-luyen', EndUser\GVController::class);
 
 });
 

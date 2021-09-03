@@ -23,7 +23,7 @@ const genIndex = (level, index) => {
 const TableDanhGia = forwardRef(({
     tree,
     loading,
-    type = "all",
+    type,
     onSuccess
 }, ref) => {
 
@@ -118,7 +118,7 @@ const TableDanhGia = forwardRef(({
                     ]}
                 >
                     <InputNumber
-                        disabled={record.isParent || type === 'CBL' || record.isDiemHocTap}
+                        disabled={record.isParent || type === 'CBL' || !type || record.isDiemHocTap}
                         min={0}
                         max={record.SoDiem}
                         onChange={value => onChangeValue(value, record?.id, 'SoDiemSV')}
@@ -145,7 +145,7 @@ const TableDanhGia = forwardRef(({
                     ]}
                 >
                     <InputNumber
-                        disabled={record.isParent || type === "SV" || record.isDiemHocTap}
+                        disabled={record.isParent || type === "SV" || !type || record.isDiemHocTap}
                         min={0}
                         max={record.SoDiem}
                         onChange={value => onChangeValue(value, record?.id, 'SoDiemCBL')}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Repositories\DM_DotDanhGia\DanhGia_ChiTiet_ChiTiet_Repository;
 use App\Repositories\DM_DotDanhGia\DM_DotDanhGia_Repository;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;

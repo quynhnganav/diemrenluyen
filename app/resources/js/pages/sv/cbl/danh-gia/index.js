@@ -91,7 +91,7 @@ const SVDanhGia = () => {
             title: 'Xếp loại',
             dataIndex: 'danhGia',
             className: 'cell-center',
-            width: 150,
+            width: 130,
             key: 'point',
             render: (text) => renderXepLoai(text?.TongSoDiem)
         },
@@ -112,10 +112,18 @@ const SVDanhGia = () => {
                 </>
         },
         {
+            title: 'CVHT nhận xét',
+            dataIndex: 'danhGia',
+            className: 'cell-center',
+            width: 200,
+            key: 'CVHTNhanXet`',
+            render: (text, record) => `${text?.GiangVienNhanXet || ''}`
+        },
+        {
             title: 'Ghi chú',
             dataIndex: 'TrangThai',
             className: 'cell-center',
-            width: 250,
+            width: 200,
             key: 'ghichu`',
             render: (text, record) => `${text != '0' && text || ''} ${record?.GhiChu != '0' && record?.GhiChu || ''}`
         },

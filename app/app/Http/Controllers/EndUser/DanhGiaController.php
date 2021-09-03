@@ -5,6 +5,7 @@ namespace App\Http\Controllers\EndUser;
 use App\Common\Constant;
 use App\Http\Controllers\Controller;
 use App\Models\DanhGiaChiTiet;
+use App\Repositories\DM_DotDanhGia\DanhGia_ChiTiet_ChiTiet_Repository;
 use App\Repositories\DM_DotDanhGia\DM_DotDanhGia_Repository;
 use App\Repositories\DM_HocKy\DM_HocKy_Repository;
 use App\Repositories\DM_MauTieuChi\DM_MauTieuChi_Repository;
@@ -25,11 +26,11 @@ class DanhGiaController extends Controller
 
     public function __construct(
         DM_DotDanhGia_Repository $dotDanhGia_Repository,
-        DM_MauTieuChi_Repository $mauTieuChi_Repository,
-        DM_HocKy_Repository $hocKy_Repository,
-        DanhGiaService $danhGiaService,
-        DTAPIService $daotaoAPI,
-        TieuChiService $tieuChiService
+        DM_MauTieuChi_Repository           $mauTieuChi_Repository,
+        DM_HocKy_Repository                $hocKy_Repository,
+        DanhGiaService                     $danhGiaService,
+        DTAPIService                       $daotaoAPI,
+        TieuChiService                     $tieuChiService
     ) {
         $this->dotDanhGia_Repository = $dotDanhGia_Repository;
         $this->mauTieuChi_Repository = $mauTieuChi_Repository;

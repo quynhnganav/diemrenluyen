@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-//        $this->call(PermissionSeeder::class);
+        $this->call(PermissionSeeder::class);
         $user = User::where('username', 'appadmin')->first();
         if (empty($user)) {
             $user = User::create([

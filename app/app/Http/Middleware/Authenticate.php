@@ -20,7 +20,7 @@ class Authenticate extends Middleware
         if (str_starts_with($name, 'sv.')) {
             return route('sv.login');
         }
-        if (str_starts_with($name, 'sg.')) {
+        if (str_starts_with($name, 'gv.')) {
             return route('gv.login');
         }
         if (str_starts_with($name, 'admin.')) {

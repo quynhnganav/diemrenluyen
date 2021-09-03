@@ -84,11 +84,14 @@ class LoginController extends Controller
         $existingUser->save();
         $hocKys = DM_HocKy::orderBy('NamBatDau', 'desc')->orderBy('TenHocKy', 'desc')->get();
 
+        $existingUser = User::where('email', 'natuan@vku.udn.vn')->with(['chucVu', 'hocKy'])->first();
+
         session(['HocKyHienTai_Id' => $hocKyHienHanhOfUser]);
         session([Constant::SESSION_KEY['HocKys'] => $hocKys]);
         auth()->login($existingUser, false);
 
-        return redirect()->route('sv.danh-gia.index');
+//        return redirect()->route('sv.danh-gia.index');
+        return redirect()->route('gv.login');
     }
 
 }

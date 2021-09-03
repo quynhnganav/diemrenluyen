@@ -5,6 +5,7 @@ namespace App\Http\Controllers\EndUser;
 use App\Common\Constant;
 use App\Http\Controllers\Controller;
 use App\Models\DanhGiaChiTiet;
+use App\Repositories\DM_DotDanhGia\DanhGia_ChiTiet_ChiTiet_Repository;
 use App\Repositories\DM_DotDanhGia\DM_DotDanhGia_Repository;
 use App\Repositories\DM_HocKy\DM_HocKy_Repository;
 use App\Repositories\DM_MauTieuChi\DM_MauTieuChi_Repository;
@@ -24,12 +25,12 @@ class CBLQuanLyController extends Controller
 
     public function __construct(
         DM_DotDanhGia_Repository $dotDanhGia_Repository,
-        DM_MauTieuChi_Repository $mauTieuChi_Repository,
-        DM_HocKy_Repository $hocKy_Repository,
-        DanhGiaService $danhGiaService,
-        SV_Repository $sv_Repository,
-        DTAPIService $daotaoAPI,
-        TieuChiService $tieuChiService
+        DM_MauTieuChi_Repository           $mauTieuChi_Repository,
+        DM_HocKy_Repository                $hocKy_Repository,
+        DanhGiaService                     $danhGiaService,
+        SV_Repository                      $sv_Repository,
+        DTAPIService                       $daotaoAPI,
+        TieuChiService                     $tieuChiService
     ) {
         $this->dotDanhGia_Repository = $dotDanhGia_Repository;
         $this->mauTieuChi_Repository = $mauTieuChi_Repository;
@@ -45,8 +46,8 @@ class CBLQuanLyController extends Controller
         $hocKyId = $user[Constant::SESSION_KEY['HocKyHienTai_Id']];
         $dotDanhGia = $this->dotDanhGia_Repository->findOneByHocKy($hocKyId);
         if (empty($dotDanhGia)  || !$dotDanhGia->PhatHanh) abort(404, "Đợt đánh giá chưa sẵn sàng, mời bạn chuyển sang học kỳ khác");
-        $reuslt = $this->dotDanhGia_Repository->getDSDanhGiaByLopAndDotDanhGia($user->chucVu->lopHoc->id, $dotDanhGia->id);
-        return response()->json($reuslt, 200);
+        $result = $this->dotDanhGia_Repository->getDSDanhGiaByLopAndDotDanhGia($user->chucVu->lopHoc->id, $dotDanhGia->id);
+        return response()->json($result, 200);
     }
 
     public function sinhVienGetDotDanhGiaHienTai($id) {
@@ -61,12 +62,13 @@ class CBLQuanLyController extends Controller
         $diem = DanhGiaChiTiet::where('DotDanhGia_Id', $dotDanhGia->id)
             ->where('SinhVien_Id', $id)->first();
         $hocKy = $this->hocKy_Repository->find($hocKyId);
-        $diemHocTap = $this->daotaoAPI->getDiemSV($hocKy->idDaoTao, $hocKy->TenHocKy, $user->chucVu->MaSV);
+        $diemHocTap = $this->daotaoAPI->getDiemSV($hocKy->idDaoTao, $hocKy->TenHocKy, $sv->MaSV);
         $newTieuChi = $this->danhGiaService->mergeTieuChiAndDanhGia($tieuChiCT, $diem, $this->tieuChiService->diemHocTap($diemHocTap));
         return response()->json([
             'dotDanhGia' => $dotDanhGia,
             'tieuChi' => $newTieuChi,
-            'sinhVien' => $sv
+            'sinhVien' => $sv,
+            'danhGia' => $diem
         ], 200);
     }
 
@@ -81,7 +83,7 @@ class CBLQuanLyController extends Controller
         if (empty($dotDanhGia) || !$dotDanhGia->PhatHanh) abort(404, "Đợt đánh giá chưa sẵn sàng, mời bạn chuyển sang học kỳ khác");
         $tieuChiCT = $this->mauTieuChi_Repository->getTieuChiChiTietOfMau($dotDanhGia->mauTieuChi->id, false);
         $hocKy = $this->hocKy_Repository->find($hocKyId);
-        $diemHocTap = $this->daotaoAPI->getDiemSV($hocKy->idDaoTao, $hocKy->TenHocKy, $user->chucVu->MaSV);
+        $diemHocTap = $this->daotaoAPI->getDiemSV($hocKy->idDaoTao, $hocKy->TenHocKy, $sv->MaSV);
         $validate = $this->danhGiaService->validateDanhGia($input, $tieuChiCT, $this->tieuChiService->diemHocTap($diemHocTap));
 //        $tieuChiCT = $this->mauTieuChi_Repository->getTieuChiChiTietOfMau($dotDanhGia->mauTieuChi->id);
         if (!$validate[0]) return response()->json($validate[1], 422);

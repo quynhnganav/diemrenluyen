@@ -27,14 +27,14 @@ export const routers = [
     },
     //gv
     {
-        component: 'gv/danh-gia',
+        component: 'gv/diem-ren-luyen',
         exact: true,
-        path: '/gv/danh-gia'
+        path: '/gv/diem-ren-luyen'
     },
     {
-        component: 'gv/danh-gia-sv',
+        component: 'gv/diem-ren-luyen-sv',
         exact: true,
-        path: '/gv/danh-gia/:idSV'
+        path: '/gv/diem-ren-luyen/:idSV'
     },
     //admin
     {

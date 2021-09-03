@@ -22,6 +22,9 @@ class CreateDMDotDanhGiaTable extends Migration
             $table->boolean('PhatHanh')->default(false);
             $table->softDeletes();
             $table->timestamps();
+            $table->timestamp('n_deleted_at')->virtualAs("COALESCE(deleted_at, '1980-01-01')");
+
+            $table->unique(['HocKy_Id', 'n_deleted_at']);
 
             $table->foreign('HocKy_Id')
             ->references('id')

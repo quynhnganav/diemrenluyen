@@ -4,8 +4,11 @@ import LayoutWrapper from "../../../components/LayoutWrapper";
 import { localeTable } from "../../../constant";
 import { reducer, renderXepLoai } from "../../../utils";
 import * as DanhGiaAPI from "../../../API/DanhGiaAPI";
+import * as GVAPI from "../../../API/GVAPI";
 import { useHistory } from "react-router-dom";
 import { useListSinhVien } from "../../..";
+import ActionItem from "./action";
+import ModalThongKe from "../../../components/ModalThongKe";
 
 const { Option } = Select
 
@@ -14,23 +17,29 @@ const GVDRL = () => {
 
     const [state, setState] = useReducer(reducer, {
         sinhViens: [],
-        loading: false
+        lopHocs: [],
+        loading: false,
+        selected: null
     });
 
     const history = useHistory()
     const { setIdsSv } = useListSinhVien();
 
     const refTableDanhGia = useRef(null)
+    const refModalThongKe = useRef(null)
 
     useEffect(() => {
-        loadData()
+        // loadData()
+        loadDataLopHoc()
     }, [])
 
-    const loadData = useCallback(() => {
+    const loadData = useCallback((lop) => {
         setState({
             loading: true
         })
-        DanhGiaAPI.getCBLDanhSachSV()
+        GVAPI.getSVLop({
+            lop
+        })
             .then(res => {
                 setState({
                     sinhViens: res?.data
@@ -49,6 +58,42 @@ const GVDRL = () => {
             .finally(() => setState({ loading: false }))
     }, [])
 
+    const loadDataLopHoc = useCallback(() => {
+        setState({
+            loading: true
+        })
+        GVAPI.getLop()
+            .then(res => {
+                onChangeLop(res?.data[0]?.id)
+                setState({
+                    lopHocs: res?.data,
+                    selected: res?.data[0]?.id
+                })
+            })
+            .catch(err => {
+                notification.warning({
+                    message: err?.response?.data?.message || 'Lỗi khi tải dữ liệu'
+                })
+                setState({ loading: false })
+            })
+    }, [])
+
+    const onChangeLop = useCallback((value) => {
+        setState({ selected: value })
+        loadData(value)
+    }, [])
+
+    const onDuyet = useCallback((value) => {
+        const sinhViens = state.sinhViens.map(sv => sv?.danhGia?.id != value?.id ? sv : ({...sv, danhGia: value}))
+        setState({
+            sinhViens
+        })
+    }, [state.sinhViens])
+
+    const onOpenThongKe = useCallback((value) => {
+        refModalThongKe?.current?.showModal()
+    }, [])
+
     const columns = useMemo(() => ([
         {
             title: 'Mã SV',
@@ -60,7 +105,7 @@ const GVDRL = () => {
         {
             title: 'Họ tên SV',
             dataIndex: 'user',
-            width: 220,
+            width: 200,
             key: 'HoTenSinhVien',
             render: (text, record) =>
                 <Tooltip placement='top' title={text?.email}>
@@ -69,26 +114,26 @@ const GVDRL = () => {
                 </Tooltip>
         },
         {
-            title: 'Sinh viên đánh giá',
+            title: 'SV đánh giá',
             dataIndex: 'danhGia',
             className: 'cell-center',
-            width: 150,
+            width: 120,
             key: 'isDanhGia',
-            render: (text) => text?.SinhVienDanhGia ? `${text?.TongSoDiemSinhVien || 0}` : 'Chưa đánh giá'
+            render: (text) => text?.SinhVienDanhGia ? `${text?.TongSoDiemSinhVien || 0}` : 'Chưa ĐG'
         },
         {
             title: 'CBL đánh giá',
             dataIndex: 'danhGia',
             className: 'cell-center',
-            width: 150,
+            width: 120,
             key: 'cbl',
-            render: (text) => text?.CanBoLopDanhGia ? text?.TongSoDiem : 'Chưa đánh giá'
+            render: (text) => text?.CanBoLopDanhGia ? text?.TongSoDiem : 'Chưa ĐG'
         },
         {
             title: 'Xếp loại',
             dataIndex: 'danhGia',
             className: 'cell-center',
-            width: 150,
+            width: 100,
             key: 'point',
             render: (text) => renderXepLoai(text?.TongSoDiem)
         },
@@ -97,7 +142,7 @@ const GVDRL = () => {
             title: 'CVHT duyệt',
             dataIndex: 'danhGia',
             className: 'cell-center',
-            width: 150,
+            width: 140,
             key: 'cvht',
             render: (text) => text?.GiangVienDuyet ?
                 <>
@@ -109,10 +154,18 @@ const GVDRL = () => {
                 </>
         },
         {
+            title: 'CVHT nhận xét',
+            dataIndex: 'danhGia',
+            className: 'cell-center',
+            width: 180,
+            key: 'CVHTNhanXet`',
+            render: (text, record) => `${text?.GiangVienNhanXet || ''}`
+        },
+        {
             title: 'Ghi chú',
             dataIndex: 'TrangThai',
             className: 'cell-center',
-            width: 250,
+            width: 180,
             key: 'ghichu`',
             render: (text, record) => `${text != '0' && text || ''} ${record?.GhiChu != '0' && record?.GhiChu || ''}`
         },
@@ -121,22 +174,7 @@ const GVDRL = () => {
             dataIndex: 'id',
             key: 'id',
             className: 'cell-center',
-            render: (text, record, index) => (
-                <Space size='middle'>
-                    <Button type='primary'>
-                        Duyệt
-                    </Button>
-                    <Button
-                        type='primary'
-                        onClick={() =>
-                            history.push(`/gv/danh-gia/${text}?prev=${state.sinhViens[index - 1]?.id}&next=${state.sinhViens[index + 1]?.id}&masv=${record?.MaSV}`)
-                        }
-                    >
-                        Xem Đánh giá
-                    </Button>
-                    <Button type='primary'>Ghi chú</Button>
-                </Space>
-            )
+            render: (text, record, index) => <ActionItem text={text} record={record} index={index} onDuyet={onDuyet} />
         }
     ]), [state.sinhViens])
 
@@ -153,15 +191,23 @@ const GVDRL = () => {
                                 <Col>
                                     <Select
                                         placeholder='Chọn lớp nào'
+                                        value={state.selected}
+                                        onChange={onChangeLop}
                                     >
-
+                                        {
+                                            state.lopHocs.map(l => (
+                                                <Option value={l.id} key={l.id}>
+                                                    {l.TenLopHoc}
+                                                </Option>
+                                            ))
+                                        }
                                     </Select>
                                 </Col>
                                 <Col>
-                                    <Button type='primary' onClick={() => window.print()}>In bản thống kê</Button>
+                                    <Button type='primary' onClick={() => window.print()}>Xuất file</Button>
                                 </Col>
                                 <Col>
-                                    <Button type='primary'>Xem thống kê</Button>
+                                    <Button type='primary' onClick={onOpenThongKe}>Xem thống kê</Button>
                                 </Col>
                             </Row>
                         </Col>
@@ -177,12 +223,15 @@ const GVDRL = () => {
                         rowKey={(v) => v?.id}
                         pagination={false}
                         locale={localeTable}
-                        rowSelection={{
-                            type: 'checkbox'
-                        }}
+                        // rowSelection={{
+                        //     type: 'checkbox'
+                        // }}
                     />
                 </Col>
             </Row>
+            <ModalThongKe 
+                ref={refModalThongKe}
+            />
         </LayoutWrapper>
     )
 };

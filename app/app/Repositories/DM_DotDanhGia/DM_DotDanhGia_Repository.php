@@ -29,9 +29,11 @@ class DM_DotDanhGia_Repository extends BaseRepository implements DM_DotDanhGia_R
     public function getDSDanhGiaByLopAndDotDanhGia($idLop, $idDotDanhGia)
     {
         $dsSinhVienDanhGia = $this->SV_Repository->getModelEq()->where('LopHoc_Id', $idLop)
-            ->with('user')->with(['danhGia' => function ($query) use ($idDotDanhGia) {
+            ->with(['user' => function ($query) {
+//                $query->orderBy('Ten', 'asc')->orderBy('HoDem', 'asc');
+            }])->with(['danhGia' => function ($query) use ($idDotDanhGia) {
                 $query->where('DotDanhGia_Id', $idDotDanhGia);
-            }])->get();
+            }])->orderBy('MaSV')->get();
         return $dsSinhVienDanhGia;
     }
 
