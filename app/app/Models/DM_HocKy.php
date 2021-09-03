@@ -16,11 +16,13 @@ class DM_HocKy extends Model
 
     protected $fillable = [
         'idDaoTao',
+        'MauTieuChi_Id',
         'TenHocKy',
         'NamBatDau',
         'NamKetThuc',
         'DaoTaoHienHanh',
-        'HienHanh'
+        'HienHanh',
+        'PhatHanh',
     ];
 
     protected $casts = [
@@ -28,14 +30,19 @@ class DM_HocKy extends Model
         'HienHanh' => 'boolean',
         'created_at' => 'timestamp',
         'updated_at' => 'timestamp',
+        'PhatHanh' => 'boolean'
     ];
 
     protected $hidden = [
         'idDaoTao', 'deleted_at'
     ];
 
-    public function dotDanhGia() {
-        return $this->hasOne(DM_DotDanhGia::class, 'HocKy_Id', 'id');
+    public function danhGiaChiTiet() {
+        return $this->hasMany(DanhGiaChiTiet::class, 'DotDanhGia_Id');
+    }
+
+    public function mauTieuChi() {
+        return $this->belongsTo(DM_MauTieuChi::class, 'MauTieuChi_Id', 'id');
     }
 
 }

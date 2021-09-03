@@ -4,9 +4,7 @@ namespace App\Http\Controllers\EndUser;
 
 use App\Common\Constant;
 use App\Http\Controllers\Controller;
-use App\Models\DanhGiaChiTiet;
 use App\Repositories\DanhGiaChiTiet\DanhGiaChiTiet_Repository;
-use App\Repositories\DM_DotDanhGia\DM_DotDanhGia_Repository;
 use App\Repositories\DM_HocKy\DM_HocKy_Repository;
 use App\Repositories\DM_LopHoc\DM_LopHoc_Repository;
 use App\Repositories\DM_MauTieuChi\DM_MauTieuChi_Repository;
@@ -19,12 +17,11 @@ use Illuminate\Support\Facades\Auth;
 
 class GVController extends Controller
 {
-    protected $dotDanhGia_Repository, $lopHoc_Repository;
+    protected $lopHoc_Repository;
     protected $mauTieuChi_Repository, $hocKy_Repository;
     private $danhGiaService, $sv_Repository, $daotaoAPI, $tieuChiService, $danhGiaChiTiet_Repository;
 
     public function __construct(
-        DM_DotDanhGia_Repository           $dotDanhGia_Repository,
         DM_MauTieuChi_Repository           $mauTieuChi_Repository,
         DM_HocKy_Repository                $hocKy_Repository,
         DanhGiaService                     $danhGiaService,
@@ -34,7 +31,6 @@ class GVController extends Controller
         DM_LopHoc_Repository               $lopHoc_Repository,
         DanhGiaChiTiet_Repository          $danhGiaChiTiet_Repository
     ) {
-        $this->dotDanhGia_Repository = $dotDanhGia_Repository;
         $this->mauTieuChi_Repository = $mauTieuChi_Repository;
         $this->danhGiaService = $danhGiaService;
         $this->sv_Repository = $sv_Repository;
@@ -56,9 +52,9 @@ class GVController extends Controller
         if (empty($idLop) && $idLop != 0) return [];
         $user = Auth::user();
         $hocKyId = $user[Constant::SESSION_KEY['HocKyHienTai_Id']] ?? 7;
-        $dotDanhGia = $this->dotDanhGia_Repository->findOneByHocKy($hocKyId);
-        if (empty($dotDanhGia)  || !$dotDanhGia->PhatHanh) abort(404, "Đợt đánh giá chưa sẵn sàng, mời bạn chuyển sang học kỳ khác");
-        $reuslt = $this->dotDanhGia_Repository->getDSDanhGiaByLopAndDotDanhGia($idLop, $dotDanhGia->id);
+        $hocKy = $this->hocKy_Repository->find($hocKyId);
+        if (empty($hocKy)  || !$hocKy->PhatHanh) abort(404, "Đợt đánh giá chưa sẵn sàng, mời bạn chuyển sang học kỳ khác");
+        $reuslt = $this->hocKy_Repository->getDSDanhGiaByLopAndHocKy($idLop, $hocKy->id);
         return response()->json($reuslt, 200);
     }
 
@@ -66,18 +62,16 @@ class GVController extends Controller
 //        return Auth::user();
         $user = Auth::user();
         $hocKyId = $user[Constant::SESSION_KEY['HocKyHienTai_Id']] ?? 7;
-        $sv = $this->sv_Repository->find($id, 'user');
+        $sv = $this->sv_Repository->findSVByIdOrMaSv($id, 'user');
 //        if (empty($sv) || $sv->LopHoc_Id != $user->chucVu->LopHoc_Id) abort(404, "Không tìm thấy sinh viên");
-        $dotDanhGia = $this->dotDanhGia_Repository->findOneByHocKy($hocKyId);
-        if (empty($dotDanhGia) || !$dotDanhGia->PhatHanh) abort(404, "Đợt đánh giá chưa sẵn sàng, mời bạn chuyển sang học kỳ khác");
-        $tieuChiCT = $this->mauTieuChi_Repository->getTieuChiChiTietOfMau($dotDanhGia->mauTieuChi->id);
-        $diem = DanhGiaChiTiet::where('DotDanhGia_Id', $dotDanhGia->id)
-            ->where('SinhVien_Id', $id)->first();
         $hocKy = $this->hocKy_Repository->find($hocKyId);
+        if (empty($hocKy) || !$hocKy->PhatHanh) abort(404, "Đợt đánh giá chưa sẵn sàng, mời bạn chuyển sang học kỳ khác");
+        $tieuChiCT = $this->mauTieuChi_Repository->getTieuChiChiTietOfMau($hocKy->mauTieuChi->id);
+        $diem = $this->danhGiaChiTiet_Repository->getDiemSV($hocKy->id, $sv->MaSV);
         $diemHocTap = $this->daotaoAPI->getDiemSV($hocKy->idDaoTao, $hocKy->TenHocKy, $sv->MaSV);
         $newTieuChi = $this->danhGiaService->mergeTieuChiAndDanhGia($tieuChiCT, $diem, $this->tieuChiService->diemHocTap($diemHocTap));
         return response()->json([
-            'dotDanhGia' => $dotDanhGia,
+            'hocKy' => $hocKy,
             'tieuChi' => $newTieuChi,
             'sinhVien' => $sv,
             'danhGia' => $diem

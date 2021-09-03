@@ -28,16 +28,6 @@
             </div>
             <div class="ps-2 pe-2 menu-item-inline">
                 <button  type="button" class="btn d-flex align-items-center justify-content-center">
-                    <a class='text-decoration-none text-white' href="{{ route('admin.DM_DotDanhGia.index') }}">
-                        <span style='color: rgb(120, 129, 149)' class="children-item">
-                            <i class='fa fa-street-view'></i>
-                            <span class='ps-3 menu-inline-text menu-tille' id='menu-text'>Đợt đánh giá</span>
-                        </span>
-                    </a>
-                </button>
-            </div>
-            <div class="ps-2 pe-2 menu-item-inline">
-                <button  type="button" class="btn d-flex align-items-center justify-content-center">
                     <a class='text-decoration-none text-white' href="{{ route('admin.DM_MauTieuChi.index') }}">
                         <span style='color: rgb(120, 129, 149)' class="children-item">
                             <i class='fa fa-street-view'></i>

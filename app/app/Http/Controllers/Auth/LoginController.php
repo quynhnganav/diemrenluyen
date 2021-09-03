@@ -70,7 +70,7 @@ class LoginController extends Controller
         $existingUser = User::where('email', $user->getEmail())->with(['chucVu.lopHoc', 'hocKy'])->first();
 
         if (empty($existingUser)) {
-            return redirect()->route('sv');
+            return redirect()->route('sv.login');
         }
         $existingUser->picture = $user->getAvatar();
 

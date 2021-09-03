@@ -15,8 +15,8 @@ class DanhGiaChiTiet extends Model
     public static $snakeAttributes = false;
 
     protected $fillable = [
-        'DotDanhGia_Id',
-        'SinhVien_Id',
+        'HocKy_Id',
+        'MaSV',
         'SinhVienDanhGia',
         'CanBoLopDanhGia',
         'TongSoDiem',
@@ -36,11 +36,12 @@ class DanhGiaChiTiet extends Model
     ];
 
     public function dotDanhGia() {
-        return $this->belongsTo(DM_DotDanhGia::class, 'DotDanhGia_Id');
+        return $this->belongsTo(DM_HocKy::class, 'HocKy_Id');
     }
 
+
     public function sinhVien() {
-        return $this->belongsTo(SV::class, 'SinhVien_Id');
+        return $this->belongsTo(SV::class, 'MaSV', 'MaSV');
     }
 
 }

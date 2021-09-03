@@ -69,4 +69,9 @@ class SV_Repository extends BaseRepository implements SV_RepositoryInterface
         return "Đồng bộ thành công";
     }
 
+    public function findSVByIdOrMaSv($id, $with)
+    {
+        return is_numeric($id) ?  $this->model->where('id', $id)->with($with)->first() : $this->model->where('MaSV', $id)->with($with)->first();
+    }
+
 }
