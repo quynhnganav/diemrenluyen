@@ -7,6 +7,7 @@ import * as DanhGiaAPI from "../../../../API/DanhGiaAPI";
 import { useHistory } from "react-router-dom";
 import { useListSinhVien } from "../../../..";
 import ModalGhiChu from "../../../../components/ModalGhiChu";
+import ModalThongKe from "../../../../components/ModalThongKe";
 
 const SVDanhGia = () => {
 
@@ -20,6 +21,7 @@ const SVDanhGia = () => {
     const { setIdsSv } = useListSinhVien();
 
     const refModalGhiChu = useRef(null)
+    const refModalThongKe = useRef(null)
 
     useEffect(() => {
         loadData()
@@ -51,6 +53,12 @@ const SVDanhGia = () => {
     const onOpenGhiChu = useCallback((item) => {
         refModalGhiChu.current?.showModal(item)
     }, [])
+
+    const onOpenThongKe = useCallback((value) => {
+        refModalThongKe?.current?.showModal({
+            LopHoc_Id: state?.selected
+        })
+    }, [state])
 
     const columns = useMemo(() => ([
         {
@@ -159,10 +167,10 @@ const SVDanhGia = () => {
                         <Col>
                             <Row gutter={[5, 5]}>
                                 <Col>
-                                    <Button type='primary' onClick={() => window.print()}>In bản thống kê</Button>
+                                    <Button type='primary' onClick={() =>  window.open('/common/diem-ren-luyen/api/bao-cao-excel')}>Báo cáo</Button>
                                 </Col>
                                 <Col>
-                                    <Button type='primary'>Xem thống kê</Button>
+                                    <Button type='primary' onClick={onOpenThongKe}>Xem thống kê</Button>
                                 </Col>
                                 <Col>
                                     <Button type='primary'>Nhắc nhở</Button>
@@ -189,6 +197,9 @@ const SVDanhGia = () => {
             </Row>
             <ModalGhiChu 
                 ref={refModalGhiChu}
+            />
+            <ModalThongKe 
+                ref={refModalThongKe}
             />
         </LayoutWrapper>
     )

@@ -17,7 +17,7 @@ class Authenticate extends Middleware
     {
         $name = Route::currentRouteName();
 //        dd($name);
-        if (str_starts_with($name, 'sv.')) {
+        if (str_starts_with($name, 'sv.') || str_starts_with($name, 'common.')) {
             return route('sv.login');
         }
         if (str_starts_with($name, 'gv.')) {

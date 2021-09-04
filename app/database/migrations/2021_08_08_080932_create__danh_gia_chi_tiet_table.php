@@ -19,8 +19,8 @@ class CreateDanhGiaChiTietTable extends Migration
             $table->string('MaSV')->nullable()->index();
             $table->json('SinhVienDanhGia')->nullable();
             $table->json('CanBoLopDanhGia')->nullable();
-            $table->unsignedBigInteger('TongSoDiem')->default(0);
-            $table->unsignedBigInteger('TongSoDiemSinhVien')->default(0);
+            $table->unsignedBigInteger('TongSoDiem')->nullable()->default(null);
+            $table->unsignedBigInteger('TongSoDiemSinhVien')->nullable()->default(null);
             $table->boolean('SinhVienDuyet')->default(false);
             $table->boolean('CanBoLopDuyet')->default(false);
             $table->boolean('GiangVienDuyet')->default(false);
@@ -29,7 +29,7 @@ class CreateDanhGiaChiTietTable extends Migration
             $table->string('CanBoLopNhanXet')->default('');
             $table->string('KhoaNhanXet')->default('');
             $table->string('YKienSinhVien')->default('');
-            $table->string('GhiChu')->default(false);
+            $table->string('GhiChu')->nullable()->default(null);
             $table->softDeletes();
             $table->timestamps();
             $table->timestamp('n_deleted_at')->virtualAs("COALESCE(deleted_at, '1980-01-01')");

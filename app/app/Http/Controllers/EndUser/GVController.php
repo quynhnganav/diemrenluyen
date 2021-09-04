@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Auth;
 
 class GVController extends Controller
 {
-    protected $lopHoc_Repository;
-    protected $mauTieuChi_Repository, $hocKy_Repository;
+    private $lopHoc_Repository;
+    private $mauTieuChi_Repository, $hocKy_Repository;
     private $danhGiaService, $sv_Repository, $daotaoAPI, $tieuChiService, $danhGiaChiTiet_Repository;
 
     public function __construct(

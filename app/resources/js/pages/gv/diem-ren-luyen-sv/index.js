@@ -108,17 +108,17 @@ const SVDanhGia = () => {
 
     const onNext = useCallback(() => {
         if (!next) return
-        history.push(`/sv/cbl/danh-gia/${next?.id}?masv=${next?.MaSV}`)
+        history.push(`/gv/diem-ren-luyen/${next?.id}?masv=${next?.MaSV}`)
     }, [next])
 
     const onPrev = useCallback(() => {
         if (!prev) return
-        history.push(`/sv/cbl/danh-gia/${prev?.id}?masv=${next?.MaSV}`)
+        history.push(`/gv/diem-ren-luyen/${prev?.id}?masv=${next?.MaSV}`)
     }, [prev])
 
     const gotoSVChange = useCallback((id) => {
         if (!id) return
-        history.push(`/sv/cbl/danh-gia/${id}`)
+        history.push(`/gv/diem-ren-luyen/${id}`)
     }, [])
 
     const onOpenGhiChu = useCallback((item) => {
@@ -137,7 +137,7 @@ const SVDanhGia = () => {
         GVAPI.putGVNhanXet(state.danhGia?.id, {
             nhanXet: value
         }).then((res) => {
-            setState({ 
+            setState({
                 loading: false,
                 danhGia: res?.data
             })
@@ -145,14 +145,14 @@ const SVDanhGia = () => {
                 message: 'Đã nhận xét'
             })
         })
-        .catch((err) => {
-            console.log(err?.response)
-            notification.error({
-                message: err?.response?.data?.message
+            .catch((err) => {
+                console.log(err?.response)
+                notification.error({
+                    message: err?.response?.data?.message
+                })
+                setState({ loading: false })
             })
-            setState({ loading: false })
-        })
-        .finally(cb)
+            .finally(cb)
     }, [state.danhGia])
 
     const duyet = useCallback(() => {
@@ -165,7 +165,7 @@ const SVDanhGia = () => {
         setState({ loading: true })
         GVAPI.putGVDuyet(state.danhGia?.id)
             .then((res) => {
-                setState({ 
+                setState({
                     loading: false,
                     danhGia: res?.data
                 })
@@ -182,6 +182,8 @@ const SVDanhGia = () => {
 
     }, [state.danhGia])
 
+    const trangThai = current?.TrangThai ? current?.TrangThai == '0' ? '' : `(${current?.TrangThai})` : state?.sinhVien?.TrangThai ? state?.sinhVien?.TrangThai == '0' ? '' : `(${state?.sinhVien?.TrangThai })` : ''
+
     return (
         <LayoutWrapper className='danh-gia-page'>
             <Row className='bg-white p-3 content'>
@@ -191,7 +193,8 @@ const SVDanhGia = () => {
                             <Row>
                                 <Col>
                                     <p>
-                                        {`${current?.user?.HoDem || state?.sinhVien?.user?.HoDem || ''} ${current?.user?.Ten || state?.sinhVien?.user?.Ten || ''} - ${current?.MaSV || state?.sinhVien?.MaSV ||''}`}
+                                        {`${current?.user?.HoDem || state?.sinhVien?.user?.HoDem || ''} ${current?.user?.Ten || state?.sinhVien?.user?.Ten || ''} - ${current?.MaSV || state?.sinhVien?.MaSV || ''} 
+                                        ${trangThai}`}
                                     </p>
                                 </Col>
                             </Row>
@@ -245,7 +248,7 @@ const SVDanhGia = () => {
                                 </Col>
                                 <Col>
                                     <Button type={state.danhGia?.GiangVienDuyet ? 'dashed' : 'primary'} disabled={state.loading || isEmpty(state?.danhGia?.CanBoLopDanhGia)} onClick={duyet}>
-                                      {state.danhGia?.GiangVienDuyet ? 'Bỏ duyệt' : 'Duyệt'}  
+                                        {state.danhGia?.GiangVienDuyet ? 'Bỏ duyệt' : 'Duyệt'}
                                     </Button>
                                 </Col>
                             </Row>
@@ -261,7 +264,7 @@ const SVDanhGia = () => {
                     />
                 </Col>
             </Row>
-            <ModalGhiChu 
+            <ModalGhiChu
                 ref={refModalGhiChu}
                 onSubmit={onSubmitNhanXet}
             />

@@ -26,10 +26,11 @@ const putGVNhanXet = (idSv, payload) => {
     return axios.put(route, payload);
 }
 
+
 export {
     getLop,
     getSVLop,
     getGVDanhGiaSv,
     putGVDuyet,
-    putGVNhanXet
+    putGVNhanXet,
 }

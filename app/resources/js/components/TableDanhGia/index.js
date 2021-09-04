@@ -37,6 +37,14 @@ const TableDanhGia = forwardRef(({
 
     const [form] = useForm()
 
+    const scrollToTop = useCallback(() => {
+        const ele = document.querySelector('.ant-table-body')
+        ele?.scroll({
+            behavior: 'smooth',
+            top: 0
+        })
+    }, [])
+
     useEffect(() => {
         const [data, total, formValue, sv, cbl] = flattenTree(tree || [])
         setState({
@@ -47,6 +55,7 @@ const TableDanhGia = forwardRef(({
             total
         })
         form?.setFieldsValue(formValue)
+        scrollToTop()
     }, [tree])
 
     const submit = useCallback(() => {
@@ -54,7 +63,6 @@ const TableDanhGia = forwardRef(({
     }, [form])
 
     const setFieldsValue = useCallback((values) => {
-        console.log(values)
         form?.setFields(values)
     }, [form])
 
@@ -62,9 +70,12 @@ const TableDanhGia = forwardRef(({
         onSuccess && onSuccess(values)
     }, [onSuccess])
 
+    
+
     useImperativeHandle(ref, () => ({
         submit,
-        setFieldsValue
+        setFieldsValue,
+        scrollToTop
     }))
 
     const onChangeValue = useCallback((value, id, type) => {

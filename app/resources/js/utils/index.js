@@ -1,10 +1,59 @@
 import { differenceBy, isEmpty } from "lodash";
 
+export const ObjToArrayThongKe = (input) => {
+    const total = input?.total ?? 0;
+    console.log(total)
+    return ([
+        {
+            id: 'xuatsac',
+            xeploai: 'Loại xuất sắc có',
+            soluong: input?.xuatsac ?? 0,
+            tyle: `${total <1  ? 0 : ((input?.xuatsac ?? 0) / total)*100}%`
+        },
+        {
+            id: 'tot',
+            xeploai: 'Loại tốt có',
+            soluong: input?.tot ?? 0,
+            tyle: total <1  ? 0 : ((input?.tot ?? 0) / total)*100
+        },
+        {
+            id: 'kha',
+            xeploai: 'Loại khá có',
+            soluong: input?.kha ?? 0,
+            tyle: total <1  ? 0 : ((input?.kha ?? 0) / total)*100
+        },
+        {
+            id: 'trungbinh',
+            xeploai: 'Loại trung bình có',
+            soluong: input?.trungbinh ?? 0,
+            tyle: total <1  ? 0 : ((input?.trungbinh ?? 0) / total)*100
+        },
+        {
+            id: 'yeu',
+            xeploai: 'Loại yếu có',
+            soluong: input?.yeu ?? 0,
+            tyle: total <1  ? 0 : ((input?.yeu ?? 0) / total)*100
+        },
+        {
+            id: 'kem',
+            xeploai: 'Loại kém có',
+            soluong: input?.kem ?? 0,
+            tyle: total <1  ? 0 : ((input?.kem ?? 0) / total)*100
+        },
+        {
+            id: 'total',
+            xeploai: 'Tổng',
+            isTotal: true,
+            soluong: total,
+            tyle: total < 1  ? 0 : (((input?.xuatsac ?? 0) + (input?.tot ?? 0) + (input?.kha ?? 0) + (input?.trungbinh ?? 0) + (input?.yeu ?? 0) + (input?.kem ?? 0)) / total)*100
+        },
+    ])
+}
+
 export const renderXepLoai = (diem) => {
     if (!diem && diem !=0) return ''
     if (diem < 35) return 'Kém'
     if (diem < 50) return 'Yếu'
-    if (diem < 50) return 'Trung bình'
     if (diem < 65) return 'Trung bình'
     if (diem < 80) return 'Khá'
     if (diem < 90) return 'Tốt'

@@ -91,8 +91,10 @@ const GVDRL = () => {
     }, [state.sinhViens])
 
     const onOpenThongKe = useCallback((value) => {
-        refModalThongKe?.current?.showModal()
-    }, [])
+        refModalThongKe?.current?.showModal({
+            LopHoc_Id: state?.selected
+        })
+    }, [state])
 
     const columns = useMemo(() => ([
         {
@@ -105,7 +107,7 @@ const GVDRL = () => {
         {
             title: 'Họ tên SV',
             dataIndex: 'user',
-            width: 200,
+            width: 230,
             key: 'HoTenSinhVien',
             render: (text, record) =>
                 <Tooltip placement='top' title={text?.email}>
@@ -204,7 +206,7 @@ const GVDRL = () => {
                                     </Select>
                                 </Col>
                                 <Col>
-                                    <Button type='primary' onClick={() => window.print()}>Xuất file</Button>
+                                    <Button type='primary' onClick={() => window.open('/common/diem-ren-luyen/api/bao-cao-excel')}>Xuất file</Button>
                                 </Col>
                                 <Col>
                                     <Button type='primary' onClick={onOpenThongKe}>Xem thống kê</Button>

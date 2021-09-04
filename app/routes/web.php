@@ -26,6 +26,12 @@ Route::get('/callback/{driver}', 'Auth\LoginController@handleProviderCallback');
 Route::get('doi-hoc-ky/{idHocKy}', 'Auth\AuthController@changeHocKy')
     ->name('doiHocKy')->middleware('auth');
 
+
+Route::prefix('common')->name('common.')->group(function () {
+    Route::get('diem-ren-luyen/api/thong-ke', 'CommonController@thongKeTheoLop')->middleware(['auth', 'role:cbl|gvcn']);
+    Route::get('diem-ren-luyen/api/bao-cao-excel', 'CommonController@baoCaoExcelTheoLop')->middleware(['auth', 'role:cbl|gvcn']);
+});
+
 Route::get('/sv', function () {
     if (Auth::check()) {
         return redirect()->route('sv.danh-gia.index');
