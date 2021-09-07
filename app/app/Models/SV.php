@@ -26,7 +26,7 @@ class SV extends Model
 
     protected $casts = [
         'created_at' => 'timestamp',
-        'updated_at' => 'timestamp',
+        'updated_at' => 'timestamp'
     ];
 
     protected $hidden = [
@@ -44,7 +44,7 @@ class SV extends Model
     }
 
     public function danhGia() {
-        return $this->hasOne(DanhGiaChiTiet::class, 'SinhVien_Id');
+        return $this->hasOne(DanhGiaChiTiet::class, 'MaSV', 'MaSV');
     }
 
 }

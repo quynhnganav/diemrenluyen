@@ -70,7 +70,7 @@ class LoginController extends Controller
         $existingUser = User::where('email', $user->getEmail())->with(['chucVu.lopHoc', 'hocKy'])->first();
 
         if (empty($existingUser)) {
-            return redirect()->route('sv');
+            return redirect()->route('sv.login');
         }
         $existingUser->picture = $user->getAvatar();
 
@@ -84,11 +84,14 @@ class LoginController extends Controller
         $existingUser->save();
         $hocKys = DM_HocKy::orderBy('NamBatDau', 'desc')->orderBy('TenHocKy', 'desc')->get();
 
+//        $existingUser = User::where('email', 'tthoang.19it1@vku.udn.vn')->with(['chucVu', 'hocKy'])->first();
+
         session(['HocKyHienTai_Id' => $hocKyHienHanhOfUser]);
         session([Constant::SESSION_KEY['HocKys'] => $hocKys]);
         auth()->login($existingUser, false);
 
         return redirect()->route('sv.danh-gia.index');
+        return redirect()->route('gv.login');
     }
 
 }

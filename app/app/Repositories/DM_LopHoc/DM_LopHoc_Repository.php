@@ -46,7 +46,7 @@ class DM_LopHoc_Repository extends BaseRepository implements DM_LopHoc_Repositor
                 'Profile_id' => $newGV->id,
                 'Profile_type' => "App\Models\GV",
             ]);
-
+            $newUser->assignRole('gvcn');
             DM_LopHoc::updateOrCreate(['id' => $item->id], [
                 "id" => $item->id,
                 'GV_Id' => $newGV->id,
@@ -58,4 +58,9 @@ class DM_LopHoc_Repository extends BaseRepository implements DM_LopHoc_Repositor
     }
 
 
+    public function getLopHocOfGV($idGV)
+    {
+        $lopHocs = $this->model->where('GV_Id', $idGV)->get();
+        return $lopHocs;
+    }
 }

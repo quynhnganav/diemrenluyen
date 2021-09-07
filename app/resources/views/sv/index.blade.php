@@ -1,5 +1,7 @@
 @extends('layouts.index')
-
+@section('title')
+    Sinh viên
+@endsection
 @section('css')
 <style>
     .main-loader {
@@ -33,13 +35,13 @@
 
 @section('sidebar')
     @component('layouts.sv.sidebar')
-        
+
     @endcomponent
 @endsection
 
 @section('header')
     @component('layouts.sv.header')
-        
+
     @endcomponent
 @endsection
 

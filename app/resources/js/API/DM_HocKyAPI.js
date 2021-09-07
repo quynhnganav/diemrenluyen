@@ -11,7 +11,19 @@ const syncDataHocKy = (filter) => {
     return axios.get(route);
 };
 
+const update = (id, payload) => {
+    const route = `/admin/DM_HocKy/${id}`;
+    return axios.put(route, payload);
+};
+
+const updateHienHanh = (id, payload) => {
+    const route = `/admin/DM_HocKy/api/update-hienhanh/${id}`;
+    return axios.put(route, payload);
+};
+
 export {
     getAllHocKy,
-    syncDataHocKy
+    syncDataHocKy,
+    update,
+    updateHienHanh
 }

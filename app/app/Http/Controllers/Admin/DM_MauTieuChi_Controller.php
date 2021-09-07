@@ -28,7 +28,7 @@ class DM_MauTieuChi_Controller extends Controller
     public function getData()
     {
         $mauTieuChi = $this->mauTieuChi_Repository->getAll([], 'created_at DESC');
-        return $mauTieuChi;
+        return response()->json(json_decode($mauTieuChi), 200);
     }
 
     /**

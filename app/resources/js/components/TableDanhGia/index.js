@@ -23,7 +23,7 @@ const genIndex = (level, index) => {
 const TableDanhGia = forwardRef(({
     tree,
     loading,
-    type = "all",
+    type,
     onSuccess
 }, ref) => {
 
@@ -37,6 +37,14 @@ const TableDanhGia = forwardRef(({
 
     const [form] = useForm()
 
+    const scrollToTop = useCallback(() => {
+        const ele = document.querySelector('.table-danh-gia .ant-table-body')
+        ele?.scroll({
+            behavior: 'smooth',
+            top: 0
+        })
+    }, [])
+
     useEffect(() => {
         const [data, total, formValue, sv, cbl] = flattenTree(tree || [])
         setState({
@@ -47,6 +55,7 @@ const TableDanhGia = forwardRef(({
             total
         })
         form?.setFieldsValue(formValue)
+        scrollToTop()
     }, [tree])
 
     const submit = useCallback(() => {
@@ -54,7 +63,6 @@ const TableDanhGia = forwardRef(({
     }, [form])
 
     const setFieldsValue = useCallback((values) => {
-        console.log(values)
         form?.setFields(values)
     }, [form])
 
@@ -62,9 +70,12 @@ const TableDanhGia = forwardRef(({
         onSuccess && onSuccess(values)
     }, [onSuccess])
 
+    
+
     useImperativeHandle(ref, () => ({
         submit,
-        setFieldsValue
+        setFieldsValue,
+        scrollToTop
     }))
 
     const onChangeValue = useCallback((value, id, type) => {
@@ -85,7 +96,10 @@ const TableDanhGia = forwardRef(({
             title: "Nội dung và tiêu chí đánh giá",
             dataIndex: "TenTieuChi",
             key: "TenTieuChi",
-            render: (text, record) => <p className={`TenTieuChi${record.level}`}>{genIndex(record?.level, record?.index)} {text}</p>
+            render: (text, record) => 
+            <p className={`TenTieuChi${record.level}`}>
+                {genIndex(record?.level, record?.index)} {text} {record?.isDiemHocTap? <strong>(Điểm được lấy theo hệ thống đào tạo)</strong> : ''}
+            </p>
         },
         {
             title: () => (
@@ -118,7 +132,7 @@ const TableDanhGia = forwardRef(({
                     ]}
                 >
                     <InputNumber
-                        disabled={record.isParent || type === 'CBL' || record.isDiemHocTap}
+                        disabled={record.isParent || type === 'CBL' || !type || record.isDiemHocTap}
                         min={0}
                         max={record.SoDiem}
                         onChange={value => onChangeValue(value, record?.id, 'SoDiemSV')}
@@ -145,7 +159,7 @@ const TableDanhGia = forwardRef(({
                     ]}
                 >
                     <InputNumber
-                        disabled={record.isParent || type === "SV" || record.isDiemHocTap}
+                        disabled={record.isParent || type === "SV" || !type || record.isDiemHocTap}
                         min={0}
                         max={record.SoDiem}
                         onChange={value => onChangeValue(value, record?.id, 'SoDiemCBL')}
@@ -173,6 +187,7 @@ const TableDanhGia = forwardRef(({
                     locale={{
                         emptyText: 'Không có dữ liệu'
                     }}
+                    className='table-danh-gia'
                 />
             </Form>
         </>

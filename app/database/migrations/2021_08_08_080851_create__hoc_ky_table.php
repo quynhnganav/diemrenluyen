@@ -16,15 +16,24 @@ class CreateHocKyTable extends Migration
         Schema::create('DM_HocKy', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('idDaoTao');
+            $table->unsignedBigInteger('MauTieuChi_Id')->nullable()->default(null);
             $table->string('TenHocKy');
             $table->string('NamBatDau');
             $table->string('NamKetThuc');
             $table->boolean('DaoTaoHienHanh')->default(0);
             $table->boolean('HienHanh')->default(0);
+            $table->boolean('PhatHanh')->default(false);
             $table->softDeletes();
             $table->timestamps();
+            $table->timestamp('n_deleted_at')->virtualAs("COALESCE(deleted_at, '1980-01-01')");
 
-            $table->unique(['idDaoTao', 'TenHocKy']);
+            $table->unique(['idDaoTao', 'TenHocKy', 'n_deleted_at']);
+
+            $table->foreign('MauTieuChi_Id')
+                ->references('id')
+                ->on('DM_MauTieuChi')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
 
         });
     }

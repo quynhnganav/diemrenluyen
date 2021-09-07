@@ -36,6 +36,8 @@ class User extends Authenticatable
         'SoDienThoaiGiaDinh',
         'NgaySinh',
         'GioiTinh',
+        'isAdmin',
+        'isRoot'
     ];
 
     /**
@@ -44,7 +46,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'Profile_type', 'HoTenKhongDau', 'email_verified_at', 'deleted_at', 'created_at', 'updated_at'
+        'password', 'remember_token', 'Profile_type', 'HoTenKhongDau', 'email_verified_at', 'deleted_at', 'created_at', 'updated_at',
+        'pivot'
     ];
 
     /**
@@ -56,6 +59,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'created_at' => 'timestamp',
         'updated_at' => 'timestamp',
+        "isAdmin" => 'boolean',
+        "isRoot" => 'boolean',
     ];
 
 

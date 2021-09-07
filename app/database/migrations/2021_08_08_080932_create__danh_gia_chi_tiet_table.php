@@ -15,12 +15,12 @@ class CreateDanhGiaChiTietTable extends Migration
     {
         Schema::create('DanhGiaChiTiet', function (Blueprint $table) {
             $table->id()->index();
-            $table->unsignedBigInteger('DotDanhGia_Id')->nullable()->index();
-            $table->unsignedBigInteger('SinhVien_Id')->nullable()->index();
+            $table->unsignedBigInteger('HocKy_Id')->nullable()->index();
+            $table->string('MaSV')->nullable()->index();
             $table->json('SinhVienDanhGia')->nullable();
             $table->json('CanBoLopDanhGia')->nullable();
-            $table->unsignedBigInteger('TongSoDiem')->default(0);
-            $table->unsignedBigInteger('TongSoDiemSinhVien')->default(0);
+            $table->unsignedBigInteger('TongSoDiem')->nullable()->default(null);
+            $table->unsignedBigInteger('TongSoDiemSinhVien')->nullable()->default(null);
             $table->boolean('SinhVienDuyet')->default(false);
             $table->boolean('CanBoLopDuyet')->default(false);
             $table->boolean('GiangVienDuyet')->default(false);
@@ -29,21 +29,17 @@ class CreateDanhGiaChiTietTable extends Migration
             $table->string('CanBoLopNhanXet')->default('');
             $table->string('KhoaNhanXet')->default('');
             $table->string('YKienSinhVien')->default('');
-            $table->string('GhiChu')->default(false);
+            $table->string('GhiChu')->nullable()->default(null);
             $table->softDeletes();
             $table->timestamps();
+            $table->timestamp('n_deleted_at')->virtualAs("COALESCE(deleted_at, '1980-01-01')");
 
-//            $table->index(['DotDanhGia_Id', 'SinhVien_Id']);
-            $table->unique(['DotDanhGia_Id', 'SinhVien_Id']);
+            $table->unique(['HocKy_Id', 'MaSV', 'n_deleted_at']);
 
-            $table->foreign('DotDanhGia_Id')
-            ->references('id')
-            ->on('DM_DotDanhGia')
-            ->onDelete('set null')
-            ->onUpdate('cascade');
 
-            $table->foreign('SinhVien_Id')
-            ->references('id')
+
+            $table->foreign('MaSV')
+            ->references('MaSV')
             ->on('SV')
             ->onDelete('set null')
             ->onUpdate('cascade');
@@ -58,10 +54,6 @@ class CreateDanhGiaChiTietTable extends Migration
      */
     public function down()
     {
-        // Schema::table('DanhGiaChiTiet', function (Blueprint $table) {
-        //     $table->dropForeign(['DotDanhGia_Id']);
-        //     $table->dropForeign(['SinhVien_Id']);
-        // });
         Schema::dropIfExists('DanhGiaChiTiet');
     }
 }

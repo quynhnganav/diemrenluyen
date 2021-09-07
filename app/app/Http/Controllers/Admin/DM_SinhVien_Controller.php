@@ -77,7 +77,7 @@ class DM_SinhVien_Controller extends Controller
                     'GhiChu' => $item->ghichu,
                 ]);
 
-                User::updateOrCreate(['email' => $item->email], [
+                $user = User::updateOrCreate(['email' => $item->email], [
                     'Profile_id' => $newSv->id,
                     'Profile_type' => 'App\Models\SV',
                     'Ten' => $item->ten,
@@ -90,6 +90,7 @@ class DM_SinhVien_Controller extends Controller
 //                'NgaySinh' => $item->ngaysinh,
                     'GioiTinh' => $item->gioitinh,
                 ]);
+                $user->assignRole('sv');
             } catch (\Exception $exception){
 
             }

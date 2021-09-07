@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-//        $this->call(PermissionSeeder::class);
+        $this->call(PermissionSeeder::class);
         $user = User::where('username', 'appadmin')->first();
         if (empty($user)) {
             $user = User::create([
@@ -25,7 +25,9 @@ class DatabaseSeeder extends Seeder
                 'HoTenKhongDau' => 'appadmin root',
                 'username' => 'appadmin',
                 'email' => 'maiquang1470@gmail.com',
-                'password' => bcrypt('admin_di3mrenluy3n@vku2021')
+                'password' => bcrypt('admin_di3mrenluy3n@vku2021'),
+                'isAdmin' => TRUE,
+                'isRoot' => TRUE
             ]);
         }
         $role = Role::where('name','super_admin')->first();

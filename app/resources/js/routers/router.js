@@ -27,16 +27,22 @@ export const routers = [
     },
     //gv
     {
-        component: 'gv/danh-gia',
+        component: 'gv/diem-ren-luyen',
         exact: true,
-        path: '/gv/danh-gia'
+        path: '/gv/diem-ren-luyen'
     },
     {
-        component: 'gv/danh-gia-sv',
+        component: 'gv/diem-ren-luyen-sv',
         exact: true,
-        path: '/gv/danh-gia/:idSV'
+        path: '/gv/diem-ren-luyen/:idSV'
     },
     //admin
+
+    {
+        component: 'admin/DM_DiemRenLuyen',
+        exact: true,
+        path: '/admin/DM_DiemRenLuyen'
+    },
     {
         component: 'admin/DM_MauTieuChi',
         exact: true,
@@ -61,6 +67,11 @@ export const routers = [
         component: 'admin/DM_HocKy',
         exact: true,
         path: '/admin/DM_HocKy'
+    },
+    {
+        component: 'admin/nguoi-dung',
+        exact: true,
+        path: '/admin/nguoi-dung'
     },
 
     //common

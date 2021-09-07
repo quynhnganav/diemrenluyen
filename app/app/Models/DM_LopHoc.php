@@ -29,6 +29,10 @@ class DM_LopHoc extends Model
         'updated_at' => 'timestamp',
     ];
 
+    protected $hidden = [
+        'deleted_at', 'created_at', 'updated_at', 'TenKhongDau'
+    ];
+
     /**
      * Get the GV that owns the DM_LopHoc
      *

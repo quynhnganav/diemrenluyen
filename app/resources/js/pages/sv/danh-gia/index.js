@@ -88,9 +88,9 @@ const SVDanhGia = () => {
                 <Col span={24}>
                     <Row justify='space-between'>
                         <Row>
-                            <Col>
+                            {/* <Col>
                                 <p>{ state?.dotDanhGia?.TenDotDanhGia }</p>
-                            </Col>
+                            </Col> */}
                         </Row>
                         <Row justify='end'>
                             <Col>
