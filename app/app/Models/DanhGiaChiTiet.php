@@ -39,7 +39,6 @@ class DanhGiaChiTiet extends Model
         return $this->belongsTo(DM_HocKy::class, 'HocKy_Id');
     }
 
-
     public function sinhVien() {
         return $this->belongsTo(SV::class, 'MaSV', 'MaSV');
     }

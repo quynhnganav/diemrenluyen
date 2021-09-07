@@ -37,6 +37,12 @@ export const routers = [
         path: '/gv/diem-ren-luyen/:idSV'
     },
     //admin
+
+    {
+        component: 'admin/DM_DiemRenLuyen',
+        exact: true,
+        path: '/admin/DM_DiemRenLuyen'
+    },
     {
         component: 'admin/DM_MauTieuChi',
         exact: true,
@@ -61,6 +67,11 @@ export const routers = [
         component: 'admin/DM_HocKy',
         exact: true,
         path: '/admin/DM_HocKy'
+    },
+    {
+        component: 'admin/nguoi-dung',
+        exact: true,
+        path: '/admin/nguoi-dung'
     },
 
     //common

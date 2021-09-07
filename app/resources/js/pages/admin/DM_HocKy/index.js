@@ -5,6 +5,7 @@ import './style.scss'
 import LayoutWrapper from "../../../components/LayoutWrapper";
 import * as DM_HocKyAPI from "../../../API/DM_HocKyAPI";
 import * as DM_MauTieuChiAPI from "../../../API/DM_MauTieuChiAPI";
+import ModalViewChiTiet from "../../../components/ModalViewChiTiet";
 
 const { Option } = Select
 
@@ -12,6 +13,8 @@ const DM_HocKy = () => {
     const [dotDanhGia, setDotDanhGias] = useState([])
     const [mauTieuChi, setMauTieuChi] = useState([]);
     const [loading, setLoading] = useState(false)
+
+    const refModalViewChiTiet = useRef(null)
 
     useEffect(() => {
         loadMauTieuChi()
@@ -90,6 +93,10 @@ const DM_HocKy = () => {
                 message: error?.response?.data?.message
             })
         }).finally(() => setLoading(false))
+    }, [])
+
+    const onViewTieuChi = useCallback((item) => {
+        refModalViewChiTiet.current?.showModal(item)
     }, [])
 
     const columns = useMemo(() => (
@@ -180,18 +187,21 @@ const DM_HocKy = () => {
                         <Button
                             type='primary'
                             onClick={() => onPhatHanh(record?.id)}
+                            disabled={record.PhatHanh}
                         >
                             Phát hành
                         </Button>
                         <Button
                             type='primary'
-                        // onClick={() => onEditChiTiet(record?.mauTieuChi)}
+                            onClick={() => onViewTieuChi(record?.mauTieuChi)}
+                            disabled={!record?.mauTieuChi}
                         >
                             Tiêu chí
                         </Button>
                         <Button
                             type='primary'
                             onClick={() => updateHienHanh(record?.id)}
+                            disabled={record.HienHanh}
                         >
                             Hiện hành
                         </Button>
@@ -225,6 +235,9 @@ const DM_HocKy = () => {
                     />
                 </Col>
             </Row>
+            <ModalViewChiTiet
+                ref={refModalViewChiTiet}
+            />
         </LayoutWrapper>
     )
 }

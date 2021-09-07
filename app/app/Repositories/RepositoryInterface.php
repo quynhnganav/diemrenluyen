@@ -9,7 +9,7 @@ interface RepositoryInterface
      * Get Chunk
      * @return mixed
      */
-    public function getPaginate($withRelation = [], $orderBy = '');
+    public function getPaginate($withRelation = [], $orderBy = '', $withCount = []);
 
     /**
      * Get all

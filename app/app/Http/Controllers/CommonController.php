@@ -47,8 +47,12 @@ class CommonController extends Controller
         $user = Auth::user();
         $lop = $request->lop ?? -1;
         $gvDuyet = $request->duyet ? true : false;
-        if (!empty($user->chucVu->LopHoc_Id)) $lop = $user->chucVu->LopHoc_Id;
-        $hocKyId = $user[Constant::SESSION_KEY['HocKyHienTai_Id']] ?? 7;
+        if ($user->hasRole('super_admin')) {
+            $hocKyId = $request->get('hocky') ?? $user[Constant::SESSION_KEY['HocKyHienTai_Id']] ?? 7;
+        } else {
+            if (!empty($user->chucVu->LopHoc_Id)) $lop = $user->chucVu->LopHoc_Id;
+            $hocKyId = $user[Constant::SESSION_KEY['HocKyHienTai_Id']] ?? 7;
+        }
         $result = $this->danhGiaChiTiet_Repository->thongKeTheoDot($lop, $hocKyId, $gvDuyet)->first();
         return response()->json($result, 200);
     }

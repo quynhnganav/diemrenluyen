@@ -28,7 +28,7 @@ Route::get('doi-hoc-ky/{idHocKy}', 'Auth\AuthController@changeHocKy')
 
 
 Route::prefix('common')->name('common.')->group(function () {
-    Route::get('diem-ren-luyen/api/thong-ke', 'CommonController@thongKeTheoLop')->middleware(['auth', 'role:cbl|gvcn']);
+    Route::get('diem-ren-luyen/api/thong-ke', 'CommonController@thongKeTheoLop')->middleware(['auth', 'role:cbl|gvcn|super_admin']);
     Route::get('diem-ren-luyen/api/bao-cao-excel', 'CommonController@baoCaoExcelTheoLop')->middleware(['auth', 'role:cbl|gvcn']);
 });
 
@@ -80,7 +80,7 @@ Route::get('/admin', function () {
     return view('auth.login');
 })->name('admin.login');
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super_admin'])->group(function () {
 
     Route::get('DM_MauTieuChi/api', 'Admin\DM_MauTieuChi_Controller@getData');
 
@@ -88,6 +88,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('DM_MauTieuChi/{idMauTieuChi}/tieuchi-chitiet', 'Admin\DM_MauTieuChi_Controller@getTieuChiChiTiet');
 
     Route::resource('DM_MauTieuChi', Admin\DM_MauTieuChi_Controller::class);
+
+    Route::get('DM_DiemRenLuyen/api', 'Admin\DM_DiemRenLuyen_Controller@danhSachDiemRenLuyenLop');
+    Route::get('DM_DiemRenLuyen/api/danh-gia-sv/{id}', 'Admin\DM_DiemRenLuyen_Controller@getDanhGiaSV');
+
+    Route::resource('DM_DiemRenLuyen', Admin\DM_DiemRenLuyen_Controller::class);
 
     Route::get('DM_LopHoc/api/sync-data', 'Admin\DM_LopHoc_Controller@syncLopHoc');
     Route::get('DM_LopHoc/api', 'Admin\DM_LopHoc_Controller@getData');
@@ -111,6 +116,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('DM_SinhVien/{idLop}/sync-data', 'Admin\DM_SinhVien_Controller@syncSinhVienLop');
     Route::get('DM_SinhVien/{idLop}/lop', 'Admin\DM_SinhVien_Controller@getSVLopID');
     Route::get('DM_SinhVien/{tenLop}/ten-lop', 'Admin\DM_SinhVien_Controller@getSVLopTen');
+
+    Route::get('nguoi-dung', function () {
+       return view('admin.index');
+    })->name('nguoi-dung.index');
+    Route::resource('user', UserController::class);
 });
 
 Auth::routes([

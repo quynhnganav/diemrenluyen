@@ -16,6 +16,7 @@
                         </span>
                     </a>
                 </li>
+                @role('cbl')
                  <li class='d-block'>
                     <a class='text-decoration-none text-white' href="{{ route('sv.cbl.danh-gia.index') }}">
                         <span style='color: rgb(120, 129, 149)' class='d-flex '>
@@ -24,6 +25,7 @@
                         </span>
                     </a>
                 </li>
+                @endrole
             </ul>
         </div>
     </div>

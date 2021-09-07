@@ -1,7 +1,10 @@
-import { Modal } from "antd";
+import { Modal, notification } from "antd";
 import React, { forwardRef, memo, useCallback, useImperativeHandle, useState } from "react";
 import TableDanhGia from "../TableDanhGia";
 import { axios } from "../../config";
+import * as DM_DiemRenLuyenAPI from "../../API/DM_DiemRenLuyenAPI";
+import * as DM_MauTieuChiAPI from "../../API/DM_MauTieuChiAPI";
+import "./style.scss"
 
 const ModalViewChiTiet = forwardRef(({
 
@@ -10,19 +13,38 @@ const ModalViewChiTiet = forwardRef(({
     const [visible, setVisible] = useState(false);
     const [loading, setLoading] = useState(false)
     const [dataTree, setDataTree] = useState([]);
+    const [sinhVien, setSinhVien] = useState(null)
 
     const loadData = useCallback((id) => {
         setLoading(true)
-        axios.get(`admin/DM_MauTieuChi/${id}/tieuchi-chitiet`)
+        DM_MauTieuChiAPI.getTCCT(id)
             .then(res => {
                 setDataTree(res?.data || [])
             })
             .finally(() => setLoading(false))
     }, [])
 
+    const loadDataSV = useCallback((id) => {
+        setLoading(true)
+        DM_DiemRenLuyenAPI.getDanhGiaSV(id)
+            .then(res => {
+                setDataTree(res?.data?.tieuChi || [])
+                setSinhVien(res?.data?.sinhVien)
+            })
+            .catch(err => {
+                console.log(err)
+                notification.error({
+                    message: err?.response?.data?.message,
+                })
+            })
+            .finally(() => setLoading(false))
+    }, [])
+
     const showModal = useCallback((itemInput) => {
         // setItem(itemInput)
-        loadData(itemInput?.id)
+        if (itemInput?.viewSv) {
+            loadDataSV(itemInput?.viewSv)
+        } else loadData(itemInput?.id)
         setVisible(true)
     }, [])
 
@@ -40,7 +62,10 @@ const ModalViewChiTiet = forwardRef(({
             onCancel={hiddenModal}
             onOk={hiddenModal}
             width={1200}
+            title={sinhVien?.MaSV}
             centered
+            className='modal-view-tcct'
+            footer={null}
         >
             <TableDanhGia loading={loading} tree={dataTree} />
         </Modal>

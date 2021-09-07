@@ -94,9 +94,10 @@ class PhoneNumber
                                             '029'=>'0216'
                                             )
                              );
-                             
+
     static function convert($phonenumber)
     {
+        return $phonenumber;
         if(!empty($phonenumber))
         {
             //1. Xóa ký tự trắng
@@ -132,9 +133,9 @@ class PhoneNumber
 					break;
 				}
 			}
-			
-			
-			
+
+
+
 			if($dathaythe==false)
 			{
 				foreach(PhoneNumber::$arr_Prefix['CELL'] as $key=>$value)
@@ -153,7 +154,7 @@ class PhoneNumber
 					}
 				}
 			}
-			
+
             return $phonenumber;
         }
         else

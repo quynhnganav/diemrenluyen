@@ -38,7 +38,7 @@ const TableDanhGia = forwardRef(({
     const [form] = useForm()
 
     const scrollToTop = useCallback(() => {
-        const ele = document.querySelector('.ant-table-body')
+        const ele = document.querySelector('.table-danh-gia .ant-table-body')
         ele?.scroll({
             behavior: 'smooth',
             top: 0
@@ -96,7 +96,10 @@ const TableDanhGia = forwardRef(({
             title: "Nội dung và tiêu chí đánh giá",
             dataIndex: "TenTieuChi",
             key: "TenTieuChi",
-            render: (text, record) => <p className={`TenTieuChi${record.level}`}>{genIndex(record?.level, record?.index)} {text}</p>
+            render: (text, record) => 
+            <p className={`TenTieuChi${record.level}`}>
+                {genIndex(record?.level, record?.index)} {text} {record?.isDiemHocTap? <strong>(Điểm được lấy theo hệ thống đào tạo)</strong> : ''}
+            </p>
         },
         {
             title: () => (
@@ -184,6 +187,7 @@ const TableDanhGia = forwardRef(({
                     locale={{
                         emptyText: 'Không có dữ liệu'
                     }}
+                    className='table-danh-gia'
                 />
             </Form>
         </>

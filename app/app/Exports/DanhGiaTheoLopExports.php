@@ -126,9 +126,57 @@ class DanhGiaTheoLopExports implements
         $sheet->getRowDimension(5)->setRowHeight(25);
         $sheet->getRowDimension(6)->setRowHeight(25);
         $sheet->getRowDimension(7)->setRowHeight(35);
-        for ($i=8; $i<=$conutRow; $i++) {
+        for ($i=8; $i<=$conutRow + 8; $i++) {
             $sheet->getRowDimension($i)->setRowHeight(20);
+            if ($i <= $conutRow)
+                $sheet->setCellValue("F{$i}", "=IF(E{$i}>=90,\"Xuất sắc\",IF(E{$i}>=80,\"Tốt\",IF(E{$i}>=65,\"Khá\",IF(E{$i}>=50,\"Trung bình\",\"Yếu\"))))");
         }
+
+        $sheet->mergeCells("A".($conutRow + 1).":G".($conutRow+1));
+        $sheet->setCellValue("A".($conutRow+1), "=CONCATENATE(\"(Tổng cộng danh sách có: \", COUNT(E8:E{$conutRow}), \" sinh viên được đánh giá kết quả rèn luyện)\")");
+
+        $sheet->mergeCells("A".($conutRow + 2).":B".($conutRow+2));
+        $sheet->setCellValue("A".($conutRow+2), "Trong đó:");
+        $sheet->setCellValue("B".($conutRow+3), "Xếp loại");
+        $sheet->setCellValue("C".($conutRow+3), "Số lượng sinh viên");
+        $sheet->setCellValue("D".($conutRow+3), " Chiếm tỷ lệ %");
+        $sheet->getRowDimension($conutRow + 3)->setRowHeight(35);
+
+
+
+        $sheet->setCellValue("B".($conutRow+4), "Loại xuất sắc có");
+        $sheet->setCellValue("B".($conutRow+4), "Loại xuất sắc có");
+        $sheet->setCellValue("B".($conutRow+5), "Loại tốt có");
+        $sheet->setCellValue("B".($conutRow+5), "Loại tốt có");
+        $sheet->setCellValue("B".($conutRow+6), "Loại khá có");
+        $sheet->setCellValue("B".($conutRow+6), "Loại khá có");
+        $sheet->setCellValue("B".($conutRow+7), "Loại trung bình có");
+        $sheet->setCellValue("B".($conutRow+7), "Loại trung bình có");
+        $sheet->setCellValue("B".($conutRow+8), "Loại yếu có");
+        $sheet->setCellValue("B".($conutRow+8), "Loại yếu có");
+
+        $sheet->getStyle("B".($conutRow + 3).":D".($conutRow+8))->applyFromArray([
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['rgb' => '000000']
+                ]
+            ]
+        ]);
+
+        $sheet->getStyle("B".($conutRow + 3).":D".($conutRow+3))->applyFromArray([
+            'font' => [
+                'size'  =>  14,
+                'name'  =>  'Times New Roman',
+                'bold' => TRUE
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrap' => TRUE
+            ]
+        ]);
+
         return [
             'A2' => ['alignment' => ['wrapText' => true]],
             'D7' => ['alignment' => ['wrapText' => true]],

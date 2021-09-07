@@ -24,6 +24,10 @@ class GV extends Model
         'updated_at' => 'timestamp',
     ];
 
+    protected $hidden = [
+        'deleted_at', 'created_at', 'updated_at'
+    ];
+
     public function user()
     {
         return $this->morphOne('App\\Models\\User', 'Profile');
