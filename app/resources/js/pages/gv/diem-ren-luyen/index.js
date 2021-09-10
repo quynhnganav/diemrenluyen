@@ -102,12 +102,13 @@ const GVDRL = () => {
             dataIndex: 'MaSV',
             className: 'cell-center',
             width: 100,
+            fixed: 'left',
             key: 'MaSV'
         },
         {
             title: 'Họ tên SV',
             dataIndex: 'user',
-            width: 230,
+            width: 180,
             key: 'HoTenSinhVien',
             render: (text, record) =>
                 <Tooltip placement='top' title={text?.email}>
@@ -119,7 +120,7 @@ const GVDRL = () => {
             title: 'SV đánh giá',
             dataIndex: 'danhGia',
             className: 'cell-center',
-            width: 120,
+            width: 100,
             key: 'isDanhGia',
             render: (text) => text?.SinhVienDanhGia ? `${text?.TongSoDiemSinhVien || 0}` : 'Chưa ĐG'
         },
@@ -129,22 +130,13 @@ const GVDRL = () => {
             className: 'cell-center',
             width: 120,
             key: 'cbl',
-            render: (text) => text?.CanBoLopDanhGia ? text?.TongSoDiem : 'Chưa ĐG'
+            render: (text) => text?.CanBoLopDanhGia ? `${text?.TongSoDiem} - ${renderXepLoai(text?.TongSoDiem)}` : 'Chưa đánh giá'
         },
-        {
-            title: 'Xếp loại',
-            dataIndex: 'danhGia',
-            className: 'cell-center',
-            width: 100,
-            key: 'point',
-            render: (text) => renderXepLoai(text?.TongSoDiem)
-        },
-
         {
             title: 'CVHT duyệt',
             dataIndex: 'danhGia',
             className: 'cell-center',
-            width: 140,
+            width: 100,
             key: 'cvht',
             render: (text) => text?.GiangVienDuyet ?
                 <>
@@ -159,7 +151,7 @@ const GVDRL = () => {
             title: 'CVHT nhận xét',
             dataIndex: 'danhGia',
             className: 'cell-center',
-            width: 180,
+            width: 100,
             key: 'CVHTNhanXet`',
             render: (text, record) => `${text?.GiangVienNhanXet || ''}`
         },
@@ -167,7 +159,7 @@ const GVDRL = () => {
             title: 'Ghi chú',
             dataIndex: 'TrangThai',
             className: 'cell-center',
-            width: 180,
+            width: 100,
             key: 'ghichu`',
             render: (text, record) => `${text != '0' && text || ''} ${record?.GhiChu != '0' && record?.GhiChu || ''}`
         },
@@ -176,6 +168,8 @@ const GVDRL = () => {
             dataIndex: 'id',
             key: 'id',
             className: 'cell-center',
+            width: 130,
+            fixed: 'right',
             render: (text, record, index) => <ActionItem text={text} record={record} index={index} onDuyet={onDuyet} />
         }
     ]), [state.sinhViens])
@@ -192,7 +186,7 @@ const GVDRL = () => {
                             <Row gutter={[5, 5]}>
                                 <Col>
                                     <Select
-                                        placeholder='Chọn lớp nào'
+                                        placeholder='Chọn lớp'
                                         value={state.selected}
                                         onChange={onChangeLop}
                                     >
@@ -206,7 +200,7 @@ const GVDRL = () => {
                                     </Select>
                                 </Col>
                                 <Col>
-                                    <Button type='primary' onClick={() => window.open('/common/diem-ren-luyen/api/bao-cao-excel')}>Xuất file</Button>
+                                    <Button type='primary' onClick={() => window.open(`/common/diem-ren-luyen/api/bao-cao-excel?lop=${state?.selected}`)}>Xuất file</Button>
                                 </Col>
                                 <Col>
                                     <Button type='primary' onClick={onOpenThongKe}>Xem thống kê</Button>

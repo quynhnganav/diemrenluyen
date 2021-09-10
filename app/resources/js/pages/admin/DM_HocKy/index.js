@@ -116,7 +116,7 @@ const DM_HocKy = () => {
                 title: 'Tên học kỳ',
                 dataIndex: 'TenHocKy',
                 className: 'cell-center',
-                width: 150,
+                width: 100,
                 key: 'TenHocKy'
             },
             {
@@ -129,10 +129,10 @@ const DM_HocKy = () => {
 
             },
             {
-                title: 'Đào tạo hiện hành',
+                title: 'ĐT hiện hành',
                 dataIndex: 'DaoTaoHienHanh',
                 className: 'cell-center',
-                width: 150,
+                width: 100,
                 key: 'DaoTaoHienHanh',
                 render: text => <Checkbox disabled checked={text} />
             },
@@ -141,7 +141,7 @@ const DM_HocKy = () => {
                 dataIndex: 'HienHanh',
                 key: 'HienHanh',
                 className: 'cell-center',
-                width: 150,
+                width: 100,
                 render: text => <Checkbox checked={text} />
                 // render: (text) => text ? 'Đang đồng bộ' : 'Đã đồng bộ'
             },
@@ -150,7 +150,7 @@ const DM_HocKy = () => {
                 dataIndex: 'mauTieuChi',
                 key: 'mauTieuChi',
                 className: 'cell-center',
-                width: 250,
+                width: 200,
                 render: (text, record) => record.PhatHanh ? text ? `${text?.TenMauTieuChi} -- ${text?.TongSoDiem}` : '' : (
                     <Select
                         placeholder={'Chọn mẫu tiêu chí'}
@@ -175,13 +175,14 @@ const DM_HocKy = () => {
                 dataIndex: 'PhatHanh',
                 key: 'PhatHanh',
                 className: 'cell-center',
-                width: 200,
+                width: 150,
                 render: (t) => t ? "Đã phát hành" : "Chưa phát hành"
             },
             {
                 title: '',
                 dataIndex: 'action',
                 key: 'action',
+                width: 300,
                 render: (text, record) => (
                     <Space size='middle'>
                         <Button

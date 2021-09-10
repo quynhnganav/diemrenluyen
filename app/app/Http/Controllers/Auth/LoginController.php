@@ -77,21 +77,20 @@ class LoginController extends Controller
         $hocKyHienHanhOfUser = $existingUser->HocKyHienTai_Id;
         if (empty($hocKyHienHanhOfUser)) {
             $hocKyHT = DM_HocKy::where('HienHanh', 1)->first();
-            if (empty($hocKyHT)) return redirect()->route('sv');
+            if (empty($hocKyHT)) return redirect()->route('sv.login');
             $existingUser->HocKyHienTai_Id = $hocKyHT->id;
             $hocKyHienHanhOfUser = $hocKyHT->id;
         }
         $existingUser->save();
         $hocKys = DM_HocKy::orderBy('NamBatDau', 'desc')->orderBy('TenHocKy', 'desc')->get();
 
-//        $existingUser = User::where('email', 'tthoang.19it1@vku.udn.vn')->with(['chucVu', 'hocKy'])->first();
+    //    $existingUser = User::where('email', 'natuan@vku.udn.vn')->with(['chucVu', 'hocKy'])->first();
 
         session(['HocKyHienTai_Id' => $hocKyHienHanhOfUser]);
         session([Constant::SESSION_KEY['HocKys'] => $hocKys]);
         auth()->login($existingUser, false);
 
-        return redirect()->route('sv.danh-gia.index');
-        return redirect()->route('gv.login');
+        return $existingUser->hasRole('gvcn') ? redirect()->route('gv.login') : redirect()->route('sv.danh-gia.index');
     }
 
 }

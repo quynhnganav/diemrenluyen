@@ -12,6 +12,7 @@ const SVDanhGia = () => {
     const [state, setState] = useReducer(reducer, {
         tree: [],
         dotDanhGia: null,
+        danhGia: null,
         loading: false
     });
 
@@ -29,7 +30,8 @@ const SVDanhGia = () => {
             .then(res => {
                 setState({
                     tree: res?.data?.tieuChi || [],
-                    dotDanhGia: res?.data?.dotDanhGia
+                    dotDanhGia: res?.data?.dotDanhGia,
+                    danhGia: res?.data?.danhGia
                 })
             })
             .catch(err => {
@@ -103,7 +105,7 @@ const SVDanhGia = () => {
                     <TableDanhGia
                         tree={state.tree}
                         loading={state.loading}
-                        type='SV'
+                        type={state.danhGia?.GiangVienDuyet ? null : 'SV'}
                         ref={refTableDanhGia}
                         onSuccess={onSuccess}
                     />

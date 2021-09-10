@@ -70,7 +70,8 @@ class DanhGiaController extends Controller
         $newTieuChi = $this->danhGiaService->mergeTieuChiAndDanhGia($tieuChiCT, $diem, $this->tieuChiService->diemHocTap($diemHocTap));
         return response()->json([
             'dotDanhGia' => $hocKy,
-            'tieuChi' => $newTieuChi
+            'tieuChi' => $newTieuChi,
+            'danhGia' => $diem
         ], 200);
     }
 
