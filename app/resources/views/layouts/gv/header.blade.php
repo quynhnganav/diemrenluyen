@@ -29,7 +29,7 @@
                     <img class='rounded-circle' src='/images/logo.png' />
                     <span>
                         @if (Auth::user())
-                            {{ Auth::user()->HoDem }} {{ Auth::user()->Ten }} }}
+                            {{ Auth::user()->HoDem }} {{ Auth::user()->Ten }}
                         @endif
                     </span>
                 </div>

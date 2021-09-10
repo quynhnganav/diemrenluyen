@@ -46,7 +46,7 @@ class DanhGiaTheoLopExports implements
         return [
             'A' => 10,
             'B' => 30,
-            'C' => 14,
+            'C' => 16,
             'D' => 20,
             'E' => 20,
             'F' => 20,
@@ -173,7 +173,7 @@ class DanhGiaTheoLopExports implements
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
                 'vertical' => Alignment::VERTICAL_CENTER,
-                'wrap' => TRUE
+                'wrapText' => TRUE
             ]
         ]);
 
@@ -189,7 +189,7 @@ class DanhGiaTheoLopExports implements
                 'alignment' => [
                     'horizontal' => Alignment::HORIZONTAL_CENTER,
                     'vertical' => Alignment::VERTICAL_CENTER,
-                    'wrap' => TRUE
+                    'wrapText' => TRUE
                 ]
             ],
             "D8:G{$conutRow}" => ['alignment' => [

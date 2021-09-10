@@ -32,7 +32,8 @@ class DanhGiaChiTiet extends Model
     ];
 
     protected $hidden = [
-        'deleted_at', 'created_at', 'updated_at'
+        'deleted_at', 'created_at', 'updated_at',
+        'SinhVienDanhGia', 'CanBoLopDanhGia'
     ];
 
     public function dotDanhGia() {

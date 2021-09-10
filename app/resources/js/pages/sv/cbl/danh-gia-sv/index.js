@@ -121,6 +121,8 @@ const SVDanhGia = () => {
         console.log(refModalGhiChu.current)
     }, [])
 
+    const trangThai = current?.TrangThai ? current?.TrangThai == '0' ? '' : `(${current?.TrangThai})` : state?.sinhVien?.TrangThai ? state?.sinhVien?.TrangThai == '0' ? '' : `(${state?.sinhVien?.TrangThai})` : ''
+
     return (
         <LayoutWrapper className='danh-gia-page'>
             <Row className='bg-white p-3 content'>
@@ -129,7 +131,10 @@ const SVDanhGia = () => {
                         <Col span={12}>
                             <Row>
                                 <Col>
-                                    <p>{`${current?.user?.HoDem || ''} ${current?.user?.Ten || ''} - ${current?.MaSV || ''}`}</p>
+                                    <p>
+                                        {`${current?.user?.HoDem || state?.sinhVien?.user?.HoDem || ''} ${current?.user?.Ten || state?.sinhVien?.user?.Ten || ''} - ${current?.MaSV || state?.sinhVien?.MaSV || ''} 
+                                        ${trangThai}`}
+                                    </p>
                                 </Col>
                             </Row>
                         </Col>
@@ -197,7 +202,7 @@ const SVDanhGia = () => {
                     />
                 </Col>
             </Row>
-            <ModalGhiChu 
+            <ModalGhiChu
                 ref={refModalGhiChu}
             />
         </LayoutWrapper>

@@ -108,12 +108,12 @@ const SVDanhGia = () => {
 
     const onNext = useCallback(() => {
         if (!next) return
-        history.push(`/gv/diem-ren-luyen/${next?.id}?masv=${next?.MaSV}`)
+        history.push(`/gv/diem-ren-luyen/${next?.id}`)
     }, [next])
 
     const onPrev = useCallback(() => {
         if (!prev) return
-        history.push(`/gv/diem-ren-luyen/${prev?.id}?masv=${next?.MaSV}`)
+        history.push(`/gv/diem-ren-luyen/${prev?.id}`)
     }, [prev])
 
     const gotoSVChange = useCallback((id) => {
@@ -194,7 +194,7 @@ const SVDanhGia = () => {
                                 <Col>
                                     <p>
                                         {`${current?.user?.HoDem || state?.sinhVien?.user?.HoDem || ''} ${current?.user?.Ten || state?.sinhVien?.user?.Ten || ''} - ${current?.MaSV || state?.sinhVien?.MaSV || ''} 
-                                        ${trangThai}`}
+                                        ${state.loading ? '' : trangThai}`}
                                     </p>
                                 </Col>
                             </Row>

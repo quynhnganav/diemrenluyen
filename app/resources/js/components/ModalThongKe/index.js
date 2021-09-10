@@ -163,13 +163,13 @@ const ModalThongKe = forwardRef(({
             footer={null}
             centered
             okText='Đóng'
-            title={`Thống kê`}
+            // title={`Thống kê`}
             className='modal-thong-ke'
         >
             <Row gutter={[5, 5]}>
-                <Col span={24}>
+                {/* <Col span={24}>
                     <Button onClick={loadThongKe}>Làm mới</Button>
-                </Col>
+                </Col> */}
                 <Col span={12}>
                     <ColumnChart config={config} />
                 </Col>

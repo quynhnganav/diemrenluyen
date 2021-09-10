@@ -1,4 +1,4 @@
-import { Form, InputNumber, Table } from "antd";
+import { Form, InputNumber, Table, Tooltip } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useMemo, useReducer } from "react";
 import { flattenTree, reducer, setValuesTree } from "../../utils";
@@ -70,7 +70,7 @@ const TableDanhGia = forwardRef(({
         onSuccess && onSuccess(values)
     }, [onSuccess])
 
-    
+
 
     useImperativeHandle(ref, () => ({
         submit,
@@ -96,10 +96,10 @@ const TableDanhGia = forwardRef(({
             title: "Nội dung và tiêu chí đánh giá",
             dataIndex: "TenTieuChi",
             key: "TenTieuChi",
-            render: (text, record) => 
-            <p className={`TenTieuChi${record.level}`}>
-                {genIndex(record?.level, record?.index)} {text} {record?.isDiemHocTap? <strong>(Điểm được lấy theo hệ thống đào tạo)</strong> : ''}
-            </p>
+            render: (text, record) =>
+                <p className={`TenTieuChi${record.level}`}>
+                    {genIndex(record?.level, record?.index)} {text} {record?.isDiemHocTap ? <strong>(Điểm được lấy theo hệ thống đào tạo)</strong> : ''}
+                </p>
         },
         {
             title: () => (
@@ -126,18 +126,20 @@ const TableDanhGia = forwardRef(({
             width: 130,
             key: "myPoint",
             render: (text, record) => (
-                <Form.Item name={`SoDiemSV-${record.id}`} style={{ margin: 0 }}
-                    rules={[
-                        { required: 'true', message: 'Nhập điểm' },
-                    ]}
-                >
-                    <InputNumber
-                        disabled={record.isParent || type === 'CBL' || !type || record.isDiemHocTap}
-                        min={0}
-                        max={record.SoDiem}
-                        onChange={value => onChangeValue(value, record?.id, 'SoDiemSV')}
-                    />
-                </Form.Item>
+                <Tooltip placement='top' title={record?.TenTieuChi}>
+                    <Form.Item name={`SoDiemSV-${record.id}`} style={{ margin: 0 }}
+                        rules={[
+                            { required: 'true', message: 'Nhập điểm' },
+                        ]}
+                    >
+                        <InputNumber
+                            disabled={record.isParent || type === 'CBL' || !type || record.isDiemHocTap}
+                            min={0}
+                            max={record.SoDiem}
+                            onChange={value => onChangeValue(value, record?.id, 'SoDiemSV')}
+                        />
+                    </Form.Item>
+                </Tooltip>
             )
         },
         {
@@ -153,18 +155,20 @@ const TableDanhGia = forwardRef(({
             width: 130,
             key: "CBLPoint",
             render: (text, record) => (
-                <Form.Item name={`SoDiemCBL-${record.id}`} style={{ margin: 0 }}
-                    rules={[
-                        { required: 'true', message: 'Nhập điểm' },
-                    ]}
-                >
-                    <InputNumber
-                        disabled={record.isParent || type === "SV" || !type || record.isDiemHocTap}
-                        min={0}
-                        max={record.SoDiem}
-                        onChange={value => onChangeValue(value, record?.id, 'SoDiemCBL')}
-                    />
-                </Form.Item>
+                <Tooltip placement='top' title={record?.TenTieuChi}>
+                    <Form.Item name={`SoDiemCBL-${record.id}`} style={{ margin: 0 }}
+                        rules={[
+                            { required: 'true', message: 'Nhập điểm' },
+                        ]}
+                    >
+                        <InputNumber
+                            disabled={record.isParent || type === "SV" || !type || record.isDiemHocTap}
+                            min={0}
+                            max={record.SoDiem}
+                            onChange={value => onChangeValue(value, record?.id, 'SoDiemCBL')}
+                        />
+                    </Form.Item>
+                </Tooltip>
             )
         },
     ]), [state])

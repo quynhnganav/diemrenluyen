@@ -1,4 +1,8 @@
-import { Col, notification, Row, Button, Table, Space, Tooltip, Badge } from "antd";
+import {
+    Col, notification, Row, Button, Table,
+    Space, Tooltip, Badge, Dropdown, Menu
+} from "antd";
+import { UserOutlined, MoreOutlined } from "@ant-design/icons";
 import React, { useReducer, useEffect, useCallback, useRef, useMemo } from "react";
 import LayoutWrapper from "../../../../components/LayoutWrapper";
 import { localeTable } from "../../../../constant";
@@ -60,18 +64,40 @@ const SVDanhGia = () => {
         })
     }, [state])
 
+    const handleMenuClick = (e, record) => {
+        console.log(e)
+        if (e?.key == '1') {
+            history.push(`/sv/cbl/danh-gia/${record?.id}?masv=${record?.MaSV}`)
+        }
+        if (e?.key == '2') {
+            onOpenGhiChu(record)
+        }
+    }
+
+    const menu = (item) => (
+        <Menu onClick={e => handleMenuClick(e, item)}>
+            <Menu.Item key="1" icon={<UserOutlined />}>
+                Đánh giá
+            </Menu.Item>
+            <Menu.Item key="2" icon={<UserOutlined />}>
+                Ghi chú
+            </Menu.Item>
+        </Menu>
+    );
+
     const columns = useMemo(() => ([
         {
             title: 'Mã SV',
             dataIndex: 'MaSV',
             className: 'cell-center',
             width: 100,
+            fixed: 'left',
             key: 'MaSV'
         },
         {
             title: 'Họ tên SV',
             dataIndex: 'user',
-            width: 220,
+            width: 180,
             key: 'HoTenSinhVien',
             render: (text, record) =>
                 <Tooltip placement='top' title={text?.email}>
@@ -83,7 +109,7 @@ const SVDanhGia = () => {
             title: 'Sinh viên đánh giá',
             dataIndex: 'danhGia',
             className: 'cell-center',
-            width: 150,
+            width: 100,
             key: 'isDanhGia',
             render: (text) => text?.SinhVienDanhGia ? `${text?.TongSoDiemSinhVien || 0}` : 'Chưa đánh giá'
         },
@@ -91,24 +117,15 @@ const SVDanhGia = () => {
             title: 'CBL đánh giá',
             dataIndex: 'danhGia',
             className: 'cell-center',
-            width: 150,
-            key: 'cbl',
-            render: (text) => text?.CanBoLopDanhGia ? text?.TongSoDiem : 'Chưa đánh giá'
-        },
-        {
-            title: 'Xếp loại',
-            dataIndex: 'danhGia',
-            className: 'cell-center',
             width: 130,
-            key: 'point',
-            render: (text) => renderXepLoai(text?.TongSoDiem)
+            key: 'cbl',
+            render: (text) => text?.CanBoLopDanhGia ? `${text?.TongSoDiem} - ${renderXepLoai(text?.TongSoDiem)}` : 'Chưa đánh giá'
         },
-
         {
             title: 'CVHT duyệt',
             dataIndex: 'danhGia',
             className: 'cell-center',
-            width: 150,
+            width: 100,
             key: 'cvht',
             render: (text) => text?.GiangVienDuyet ?
                 <>
@@ -123,7 +140,7 @@ const SVDanhGia = () => {
             title: 'CVHT nhận xét',
             dataIndex: 'danhGia',
             className: 'cell-center',
-            width: 200,
+            width: 100,
             key: 'CVHTNhanXet`',
             render: (text, record) => `${text?.GiangVienNhanXet || ''}`
         },
@@ -131,7 +148,7 @@ const SVDanhGia = () => {
             title: 'Ghi chú',
             dataIndex: 'TrangThai',
             className: 'cell-center',
-            width: 200,
+            width: 130,
             key: 'ghichu`',
             render: (text, record) => `${text != '0' && text || ''} ${record?.GhiChu != '0' && record?.GhiChu || ''}`
         },
@@ -139,18 +156,13 @@ const SVDanhGia = () => {
             title: '',
             dataIndex: 'id',
             key: 'id',
+            width: 50,
+            fixed: 'right',
             className: 'cell-center',
             render: (text, record, index) => (
                 <Space size='middle'>
-                    <Button
-                        type='primary'
-                        onClick={() =>
-                            history.push(`/sv/cbl/danh-gia/${text}?prev=${state.sinhViens[index - 1]?.id}&next=${state.sinhViens[index + 1]?.id}&masv=${record?.MaSV}`)
-                        }
-                    >
-                        Đánh giá
-                    </Button>
-                    <Button type='primary' onClick={() => onOpenGhiChu(record)}>Ghi chú</Button>
+                    <Dropdown.Button overlay={menu(record)} icon={<MoreOutlined />} className='dropdown-menu-custom-more-grid'>
+                    </Dropdown.Button>
                 </Space>
             )
         }
@@ -167,7 +179,7 @@ const SVDanhGia = () => {
                         <Col>
                             <Row gutter={[5, 5]}>
                                 <Col>
-                                    <Button type='primary' onClick={() =>  window.open('/common/diem-ren-luyen/api/bao-cao-excel')}>Báo cáo</Button>
+                                    <Button type='primary' onClick={() => window.open('/common/diem-ren-luyen/api/bao-cao-excel')}>Báo cáo</Button>
                                 </Col>
                                 <Col>
                                     <Button type='primary' onClick={onOpenThongKe}>Xem thống kê</Button>
@@ -189,16 +201,13 @@ const SVDanhGia = () => {
                         rowKey={(v) => v?.id}
                         pagination={false}
                         locale={localeTable}
-                        rowSelection={{
-                            type: 'checkbox'
-                        }}
                     />
                 </Col>
             </Row>
-            <ModalGhiChu 
+            <ModalGhiChu
                 ref={refModalGhiChu}
             />
-            <ModalThongKe 
+            <ModalThongKe
                 ref={refModalThongKe}
             />
         </LayoutWrapper>

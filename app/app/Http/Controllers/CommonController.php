@@ -63,6 +63,7 @@ class CommonController extends Controller
         $gvDuyet = $request->duyet ? true : false;
         if (!empty($user->chucVu->LopHoc_Id)) $LopHoc_Id = $user->chucVu->LopHoc_Id;
         $lop = $this->lopHoc_Repository->find($LopHoc_Id, ['GV.user']);
+        if (empty($lop)) abort(404, 'Không tìm thấy lớp học');
         $hocKyId = $user[Constant::SESSION_KEY['HocKyHienTai_Id']] ?? 7;
         $hocKy = $this->hocKy_Repository->find($hocKyId);
         return $this->excelService->baoCaoExcelTheoLop($lop, $hocKy, $gvDuyet);

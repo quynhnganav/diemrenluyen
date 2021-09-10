@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\EndUser;
 
+use Illuminate\Support\Facades\Auth;
 use App\Common\Constant;
 use App\Http\Controllers\Controller;
 use App\Repositories\DanhGiaChiTiet\DanhGiaChiTiet_Repository;
@@ -13,7 +14,6 @@ use App\Services\DanhGiaService;
 use App\Services\DTAPIService;
 use App\Services\TieuChiService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class GVController extends Controller
 {
