@@ -4,6 +4,11 @@
             <div>
                 <i class='fa fa-bars' style='font-size: 26px; cursor: pointer' onClick='openSider()'> </i>
             </div>
+            @php
+                use App\Models\DM_DotDanhGia; 
+                $hienHanh = DM_DotDanhGia::where('HienHanh', 1)->with('hocKy')->first();
+                if (!empty($hienHanh)) echo("<div><span>Học kỳ {$hienHanh->hocKy->hocky} năm học {$hienHanh->hocKy->nambatdau} - {$hienHanh->hocKy->namketthuc}</span></div>")
+            @endphp
             <div class='nav-right position-relative'>
                 <div onClick='openDropdown()'>
                     <img class='rounded-circle' src='/images/logo.png' />
