@@ -14,7 +14,7 @@ use App\Models\GV;
 use App\Models\SV;
 use App\Models\DM_LopHoc;
 use App\Models\table_namhoc_hocky;
-
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
@@ -37,7 +37,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin';
+    protected $redirectTo = '/sv';
 
     /**
      * Create a new controller instance.
@@ -46,7 +46,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest')->except(['logout', 'getLogout']);
     }
 
     public function username()
@@ -73,7 +73,7 @@ class LoginController extends Controller
         }
 
         $email = $user->getEmail();
-        $email = 'natuan@vku.udn.vn';
+        // $email = 'natuan@vku.udn.vn';
 
         $sv = SV::where('email', $email)->first();
         if (!empty($sv)) {
@@ -96,8 +96,14 @@ class LoginController extends Controller
             auth()->login($user, false);
             return redirect()->route('gv.login');
         }
-        
+        return redirect()->route('sv.login');
+    }
 
+    public function getLogout(Request $request)
+    {
+        return Auth::user();
+        auth()->logout();
+        $request->session()->flush();
         return redirect()->route('sv.login');
     }
 

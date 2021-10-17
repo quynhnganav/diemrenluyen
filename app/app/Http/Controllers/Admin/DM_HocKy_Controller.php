@@ -39,7 +39,7 @@ class DM_HocKy_Controller extends Controller
         $dotDanhGia = $this->dotDanhGia_Repository->find($id);
         if (empty($dotDanhGia)) abort(404, "Không tồn tại");
         $this->dotDanhGia_Repository->update($id, [
-            "Khoa" => !$dotDanhGia->Khoa
+            "Khoa" => $dotDanhGia->Khoa ? 0 : 1
         ]);
         return response()->json([
             "message" => "Thành công"

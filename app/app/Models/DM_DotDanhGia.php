@@ -17,7 +17,8 @@ class DM_DotDanhGia extends Model
     protected $fillable = [
         'HienHanh',
         'MauTieuChi_Id',
-        'HocKy_Id'
+        'HocKy_Id',
+        'Khoa'
     ];
 
     protected $casts = [

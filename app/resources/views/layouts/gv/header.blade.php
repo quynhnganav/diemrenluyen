@@ -5,7 +5,7 @@
                 <i class='fa fa-bars' style='font-size: 26px; cursor: pointer' onClick='openSider()'> </i>
             </div>
             <div class='nav-right position-relative'>
-                <div>
+                <div onClick='openDropdown()'>
                     <img class='rounded-circle' src='/images/logo.png' />
                     <span>
                         @if (!empty(Session::get('gv')))
@@ -13,20 +13,28 @@
                         @endif
                     </span>
                 </div>
-                <div class='position-absolute user-dropdown'>
+                <div id="drop-down" class='position-absolute user-dropdown d-none'>
                     <div>
-                        <div class='dropdown-arrow'></div>
+                        <div class='dropdown-arrow' style="
+                        position: absolute;
+                        display: block;
+                        width: 8.5px;
+                        background: transparent;
+                        height: 8.5px;
+                        border: 4.25px solid white;
+                        transform: rotate(45deg);
+                        /* z-index: -1; */
+                        top: -5px;
+                        left: 71px;
+                    "></div>
                         <div class='user-dropdown-content bg-white '
-                        style='padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);'>
-                        <a href='/' class='dropdown-tag'>
-                            <span><i class='fa fa-sign-out'></i></span>
-                            <span>Logout</span>
-                        </a>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
-{{--                                <span><i class='fa fa-sign-out'></i></span>--}}
-{{--                                <span>Logout</span>--}}
+                        style='box-shadow: rgb(0 0 0 / 20%) 0px 2px 10px; border-radius: 4px; '>
+                            <a  href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();"
+                                class='dropdown-tag w-100 d-flex' style="padding: 7px 15px">
+                                <span><i class='fa fa-sign-out'></i></span>
+                                <span class="ps-2">Logout</span>
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf

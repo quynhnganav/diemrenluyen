@@ -2,7 +2,6 @@ import { differenceBy, isEmpty } from "lodash";
 
 export const ObjToArrayThongKe = (input) => {
     const total = input?.total ?? 0;
-    console.log(total)
     return ([
         {
             id: 'xuatsac',
