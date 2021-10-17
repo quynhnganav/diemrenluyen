@@ -67,6 +67,7 @@ const TableDanhGia = forwardRef(({
     }, [form])
 
     const onFinish = useCallback((values) => {
+        console.log(values)
         onSuccess && onSuccess(values)
     }, [onSuccess])
 
@@ -172,6 +173,8 @@ const TableDanhGia = forwardRef(({
             )
         },
     ]), [state])
+
+    console.log(state.tieuChis)
 
     return (
         <>

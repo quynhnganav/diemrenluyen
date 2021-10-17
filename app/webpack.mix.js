@@ -39,6 +39,7 @@ mix.babelConfig({
         ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "less" }]
     ]
 })
+// https://laravel-mix.com/docs/6.0/upgrade
 
 mix.webpackConfig({
     resolve: {

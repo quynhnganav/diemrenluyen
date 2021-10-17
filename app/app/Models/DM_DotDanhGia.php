@@ -6,31 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\DM_DotDanhGia;
 
-class DM_HocKy extends Model
+class DM_DotDanhGia extends Model
 {
 
     use SoftDeletes;
 
-    protected $table = 'DM_HocKy';
+    protected $table = 'table_DRL_DM_DotDanhGia';
     public static $snakeAttributes = false;
 
     protected $fillable = [
-        'idDaoTao',
-        'MauTieuChi_Id',
-        'TenHocKy',
-        'NamBatDau',
-        'NamKetThuc',
-        'DaoTaoHienHanh',
         'HienHanh',
-        'PhatHanh',
+        'MauTieuChi_Id',
+        'HocKy_Id'
     ];
 
     protected $casts = [
-        'DaoTaoHienHanh' => 'boolean',
+        'Khoa' => 'boolean',
         'HienHanh' => 'boolean',
         'created_at' => 'timestamp',
         'updated_at' => 'timestamp',
-        'PhatHanh' => 'boolean'
+        // 'PhatHanh' => 'boolean'
     ];
 
     protected $hidden = [
@@ -43,6 +38,10 @@ class DM_HocKy extends Model
 
     public function mauTieuChi() {
         return $this->belongsTo(DM_MauTieuChi::class, 'MauTieuChi_Id', 'id');
+    }
+
+    public function hocKy() {
+        return $this->hasOne(table_namhoc_hocky::class, 'namhoc_key', 'HocKy_Id');
     }
 
 }

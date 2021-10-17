@@ -11,7 +11,7 @@ class TieuChiChiTiet extends Model
 
     use SoftDeletes, NodeTrait;
 
-    protected $table = 'TieuChiChiTiet';
+    protected $table = 'table_DRL_TieuChiChiTiet';
     public static $snakeAttributes = false;
 
     protected $fillable = [

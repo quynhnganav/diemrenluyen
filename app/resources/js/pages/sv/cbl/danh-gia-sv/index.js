@@ -123,6 +123,8 @@ const SVDanhGia = () => {
 
     const trangThai = current?.TrangThai ? current?.TrangThai == '0' ? '' : `(${current?.TrangThai})` : state?.sinhVien?.TrangThai ? state?.sinhVien?.TrangThai == '0' ? '' : `(${state?.sinhVien?.TrangThai})` : ''
 
+    console.log(dsSinhViens)
+
     return (
         <LayoutWrapper className='danh-gia-page'>
             <Row className='bg-white p-3 content'>
@@ -132,7 +134,7 @@ const SVDanhGia = () => {
                             <Row>
                                 <Col>
                                     <p>
-                                        {`${current?.user?.HoDem || state?.sinhVien?.user?.HoDem || ''} ${current?.user?.Ten || state?.sinhVien?.user?.Ten || ''} - ${current?.MaSV || state?.sinhVien?.MaSV || ''} 
+                                        {`${current?.hodem || state?.sinhVien?.hodem || ''} ${current?.ten || state?.sinhVien?.ten || ''} - ${current?.masv || state?.sinhVien?.masv || ''} 
                                         ${trangThai}`}
                                     </p>
                                 </Col>
@@ -159,7 +161,7 @@ const SVDanhGia = () => {
                                             {
                                                 dsSinhViens?.map(d => (
                                                     <Option value={d?.id} key={d?.id}>
-                                                        {`${d?.MaSV || ''} - ${d?.user?.HoDem || ''} ${d?.user?.Ten || ''}`}
+                                                        {`${d?.masv || ''} - ${d?.hodem || ''} ${d?.ten || ''}`}
                                                     </Option>
                                                 ))
                                             }

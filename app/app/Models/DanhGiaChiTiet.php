@@ -11,7 +11,7 @@ class DanhGiaChiTiet extends Model
 
     use SoftDeletes;
 
-    protected $table = 'DanhGiaChiTiet';
+    protected $table = 'table_DRL_DanhGiaChiTiet';
     public static $snakeAttributes = false;
 
     protected $fillable = [
@@ -33,11 +33,11 @@ class DanhGiaChiTiet extends Model
 
     protected $hidden = [
         'deleted_at', 'created_at', 'updated_at',
-        'SinhVienDanhGia', 'CanBoLopDanhGia'
+        // 'SinhVienDanhGia', 'CanBoLopDanhGia'
     ];
 
     public function dotDanhGia() {
-        return $this->belongsTo(DM_HocKy::class, 'HocKy_Id');
+        return $this->belongsTo(DM_DotDanhGia::class, 'HocKy_Id');
     }
 
     public function sinhVien() {

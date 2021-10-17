@@ -4,32 +4,12 @@
             <div>
                 <i class='fa fa-bars' style='font-size: 26px; cursor: pointer' onClick='openSider()'> </i>
             </div>
-            @if(session(\App\Common\Constant::SESSION_KEY['HocKys']))
-                <select
-                    class="form-select"
-                    aria-label="Chọn học kỳ"
-                    style="width: auto"
-                    onchange="location = this.value"
-                >
-                    @foreach(session(\App\Common\Constant::SESSION_KEY['HocKys']) as $hocKy)
-                        <option
-                            data-url="{{ route('doiHocKy', $hocKy->id) }}"
-                            value="{{ route('doiHocKy', $hocKy->id) }}"
-                            {{ Auth::user()->HocKyHienTai_Id == $hocKy->id ? 'selected' : '' }}
-                        >
-                            <a href="{{ route('doiHocKy', $hocKy->id) }}">
-                                Học kỳ {{ $hocKy->TenHocKy }} ({{ $hocKy->NamBatDau }} - {{ $hocKy->NamKetThuc }})
-                            </a>
-                        </option>
-                    @endforeach
-                </select>
-            @endif
             <div class='nav-right position-relative'>
                 <div>
                     <img class='rounded-circle' src='/images/logo.png' />
                     <span>
-                        @if (Auth::user())
-                            {{ Auth::user()->HoDem }} {{ Auth::user()->Ten }}
+                        @if (!empty(Session::get('gv')))
+                        {{ Session::get('gv')->chucdanh }}.{{ Session::get('gv')->hodem }} {{ Session::get('gv')->ten }} 
                         @endif
                     </span>
                 </div>

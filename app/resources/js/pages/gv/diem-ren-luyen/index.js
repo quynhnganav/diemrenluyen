@@ -99,11 +99,11 @@ const GVDRL = () => {
     const columns = useMemo(() => ([
         {
             title: 'Mã SV',
-            dataIndex: 'MaSV',
+            dataIndex: 'masv',
             className: 'cell-center',
             width: 100,
             fixed: 'left',
-            key: 'MaSV'
+            key: 'masv'
         },
         {
             title: 'Họ tên SV',
@@ -113,7 +113,7 @@ const GVDRL = () => {
             render: (text, record) =>
                 <Tooltip placement='top' title={text?.email}>
                     <Badge status={(record?.danhGia?.SinhVienDanhGia && record?.danhGia?.CanBoLopDanhGia) ? 'success' : record?.danhGia?.SinhVienDanhGia || record?.danhGia?.CanBoLopDanhGia ? 'warning' : 'error'} />
-                    {`${text?.HoDem} ${text?.Ten}`}
+                    {`${record?.hodem} ${record?.ten}`}
                 </Tooltip>
         },
         {
@@ -193,7 +193,7 @@ const GVDRL = () => {
                                         {
                                             state.lopHocs.map(l => (
                                                 <Option value={l.id} key={l.id}>
-                                                    {l.TenLopHoc}
+                                                    {l.tenlop}
                                                 </Option>
                                             ))
                                         }

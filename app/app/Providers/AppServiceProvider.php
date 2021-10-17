@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Repositories\DM_DotDanhGia\DanhGia_ChiTiet_ChiTiet_Repository;
-use App\Repositories\DM_HocKy\DM_HocKy_Repository;
+use App\Repositories\DanhGiaChiTiet\DanhGia_ChiTiet_ChiTiet_Repository;
+use App\Repositories\DM_DotDanhGia\DM_DotDanhGia_Repository;
 use App\Repositories\DM_MauTieuChi\DM_MauTieuChi_Repository;
 use App\Repositories\GV\GV_Repository;
 use App\Repositories\SV\SV_Repository;
@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
         DanhGiaService::class => DanhGiaService::class,
         ExcelService::class => ExcelService::class,
         DanhGia_ChiTiet_ChiTiet_Repository::class => DanhGia_ChiTiet_ChiTiet_Repository::class,
-        DM_HocKy_Repository::class => DM_HocKy_Repository::class,
+        DM_DotDanhGia_Repository::class => DM_DotDanhGia_Repository::class,
         DM_MauTieuChi_Repository::class => DM_MauTieuChi_Repository::class,
         SV_Repository::class => SV_Repository::class,
         GV_Repository::class => GV_Repository::class,

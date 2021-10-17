@@ -18,6 +18,7 @@ const SVDanhGia = () => {
 
     const [state, setState] = useReducer(reducer, {
         sinhViens: [],
+        LopHoc_Id: null,
         loading: false
     });
 
@@ -38,13 +39,11 @@ const SVDanhGia = () => {
         DanhGiaAPI.getCBLDanhSachSV()
             .then(res => {
                 setState({
-                    sinhViens: res?.data
+                    sinhViens: res?.data?.sinhViens,
+                    LopHoc_Id: res?.data?.LopHoc_Id,
+                    DotDanhGia_Id: res?.data?.DotDanhGia_Id
                 })
-                setIdsSv(res?.data?.map(s => ({
-                    id: s?.id,
-                    MaSV: s?.MaSV,
-                    user: s?.user
-                })))
+                setIdsSv(res?.data?.sinhViens)
             })
             .catch(err => {
                 notification.warning({
@@ -60,7 +59,8 @@ const SVDanhGia = () => {
 
     const onOpenThongKe = useCallback((value) => {
         refModalThongKe?.current?.showModal({
-            LopHoc_Id: state?.selected
+            HocKy_Id: state.DotDanhGia_Id,
+            LopHoc_Id: state?.LopHoc_Id
         })
     }, [state])
 
@@ -102,7 +102,7 @@ const SVDanhGia = () => {
             render: (text, record) =>
                 <Tooltip placement='top' title={text?.email}>
                     <Badge status={(record?.danhGia?.SinhVienDanhGia && record?.danhGia?.CanBoLopDanhGia) ? 'success' : record?.danhGia?.SinhVienDanhGia || record?.danhGia?.CanBoLopDanhGia ? 'warning' : 'error'} />
-                    {`${text?.HoDem} ${text?.Ten}`}
+                    {`${record?.hodem} ${record?.ten}`}
                 </Tooltip>
         },
         {
@@ -179,7 +179,7 @@ const SVDanhGia = () => {
                         <Col>
                             <Row gutter={[5, 5]}>
                                 <Col>
-                                    <Button type='primary' onClick={() => window.open('/common/diem-ren-luyen/api/bao-cao-excel')}>Báo cáo</Button>
+                                    <Button type='primary' onClick={() => window.open(`/common/diem-ren-luyen/api/bao-cao-excel?lop=${state.LopHoc_Id}&dotdanhgia=${state.DotDanhGia_Id}`)}>Báo cáo</Button>
                                 </Col>
                                 <Col>
                                     <Button type='primary' onClick={onOpenThongKe}>Xem thống kê</Button>

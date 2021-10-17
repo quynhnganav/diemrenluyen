@@ -2,28 +2,36 @@ import { axios } from "../config";
 const queryString = require('query-string');
 
 const getAllHocKy = (filter) => {
-    const route = `/admin/DM_HocKy/api?${queryString.stringify(filter, { skipNull: true, skipEmptyString: true })}`;
+    const route = `/admin/DM_DotDanhGia/api/hocky?${queryString.stringify(filter, { skipNull: true, skipEmptyString: true })}`;
     return axios.get(route);
 }
 
-const syncDataHocKy = (filter) => {
-    const route = `/admin/DM_HocKy/api/sync-data?${queryString.stringify(filter, { skipNull: true, skipEmptyString: true })}`;
+const getAllDotDanhGia = (filter) => {
+    const route = `/admin/DM_DotDanhGia/api?${queryString.stringify(filter, { skipNull: true, skipEmptyString: true })}`;
     return axios.get(route);
-};
+}
 
-const update = (id, payload) => {
-    const route = `/admin/DM_HocKy/${id}`;
-    return axios.put(route, payload);
-};
+const createDotDanhGia = (payload) => {
+    const route = `/admin/DM_DotDanhGia`;
+    return axios.post(route, payload);
+}
 
-const updateHienHanh = (id, payload) => {
-    const route = `/admin/DM_HocKy/api/update-hienhanh/${id}`;
+const updateDotDanhGia = (id, payload) => {
+    const route = `/admin/DM_DotDanhGia/${id}`;
     return axios.put(route, payload);
-};
+}
+
+const updateHienHanh = (id) => {
+    const route = `/admin/DM_DotDanhGia/api/update-hienhanh/${id}`;
+    return axios.put(route);
+}
+
+
 
 export {
     getAllHocKy,
-    syncDataHocKy,
-    update,
+    createDotDanhGia,
+    updateDotDanhGia,
+    getAllDotDanhGia,
     updateHienHanh
 }

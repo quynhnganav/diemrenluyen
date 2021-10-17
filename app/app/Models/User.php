@@ -23,21 +23,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'HocKyHienTai_Id',
-        'Profile_id',
-        'Profile_type',
-        'Ten',
-        'HoDem',
-        'HoTenKhongDau',
-        'email',
-        'username',
-        'picture',
-        'SoDienThoai',
-        'SoDienThoaiGiaDinh',
-        'NgaySinh',
-        'GioiTinh',
-        'isAdmin',
-        'isRoot'
+        // 'username',
+        // 'password',
     ];
 
     /**
@@ -59,18 +46,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'created_at' => 'timestamp',
         'updated_at' => 'timestamp',
-        "isAdmin" => 'boolean',
-        "isRoot" => 'boolean',
+        // "isAdmin" => 'boolean',
+        // "isRoot" => 'boolean',
     ];
 
 
-    public function chucVu()
+    public function isGV()
     {
-        return $this->morphTo(__FUNCTION__, 'Profile_type', 'Profile_id');
+        return $this->hasOne(GV::class, 'username', 'username');
     }
 
-    public function hocKy() {
-        return $this->belongsTo(DM_HocKy::class, 'HocKyHienTai_Id');
+    public function isSV()
+    {
+        return $this->hasOne(SV::class, 'username', 'masv');
     }
 
 }

@@ -6,6 +6,5 @@ use App\Repositories\RepositoryInterface;
 
 interface DM_LopHoc_RepositoryInterface extends RepositoryInterface
 {
-    public function syncLopHoc();
     public function getLopHocOfGV($idGV);
 }

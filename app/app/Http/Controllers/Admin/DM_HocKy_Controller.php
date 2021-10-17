@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Repositories\DM_HocKy\DM_HocKy_Repository;
+use App\Repositories\DM_DotDanhGia\DM_DotDanhGia_Repository;
 use App\Repositories\DM_MauTieuChi\DM_MauTieuChi_Repository;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
@@ -11,26 +11,32 @@ use Illuminate\Http\Request;
 
 use App\Services\DTAPIService;
 use App\Models\DM_HocKy;
+use App\Models\table_namhoc_hocky;
 
 class DM_HocKy_Controller extends Controller
 {
 
     private $apiDaoTao;
-    private $hocKy_Repository, $mauTieuChi_Repository;
+    private $dotDanhGia_Repository, $mauTieuChi_Repository;
 
     public function __construct(
         DTAPIService $daotaoAPI,
-        DM_HocKy_Repository $hocKy_Repository,
+        DM_DotDanhGia_Repository $dotDanhGia_Repository,
         DM_MauTieuChi_Repository $mauTieuChi_Repository
     ) {
         $this->apiDaoTao = $daotaoAPI;
-        $this->hocKy_Repository = $hocKy_Repository;
+        $this->dotDanhGia_Repository = $dotDanhGia_Repository;
         $this->mauTieuChi_Repository = $mauTieuChi_Repository;
     }
 
     public function getData(Request $request) {
-        $hocKys = $this->hocKy_Repository->getAll(['mauTieuChi'], 'NamKetThuc desc, TenHocKy desc');
+        $hocKys = $this->dotDanhGia_Repository->getAll(['mauTieuChi', 'hocKy'], 'HocKy_Id desc');
         return response()->json(json_decode($hocKys), 200);
+    }
+
+    public function getHocKy()
+    {
+        return table_namhoc_hocky::orderBy('namhoc_key', 'desc')->get();
     }
 
     public function index()
@@ -38,31 +44,43 @@ class DM_HocKy_Controller extends Controller
        return view('admin.index');
     }
 
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'HocKy_Id' => 'required|exists:table_namhoc_hocky,namhoc_key|unique:DM_DotDanhGia,HocKy_Id,NULL,id,deleted_at,NULL',
+            'MauTieuChi_Id' => 'exists:DM_MauTieuChi,id,PhatHanh,1,deleted_at,NULL',
+        ]);
+        $dotDanhGia = $this->dotDanhGia_Repository->create([
+            'HocKy_Id' => $request->HocKy_Id,
+            'MauTieuChi_Id' => $request->MauTieuChi_Id,
+        ]);
+        return response()->json(json_decode($dotDanhGia), 201);
+    }
+
+
     public function syncHocKy()
     {
-        $this->hocKy_Repository->syncHocKy();
+        $this->dotDanhGia_Repository->syncHocKy();
        return response()->json(["message" => "Đồng bộ thành công"], 200);
     }
 
     public function update(Request $request, $id) {
-        $hocKy = $this->hocKy_Repository->find($id);
+        $hocKy = $this->dotDanhGia_Repository->find($id);
         if (empty($hocKy)) abort(404, "Không tìm thấy học kỹ");
         $mauTieuChi_Id = $request->mauTieuChi_Id ?? $hocKy->MauTieuChi_Id;
-        $phatHanh = $request->phatHanh ?? $hocKy->PhatHanh;
         $mauTieuChi = $this->mauTieuChi_Repository->find($mauTieuChi_Id);
         if (empty($mauTieuChi)) abort(404, "Không tìm thấy mẫu tiêu chí");
         if (!$mauTieuChi->PhatHanh) abort(403, "Mẫu tiêu chí chưa được phát hành");
-        if ($phatHanh && empty($mauTieuChi_Id)) abort(403, "Chưa chọn mẫu tiêu chí cho học kỳ");
-        return $this->hocKy_Repository->update($id, [
-           'PhatHanh' =>  $phatHanh,
+        return $this->dotDanhGia_Repository->update($id, [
+        //    'PhatHanh' =>  $phatHanh,s
             'MauTieuChi_Id' => $mauTieuChi_Id
         ]);
     }
 
     public function updateHienHanh($id) {
-        $hocKy = $this->hocKy_Repository->find($id);
+        $hocKy = $this->dotDanhGia_Repository->find($id);
         if (empty($hocKy)) abort(404, "Không tìm thấy học kỹ");
-        return $this->hocKy_Repository->updateHienHanh($id);
+        return $this->dotDanhGia_Repository->updateHienHanh($id);
     }
 
 }

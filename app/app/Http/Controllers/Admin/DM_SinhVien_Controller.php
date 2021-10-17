@@ -39,9 +39,6 @@ class DM_SinhVien_Controller extends Controller
 
     public function index()
     {
-    //     $sv = SV::with('user', 'lopHoc')->paginate(20);
-    //     // $sv = $sv.map()
-    //    return response()->json($sv, 200);
         return view('admin.index');
     }
 
@@ -49,67 +46,6 @@ class DM_SinhVien_Controller extends Controller
     {
         $sv = SV::with('user', 'lopHoc')->findOrFail($id);
        return response()->json($sv, 200);
-    }
-
-    public function syncAll() {
-        $lops = DM_LopHoc::all();
-        DM_LopHoc::where('id', '>', -1)->update([
-           'isSync' => true
-        ]);
-        $lops->each(function ($lop, $index) {
-            ProcessSyncSinhVien::dispatch($lop->id)->onQueue('SyncSV')->delay(now()->addSeconds($index));
-        });
-        return response()->json(["message" => "In Progess"], 200);
-    }
-
-    public function syncSinhVienLop($idLop)
-    {
-        $sv = $this->apiDaoTao->getDanhSachSVLop($idLop);
-        collect($sv)->each(function ($item) use($idLop) {
-            try {
-                $item = (object) $item;
-                $newSv = SV::updateOrCreate(['id' => $item->id], [
-                    'id' => $item->id,
-                    'LopHoc_Id' => $idLop,
-                    'MaSV' => $item->masv,
-                    'TenNganh' => $item->tennganh,
-                    'TrangThai' => $item->trangthai,
-                    'GhiChu' => $item->ghichu,
-                ]);
-
-                $user = User::updateOrCreate(['email' => $item->email], [
-                    'Profile_id' => $newSv->id,
-                    'Profile_type' => 'App\Models\SV',
-                    'Ten' => $item->ten,
-                    'HoDem' => $item->hodem,
-                    'HoTenKhongDau' => Str::slug($item->hodem." ".$item->ten, " "),
-                    'email' => $item->email,
-                    'username' => $item->email,
-                    'SoDienThoai' => PhoneNumber::convert($item->dienthoai),
-                    'SoDienThoaiGiaDinh' => PhoneNumber::convert($item->dienthoaigiadinh),
-//                'NgaySinh' => $item->ngaysinh,
-                    'GioiTinh' => $item->gioitinh,
-                ]);
-                $user->assignRole('sv');
-            } catch (\Exception $exception){
-
-            }
-       });
-       return response()->json(["message" => "Đồng bộ thành công"], 200);
-    }
-
-    public function getSVLopID($idLop)
-    {
-        $sv = SV::where('LopHoc_Id', $idLop)->with('user', 'lopHoc')->paginate(50);
-        return response()->json($sv, 200);
-    }
-
-    public function getSVLopTen($tenLop)
-    {
-        $sv = SV::whereHas('lopHoc', function ($query) use ($tenLop) {
-            return $query->where('TenKhongDau', '=', Str::slug($tenLop, " "));
-        })->with('user')->orderBy('MaSV')->paginate(50);
-        return response()->json($sv, 200);
     }
 
 }

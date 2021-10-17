@@ -9,11 +9,11 @@
                 <div class="dropdown">
                     <button class="btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                         <span>
-                            @if (Auth::user())
-                                {{ Auth::user()->HoDem }} {{ Auth::user()->Ten }} - {{ Auth::user()->roles->first()->name  }}
+                            @if (!empty(Session::get('sv')))
+                                {{ Session::get('sv')->hodem }} {{ Session::get('sv')->ten }} - {{ Session::get('sv')->lopsh_id  }}
                             @endif
                         </span>
-                        <img class='rounded-circle' src="{{  empty(Auth::user()->picture) ?'/images/logo.png' : Auth::user()->picture }}"  />
+                        {{-- <img class='rounded-circle' src="{{  empty(Auth::user()->picture) ?'/images/logo.png' : Auth::user()->picture }}"  /> --}}
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                       <li>

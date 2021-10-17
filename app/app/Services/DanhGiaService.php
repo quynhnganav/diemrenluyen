@@ -41,15 +41,25 @@ class DanhGiaService
             if (!$check) array_push($errs, $k);
             return $errs;
         }, []);
+        $tieuChiFilter = collect($tieuChi)->reject(function ($t, $key) {
+            return empty($t->parent_id) || $t->SoDiem == 0;
+        });
+        $tieuChiIds = $tieuChiFilter->map(function ($item, $key) {
+            return $item->id;
+        })->all();
+        $newInput = [];
+        foreach ($tieuChiIds as $id) {
+            $newInput[$id] = $input[$id];
+        }
         if (count($errors) == 0) {
-            $total = collect($tieuChi)->reduce(function ($prev, $t) use($input, $diemHocTap) {
+            $total = $tieuChiFilter->reduce(function ($prev, $t) use($newInput, $diemHocTap) {
                     if ($t->isDiemHocTap) return $diemHocTap + $prev;
-                    return empty($t->parent_id) || $t->SoDiem == 0 ? $prev : $prev + (empty($input[$t->id]) ? 0 : $input[$t->id]);
+                    return $prev + (empty($newInput[$t->id]) ? 0 : $newInput[$t->id]);
             }, 0);
         }
         $idDiemHocTap = collect($tieuChi)->where('isDiemHocTap', true)->first()->id;
-        $input[$idDiemHocTap] = $diemHocTap;
-        return [count($errors) == 0, $errors, $total, $input];
+        $newInput[$idDiemHocTap] = $diemHocTap;
+        return [count($errors) == 0, $errors, $total, $newInput];
     }
 
     function mergeTieuChiAndDanhGia($tieuChi, $danhGia, $diemHocTap = 0) {

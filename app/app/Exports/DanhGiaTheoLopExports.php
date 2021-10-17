@@ -57,10 +57,10 @@ class DanhGiaTheoLopExports implements
     public function styles(Worksheet $sheet)
     {
 
-        $tenHocKy = Helper::hocKyToLaMa($this->hocKy->TenHocKy);
+        $tenHocKy = Helper::hocKyToLaMa($this->hocKy->hocky);
         $conutRow = (count($this->danhGias) + 7);
 
-        $sheet->setTitle("{$this->lop->TenLopHoc}");
+        $sheet->setTitle("{$this->lop->tenlop}");
 
         $sheet->mergeCells('A1:C1');
         $sheet->mergeCells('A2:C2');
@@ -78,8 +78,8 @@ class DanhGiaTheoLopExports implements
         $sheet->setCellValue('D1', 'CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM');
         $sheet->setCellValue('D2', 'Độc lập - Tự do - Hạnh phúc');
         $sheet->setCellValue('A4', 'BẢNG TỔNG HỢP KẾT QUẢ RÈN LUYỆN CỦA SINH VIÊN');
-        $sheet->setCellValue('A5', "HỌC KỲ {$tenHocKy} NĂM HỌC {$this->hocKy->NamBatDau} - {$this->hocKy->NamKetThuc}");
-        $sheet->setCellValue('A6', "Lớp: {$this->lop->TenLopHoc} Khóa: 2018");
+        $sheet->setCellValue('A5', "HỌC KỲ {$tenHocKy} NĂM HỌC {$this->hocKy->nambatdau} - {$this->hocKy->namketthuc}");
+        $sheet->setCellValue('A6', "Lớp: {$this->lop->tenlop} Khóa: 2018");
         $sheet->setCellValue('A7', "STT");
         $sheet->setCellValue('B7', "Họ và");
         $sheet->setCellValue('C7', "Tên");
@@ -235,7 +235,7 @@ class DanhGiaTheoLopExports implements
             'creator' => "Mai Văn Quang",
             'lastModifiedBy' => 'Mai Văn Quang',
             'title'          => 'Điểm rèn luyện VKU',
-            'description'    => "Báo cáo điểm rèn luyện học kỳ {$this->hocKy->TenHocKy} năm học {$this->hocKy->NamBatDau} - {$this->hocKy->NamKetThuc}",
+            'description'    => "Báo cáo điểm rèn luyện học kỳ {$this->hocKy->hocky} năm học {$this->hocKy->nambatdau} - {$this->hocKy->namketthuc}",
             'subject'        => 'Điểm rèn luyện ',
             'keywords'       => 'vku,drl,baccao',
             'company'        => 'VKU',

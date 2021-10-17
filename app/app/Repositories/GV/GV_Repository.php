@@ -3,11 +3,11 @@
 namespace App\Repositories\GV;
 
 use App\Models\GV;
-use App\Repositories\BaseRepository;
+use App\Repositories\BaseReadRepository;
 use App\Services\DTAPIService;
 
 
-class GV_Repository extends BaseRepository implements GV_RepositoryInterface
+class GV_Repository extends BaseReadRepository implements GV_RepositoryInterface
 {
     private $apiDaoTao;
 

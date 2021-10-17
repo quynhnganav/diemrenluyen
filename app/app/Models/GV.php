@@ -8,15 +8,28 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class GV extends Model
 {
 
-    use SoftDeletes;
+    // use SoftDeletes;
 
-    protected $table = 'GV';
+    protected $table = 'table_giangvien';
     public static $snakeAttributes = false;
 
     protected $fillable = [
-        'id',
-        'email',
-        'ChucDanh'
+        // 'id',
+        // 'ma_gv',
+        // 'hodem',
+        // 'ten',
+        // 'donvi_id',
+        // 'is_gv',
+        // 'phongban_id',
+        // 'doanthe_id',
+        // 'username',
+        // 'password',
+        // 'ngaysinh',
+        // 'phone',
+        // 'chucdanh',
+        // 'ngach',
+        // 'chuc_doanthe',
+        // 'chuc_chinhquyen'
     ];
 
     protected $casts = [
@@ -25,12 +38,14 @@ class GV extends Model
     ];
 
     protected $hidden = [
-        'deleted_at', 'created_at', 'updated_at'
+        'deleted_at', 'created_at', 'updated_at', 'donvi_id', 'phongban_id', 'doanthe_id',
+        'username', 'password', 'ngaysinh', 'phone', 'phone_cq', 'ngach', 'chuc_doanthe',
+        'chuc_chinhquyen', 'email', 'website', 'scv', 'scholar', 'fields', 'remember_token'
     ];
 
     public function user()
     {
-        return $this->morphOne('App\\Models\\User', 'Profile');
+        return $this->belongsTo('App\\Models\\User', 'username', 'username');
     }
 
     public function lopHocs()

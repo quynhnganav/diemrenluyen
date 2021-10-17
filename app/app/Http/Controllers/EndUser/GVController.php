@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Common\Constant;
 use App\Http\Controllers\Controller;
 use App\Repositories\DanhGiaChiTiet\DanhGiaChiTiet_Repository;
-use App\Repositories\DM_HocKy\DM_HocKy_Repository;
+use App\Repositories\DM_DotDanhGia\DM_DotDanhGia_Repository;
 use App\Repositories\DM_LopHoc\DM_LopHoc_Repository;
 use App\Repositories\DM_MauTieuChi\DM_MauTieuChi_Repository;
 use App\Repositories\SV\SV_Repository;
@@ -18,12 +18,12 @@ use Illuminate\Http\Request;
 class GVController extends Controller
 {
     private $lopHoc_Repository;
-    private $mauTieuChi_Repository, $hocKy_Repository;
+    private $mauTieuChi_Repository, $dotDanhGia_Repository;
     private $danhGiaService, $sv_Repository, $daotaoAPI, $tieuChiService, $danhGiaChiTiet_Repository;
 
     public function __construct(
         DM_MauTieuChi_Repository           $mauTieuChi_Repository,
-        DM_HocKy_Repository                $hocKy_Repository,
+        DM_DotDanhGia_Repository                $dotDanhGia_Repository,
         DanhGiaService                     $danhGiaService,
         SV_Repository                      $sv_Repository,
         DTAPIService                       $daotaoAPI,
@@ -35,26 +35,24 @@ class GVController extends Controller
         $this->danhGiaService = $danhGiaService;
         $this->sv_Repository = $sv_Repository;
         $this->daotaoAPI = $daotaoAPI;
-        $this->hocKy_Repository = $hocKy_Repository;
+        $this->dotDanhGia_Repository = $dotDanhGia_Repository;
         $this->tieuChiService = $tieuChiService;
         $this->lopHoc_Repository = $lopHoc_Repository;
         $this->danhGiaChiTiet_Repository = $danhGiaChiTiet_Repository;
     }
 
     public function getLop() {
-        $idGV = Auth::user()->chucVu->id;
-        $lopHoc = $this->lopHoc_Repository->getLopHocOfGV($idGV);
+        $gv = session('gv');
+        $lopHoc = $this->lopHoc_Repository->getLopHocOfGV($gv->id);
         return response()->json($lopHoc, 200);
     }
 
     public function danhSachDiemRenLuyenLop(Request $request) {
         $idLop = $request->get('lop');
         if (empty($idLop) && $idLop != 0) return [];
-        $user = Auth::user();
-        $hocKyId = $user[Constant::SESSION_KEY['HocKyHienTai_Id']] ?? 7;
-        $hocKy = $this->hocKy_Repository->find($hocKyId);
-        if (empty($hocKy)  || !$hocKy->PhatHanh) abort(404, "Đợt đánh giá chưa sẵn sàng, mời bạn chuyển sang học kỳ khác");
-        $reuslt = $this->hocKy_Repository->getDSDanhGiaByLopAndHocKy($idLop, $hocKy->id);
+        $dotDanhGia = $this->dotDanhGia_Repository->getHienHanh();
+        if (empty($dotDanhGia) || empty($dotDanhGia->hocKy)) abort(404, "Đợt đánh giá chưa sẵn sàng, mời bạn chuyển sang học kỳ khác");
+        $reuslt = $this->dotDanhGia_Repository->getDSDanhGiaByLopAndHocKy($idLop, $dotDanhGia->id);
         return response()->json($reuslt, 200);
     }
 
@@ -64,7 +62,7 @@ class GVController extends Controller
         $hocKyId = $user[Constant::SESSION_KEY['HocKyHienTai_Id']] ?? 7;
         $sv = $this->sv_Repository->findSVByIdOrMaSv($id, 'user');
 //        if (empty($sv) || $sv->LopHoc_Id != $user->chucVu->LopHoc_Id) abort(404, "Không tìm thấy sinh viên");
-        $hocKy = $this->hocKy_Repository->find($hocKyId);
+        $hocKy = $this->dotDanhGia_Repository->find($hocKyId);
         if (empty($hocKy) || !$hocKy->PhatHanh) abort(404, "Đợt đánh giá chưa sẵn sàng, mời bạn chuyển sang học kỳ khác");
         $tieuChiCT = $this->mauTieuChi_Repository->getTieuChiChiTietOfMau($hocKy->mauTieuChi->id);
         $diem = $this->danhGiaChiTiet_Repository->getDiemSV($hocKy->id, $sv->MaSV);

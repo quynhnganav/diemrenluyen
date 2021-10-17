@@ -40,7 +40,7 @@ const ModalThongKe = forwardRef(({
     const loadThongKe = useCallback((LopHoc_Id, HocKy_Id, gvDuyet) => {
         CommonAPI.getThongKeTheoLop({
             lop: LopHoc_Id || item?.LopHoc_Id,
-            hocky: HocKy_Id,
+            dotdanhgia: HocKy_Id,
             gvDuyet
         })
             .then(res => {
