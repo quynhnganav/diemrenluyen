@@ -74,8 +74,8 @@
     object-fit: cover;
 } 
 .user-dropdown {
-    top: 50px;
-    right: 0;
+    top: 42px;
+    right: 11px;
 }
 .accordion-item {
     background-color: unset;
@@ -105,7 +105,8 @@
     box-shadow: unset;
 }
 .user-dropdown .dropdown-tag {
-    color: #5A738E !important
+    color: #5A738E !important;
+    width: 100%;
 }
 .nav-right {
     cursor: pointer;
