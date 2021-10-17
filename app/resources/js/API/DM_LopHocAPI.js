@@ -6,12 +6,6 @@ const getAllLopHoc = (filter) => {
     return axios.get(route);
 }
 
-const syncDataLopHoc = (filter) => {
-    const route = `/admin/DM_LopHoc/api/sync-data?${queryString.stringify(filter, { skipNull: true, skipEmptyString: true })}`;
-    return axios.get(route);
-};
-
 export {
-    getAllLopHoc,
-    syncDataLopHoc
+    getAllLopHoc
 }

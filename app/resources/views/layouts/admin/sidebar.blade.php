@@ -30,44 +30,12 @@
                         </a>
                     </button>
                 </div>
-                <div class="ps-2 pe-2 menu-item-inline @if (\Request::is('admin/DM_LopHoc') || \Request::is('admin/DM_LopHoc/*')) menu-item-selected @endif">
+                <div class="ps-2 pe-2 menu-item-inline @if (\Request::is('admin/DM_DotDanhGia') || \Request::is('admin/DM_DotDanhGia/*')) menu-item-selected @endif">
                     <button type="button" class="btn d-flex align-items-center justify-content-center">
-                        <a class='text-decoration-none text-white' href="{{ route('admin.DM_LopHoc.index') }}">
+                        <a class='text-decoration-none text-white' href="{{ route('admin.DM_DotDanhGia.index') }}">
                             <span style='color: rgb(120, 129, 149)' class="children-item">
                                 <i class='fa fa-street-view'></i>
-                                <span class='ps-3 menu-inline-text menu-tille' id='menu-text'>Danh mục Lớp học</span>
-                            </span>
-                        </a>
-                    </button>
-                </div>
-                <div class="ps-2 pe-2 menu-item-inline @if (\Request::is('admin/DM_HocKy') || \Request::is('admin/DM_HocKy/*')) menu-item-selected @endif">
-                    <button type="button" class="btn d-flex align-items-center justify-content-center">
-                        <a class='text-decoration-none text-white' href="{{ route('admin.DM_HocKy.index') }}">
-                            <span style='color: rgb(120, 129, 149)' class="children-item">
-                                <i class='fa fa-street-view'></i>
-                                <span class='ps-3 menu-inline-text menu-tille' id='menu-text'>Học kỳ</span>
-                            </span>
-                        </a>
-                    </button>
-
-
-                </div>
-                <div class="ps-2 pe-2 menu-item-inline @if (\Request::is('admin/DM_SinhVien') || \Request::is('admin/DM_SinhVien/*')) menu-item-selected @endif">
-                    <button type="button" class="btn d-flex align-items-center justify-content-center">
-                        <a class='text-decoration-none text-white' href="{{ route('admin.DM_SinhVien.index') }}">
-                            <span style='color: rgb(120, 129, 149)' class="children-item">
-                                <i class='fa fa-street-view'></i>
-                                <span class='ps-3 menu-inline-text menu-tille' id='menu-text'>Sinh viên</span>
-                            </span>
-                        </a>
-                    </button>
-                </div>
-                <div class="ps-2 pe-2 menu-item-inline @if (\Request::is('admin/nguoi-dung') || \Request::is('admin/nguoi-dung/*')) menu-item-selected @endif">
-                    <button type="button" class="btn d-flex align-items-center justify-content-center">
-                        <a class='text-decoration-none text-white' href="{{ route('admin.nguoi-dung.index') }}">
-                            <span style='color: rgb(120, 129, 149)' class="children-item">
-                                <i class='fa fa-street-view'></i>
-                                <span class='ps-3 menu-inline-text menu-tille' id='menu-text'>Người dùng</span>
+                                <span class='ps-3 menu-inline-text menu-tille' id='menu-text'>Đợt đánh giá</span>
                             </span>
                         </a>
                     </button>

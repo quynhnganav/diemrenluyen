@@ -24,18 +24,12 @@ class DM_LopHoc_Controller extends Controller
     }
 
     public function getData() {
-        return $this->lopHoc_Repository->getAll(['GV.user'], '', ['sinhViens']);
+        return $this->lopHoc_Repository->getAll();
     }
 
     public function index()
     {
         return view('admin.index');
-    }
-
-    public function syncLopHoc()
-    {
-       $this->lopHoc_Repository->syncLopHoc();
-       return response()->json(["message" => "Đồng bộ thành công"], 200);
     }
 
 }

@@ -13,7 +13,7 @@ class CreateDMMauTieuChiTable extends Migration
      */
     public function up()
     {
-        Schema::create('DM_MauTieuChi', function (Blueprint $table) {
+        Schema::create('table_DRL_DM_MauTieuChi', function (Blueprint $table) {
             $table->id();
             $table->string('TenMauTieuChi');
             $table->string('TenKhongDau')->default('');

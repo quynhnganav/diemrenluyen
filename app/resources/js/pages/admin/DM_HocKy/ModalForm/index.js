@@ -72,7 +72,7 @@ const ModalForm = forwardRef(({
     const onFinish = useCallback((values) => {
         setLoading(true)
         if (item) {
-            DM_DotDanhGiaAPI.updateDotDanhGia(item?.id, values)
+            DM_HocKyAPI.updateDotDanhGia(item?.id, values)
                 .then(res => {
                     console.log(res)
                     notification.success({
@@ -90,7 +90,7 @@ const ModalForm = forwardRef(({
                 .finally(() => setLoading(false))
         }
         else
-            DM_DotDanhGiaAPI.createDotDanhGia(values)
+            DM_HocKyAPI.createDotDanhGia(values)
                 .then(res => {
                     console.log(res)
                     notification.success({
@@ -133,14 +133,6 @@ const ModalForm = forwardRef(({
                 form={form}
             >
                 <Form.Item
-                    label='Tên đợt đánh giá'
-                    name='TenDotDanhGia'
-                    rules={[{ required: true, message: 'Nhập tên đợt đánh giá' }]}
-                >
-                    <Input />
-                </Form.Item>
-
-                <Form.Item
                     label='Học kỳ'
                     name='HocKy_Id'
                     rules={[{ required: true, message: 'Chọn học kỳ' }]}
@@ -156,8 +148,8 @@ const ModalForm = forwardRef(({
                     >
                         {
                             hocKys?.map(h => (
-                                <Option value={h?.id} key={h?.id}>
-                                    {`Học kỳ ${h?.TenHocKy} (${h?.NamBatDau} - ${h?.NamKetThuc})`}
+                                <Option value={h?.namhoc_key} key={h?.namhoc_key}>
+                                    {`Học kỳ ${h?.hocky} (${h?.nambatdau} - ${h?.namketthuc}) ${h?.hienhanh ? '(Hiện hành)' : ''}`}
                                 </Option>
                             ))
                         }

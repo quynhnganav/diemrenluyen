@@ -6,6 +6,12 @@ const getThongKeTheoLop = (filter) => {
     return axios.get(route);
 }
 
+const getRoles = (filter) => {
+    const route = `/common/roles-user?${queryString.stringify(filter, { skipNull: true, skipEmptyString: true })}`;
+    return axios.get(route);
+}
+
 export {
     getThongKeTheoLop,
+    getRoles
 }

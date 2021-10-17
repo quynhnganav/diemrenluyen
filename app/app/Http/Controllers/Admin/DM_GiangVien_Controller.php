@@ -20,7 +20,6 @@ class DM_GiangVien_Controller extends Controller
     public function index()
     {
          return $this->GV_Repository->getAll('user');
-//        return view('admin.index');
     }
 
 }

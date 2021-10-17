@@ -9,19 +9,21 @@ use App\Models\GV;
 class DM_LopHoc extends Model
 {
 
-    use SoftDeletes;
+    // use SoftDeletes;
 
-    protected $table = 'DM_LopHoc';
+    protected $table = 'table_lopsh';
     public static $snakeAttributes = false;
 
     protected $fillable = [
-        "id",
-        'Khoa_Id',
-        'GV_Id',
-        'TenLopHoc',
-        'TenKhongDau',
-        'KhoaHoc',
-        'isSync'
+        // "id",
+        // 'tenlop',
+        // 'gv_id',
+        // 'khoahoc_id',
+        // 'loptruong_id',
+        // 'khoaK',
+        // 'namhoc',
+        // 'ghichu',
+        // 'trangthai'
     ];
 
     protected $casts = [

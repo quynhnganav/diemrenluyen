@@ -13,6 +13,10 @@ class DanhGiaChiTiet_Repository extends BaseRepository implements DanhGiaChiTiet
         return DanhGiaChiTiet::class;
     }
 
+    public function getDanhGiaSV($HocKy_Id, $MaSV) {
+        return $this->model->where('HocKy_Id', $HocKy_Id)->where('MaSV', $MaSV)->first();
+    } 
+
     public function updateDanhGiaChiTiet($HocKy_Id, $MaSV, $update)
     {
         $update['HocKy_Id'] = $HocKy_Id;
@@ -28,8 +32,8 @@ class DanhGiaChiTiet_Repository extends BaseRepository implements DanhGiaChiTiet
 
     public function thongKeTheoDot($LopHoc_Id, $HocKy_Id, $GV_Duyet)
     {
-        $sqlGVDuyet = $GV_Duyet ? " DanhGiaChiTiet.GiangVienDuyet IS TRUE AND " : "  ";
-        $hocKy = $HocKy_Id ? "DanhGiaChiTiet.HocKy_Id = {$HocKy_Id} AND" : " ";
+        $sqlGVDuyet = $GV_Duyet ? " table_DRL_DanhGiaChiTiet.GiangVienDuyet IS TRUE AND " : "  ";
+        $hocKy = $HocKy_Id ? "table_DRL_DanhGiaChiTiet.HocKy_Id = {$HocKy_Id} AND" : " ";
         $result = DB::select("
                     SELECT
                         cast(sum(xuatsac) as UNSIGNED) as xuatsac,
@@ -42,21 +46,21 @@ class DanhGiaChiTiet_Repository extends BaseRepository implements DanhGiaChiTiet
                         HocKy_Id
                     FROM (
                         SELECT
-                            sum(if(DanhGiaChiTiet.TongSoDiem >= 90, 1, 0)) as xuatsac,
-                            sum(if(DanhGiaChiTiet.TongSoDiem < 90 AND DanhGiaChiTiet.TongSoDiem >=80, 1, 0)) as tot,
-                            sum(if(DanhGiaChiTiet.TongSoDiem < 80 AND DanhGiaChiTiet.TongSoDiem >=65, 1, 0)) as kha,
-                            sum(if(DanhGiaChiTiet.TongSoDiem < 65 AND DanhGiaChiTiet.TongSoDiem >=50, 1, 0)) as trungbinh,
-                            sum(if(DanhGiaChiTiet.TongSoDiem < 50 AND DanhGiaChiTiet.TongSoDiem >=35, 1, 0)) as yeu,
-                            sum(if(DanhGiaChiTiet.TongSoDiem < 35, 1, 0)) as kem,
-                            DanhGiaChiTiet.MaSV,
-                            DanhGiaChiTiet.HocKy_Id
-                        FROM DanhGiaChiTiet
-                        JOIN SV ON
-                            SV.LopHoc_Id = {$LopHoc_Id} AND
+                            sum(if(table_DRL_DanhGiaChiTiet.TongSoDiem >= 90, 1, 0)) as xuatsac,
+                            sum(if(table_DRL_DanhGiaChiTiet.TongSoDiem < 90 AND table_DRL_DanhGiaChiTiet.TongSoDiem >=80, 1, 0)) as tot,
+                            sum(if(table_DRL_DanhGiaChiTiet.TongSoDiem < 80 AND table_DRL_DanhGiaChiTiet.TongSoDiem >=65, 1, 0)) as kha,
+                            sum(if(table_DRL_DanhGiaChiTiet.TongSoDiem < 65 AND table_DRL_DanhGiaChiTiet.TongSoDiem >=50, 1, 0)) as trungbinh,
+                            sum(if(table_DRL_DanhGiaChiTiet.TongSoDiem < 50 AND table_DRL_DanhGiaChiTiet.TongSoDiem >=35, 1, 0)) as yeu,
+                            sum(if(table_DRL_DanhGiaChiTiet.TongSoDiem < 35, 1, 0)) as kem,
+                            table_DRL_DanhGiaChiTiet.MaSV,
+                            table_DRL_DanhGiaChiTiet.HocKy_Id
+                        FROM table_DRL_DanhGiaChiTiet
+                        JOIN table_sinhvien ON
+                            table_sinhvien.lopsh_id = {$LopHoc_Id} AND
                             {$hocKy}
                             {$sqlGVDuyet}
-                            SV.MaSV = DanhGiaChiTiet.MaSV
-                        GROUP BY DanhGiaChiTiet.HocKy_Id, DanhGiaChiTiet.MaSV
+                            table_sinhvien.masv = table_DRL_DanhGiaChiTiet.MaSV
+                        GROUP BY table_DRL_DanhGiaChiTiet.HocKy_Id, table_DRL_DanhGiaChiTiet.MaSV
                     ) as thongke
                     GROUP BY thongke.HocKy_Id;
                    ");

@@ -28,8 +28,9 @@ Route::get('doi-hoc-ky/{idHocKy}', 'Auth\AuthController@changeHocKy')
 
 
 Route::prefix('common')->name('common.')->group(function () {
-    Route::get('diem-ren-luyen/api/thong-ke', 'CommonController@thongKeTheoLop')->middleware(['auth', 'role:cbl|gvcn|super_admin']);
-    Route::get('diem-ren-luyen/api/bao-cao-excel', 'CommonController@baoCaoExcelTheoLop')->middleware(['auth', 'role:cbl|gvcn']);
+    Route::get('diem-ren-luyen/api/thong-ke', 'CommonController@thongKeTheoLop')->middleware(['auth']);
+    Route::get('diem-ren-luyen/api/bao-cao-excel', 'CommonController@baoCaoExcelTheoLop')->middleware(['auth']);
+    Route::get('roles-user', 'CommonController@roles')->middleware(['auth', 'role:super_admin']);
 });
 
 Route::get('/sv', function () {
@@ -39,13 +40,13 @@ Route::get('/sv', function () {
     return view('auth.sv.login');
 })->name('sv.login');
 
-Route::prefix('sv')->name('sv.')->middleware(['auth', 'role:sv|cbl'])->group(function () {
+Route::prefix('sv')->name('sv.')->middleware(['auth'])->group(function () {
 
     Route::get('danh-gia/api', 'EndUser\DanhGiaController@sinhVienGetDotDanhGiaHienTai');
     Route::get('danh-gia/api/dot-danh-gia', 'EndUser\DanhGiaController@sinhVienGetDotDanhGiaHienTai');
     Route::resource('danh-gia', EndUser\DanhGiaController::class);
 
-    Route::prefix('cbl')->name('cbl.')->middleware(['role:cbl'])->group(function () {
+    Route::prefix('cbl')->name('cbl.')->middleware(['loptruong'])->group(function () {
         Route::get('danh-gia/api', 'EndUser\CBLQuanLyController@getDSDanhGia');
         Route::get('danh-gia/api/sinh-vien/{id}', 'EndUser\CBLQuanLyController@sinhVienGetDotDanhGiaHienTai');
         Route::post('danh-gia/api/sinh-vien/{id}', 'EndUser\CBLQuanLyController@sinhVienDanhGiaDotDanhGiaHienTai');
@@ -61,7 +62,7 @@ Route::get('/gv', function () {
     return view('auth.gv.login');
 })->name('gv.login');
 
-Route::prefix('gv')->name('gv.')->middleware(['auth', 'role:gvcn'])->group(function () {
+Route::prefix('gv')->name('gv.')->middleware(['auth', 'gv'])->group(function () {
 
     Route::get('diem-ren-luyen/api/lop', 'EndUser\GVController@getLop');
     Route::get('diem-ren-luyen/api/sinh-vien/{id}', 'EndUser\GVController@GVGetDotDanhGiaHienTai');
@@ -75,12 +76,12 @@ Route::prefix('gv')->name('gv.')->middleware(['auth', 'role:gvcn'])->group(funct
 
 Route::get('/admin', function () {
     if (Auth::check()) {
-        return redirect()->route('admin.DM_HocKy.index');
+        return redirect()->route('admin.DM_DiemRenLuyen.index');
     }
     return view('auth.login');
 })->name('admin.login');
 
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super_admin'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'gv'])->group(function () {
 
     Route::get('DM_MauTieuChi/api', 'Admin\DM_MauTieuChi_Controller@getData');
 
@@ -94,32 +95,25 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super_admin'])
 
     Route::resource('DM_DiemRenLuyen', Admin\DM_DiemRenLuyen_Controller::class);
 
-    Route::get('DM_LopHoc/api/sync-data', 'Admin\DM_LopHoc_Controller@syncLopHoc');
     Route::get('DM_LopHoc/api', 'Admin\DM_LopHoc_Controller@getData');
     Route::resource('DM_LopHoc', Admin\DM_LopHoc_Controller::class);
 
-    Route::get('DM_HocKy/api', 'Admin\DM_HocKy_Controller@getData');
-    Route::put('DM_HocKy/api/update-hienhanh/{id}', 'Admin\DM_HocKy_Controller@updateHienHanh');
+    Route::get('DM_DotDanhGia/api', 'Admin\DM_HocKy_Controller@getData');
+    Route::get('DM_DotDanhGia/api/hocky', 'Admin\DM_HocKy_Controller@getHocKy');
+    Route::put('DM_DotDanhGia/api/update-hienhanh/{id}', 'Admin\DM_HocKy_Controller@updateHienHanh');
 
-    Route::get('DM_HocKy/api/sync-data', 'Admin\DM_HocKy_Controller@syncHocKy');
+    Route::get('DM_DotDanhGia/api/sync-data', 'Admin\DM_HocKy_Controller@syncHocKy');
 
-    Route::resource('DM_HocKy', Admin\DM_HocKy_Controller::class);
+    Route::resource('DM_DotDanhGia', Admin\DM_HocKy_Controller::class);
 
     Route::resource('DM_GiangVien', Admin\DM_GiangVien_Controller::class);
 
-    Route::get('DM_SinhVien/api/data', 'Admin\DM_SinhVien_Controller@getData');
-
-    Route::get('DM_SinhVien/sync-data', 'Admin\DM_SinhVien_Controller@syncAll');
-
     Route::resource('DM_SinhVien', Admin\DM_SinhVien_Controller::class);
-
-    Route::get('DM_SinhVien/{idLop}/sync-data', 'Admin\DM_SinhVien_Controller@syncSinhVienLop');
-    Route::get('DM_SinhVien/{idLop}/lop', 'Admin\DM_SinhVien_Controller@getSVLopID');
-    Route::get('DM_SinhVien/{tenLop}/ten-lop', 'Admin\DM_SinhVien_Controller@getSVLopTen');
 
     Route::get('nguoi-dung', function () {
        return view('admin.index');
     })->name('nguoi-dung.index');
+    Route::put('user/change-role-sv/{id}', 'UserController@changeRuleSV');
     Route::resource('user', UserController::class);
 });
 
@@ -128,6 +122,7 @@ Auth::routes([
     'verify' => false,
     'reset' => false,
     'confirm' => false,
+    'login' => false,
 ]);
 
 Route::get('/home', 'HomeController@index')->middleware('auth')->name('home');

@@ -300,7 +300,10 @@ const handleNodeFlatten = (node, root, level = 0, indexs, data, point) => {
             SoDiemSV += sv
             SoDiemCBL += cbl
         })
-    } else delete node.children
+    } else {
+        delete node.children
+        node.isUnit = true
+    }
     newNode.SoDiem = myPoint
     newNode[`SoDiemSV-${node?.id}`] = SoDiemSV
     newNode[`SoDiemCBL-${node?.id}`] = SoDiemCBL

@@ -59,7 +59,7 @@ const DM_DiemRenLuyen = () => {
     }, [])
 
     const loadDataHocKy = useCallback(() => {
-        return DM_HocKyAPI.getAllHocKy()
+        return DM_HocKyAPI.getAllDotDanhGia()
     }, [])
 
     const loadDataLopHoc = useCallback(() => {
@@ -145,11 +145,11 @@ const DM_DiemRenLuyen = () => {
     const columns = useMemo(() => ([
         {
             title: 'Mã SV',
-            dataIndex: 'MaSV',
+            dataIndex: 'masv',
             className: 'cell-center',
             width: 100,
             fixed: 'left',
-            key: 'MaSV'
+            key: 'masv'
         },
         {
             title: 'Họ tên SV',
@@ -159,7 +159,7 @@ const DM_DiemRenLuyen = () => {
             render: (text, record) =>
                 <Tooltip placement='top' title={text?.email}>
                     <Badge status={(record?.danhGia?.SinhVienDanhGia && record?.danhGia?.CanBoLopDanhGia) ? 'success' : record?.danhGia?.SinhVienDanhGia || record?.danhGia?.CanBoLopDanhGia ? 'warning' : 'error'} />
-                    {`${text?.HoDem} ${text?.Ten}`}
+                    {`${record?.hodem} ${record?.ten}`}
                 </Tooltip>
         },
         {
@@ -225,6 +225,8 @@ const DM_DiemRenLuyen = () => {
         }
     ]), [state.sinhViens])
 
+    console.log(state.hocKys)
+
     return (
         <LayoutWrapper className='admin-diem-ren-luyen-page'>
             <Row className='bg-white p-3 content'>
@@ -244,7 +246,7 @@ const DM_DiemRenLuyen = () => {
                                         {
                                             state.hocKys.map(l => (
                                                 <Option value={l.id} key={l.id}>
-                                                    {`Học kỳ ${l.TenHocKy} năm học ${l.NamBatDau} - ${l.NamKetThuc}`}
+                                                    {`Học kỳ ${l.hocKy?.hocky} năm học ${l.hocKy?.nambatdau} - ${l.hocKy?.namketthuc}`}
                                                 </Option>
                                             ))
                                         }
@@ -259,7 +261,7 @@ const DM_DiemRenLuyen = () => {
                                         {
                                             state.lopHocs.map(l => (
                                                 <Option value={l.id} key={l.id}>
-                                                    {l.TenLopHoc}
+                                                    {l.tenlop}
                                                 </Option>
                                             ))
                                         }

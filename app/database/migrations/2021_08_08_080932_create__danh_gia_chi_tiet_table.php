@@ -13,7 +13,7 @@ class CreateDanhGiaChiTietTable extends Migration
      */
     public function up()
     {
-        Schema::create('DanhGiaChiTiet', function (Blueprint $table) {
+        Schema::create('table_DRL_DanhGiaChiTiet', function (Blueprint $table) {
             $table->id()->index();
             $table->unsignedBigInteger('HocKy_Id')->nullable()->index();
             $table->string('MaSV')->nullable()->index();

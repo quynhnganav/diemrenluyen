@@ -6,7 +6,7 @@ use App\Common\Constant;
 use App\Http\Controllers\Controller;
 use App\Models\DanhGiaChiTiet;
 use App\Repositories\DanhGiaChiTiet\DanhGiaChiTiet_Repository;
-use App\Repositories\DM_HocKy\DM_HocKy_Repository;
+use App\Repositories\DM_DotDanhGia\DM_DotDanhGia_Repository;
 use App\Repositories\DM_MauTieuChi\DM_MauTieuChi_Repository;
 use App\Repositories\SV\SV_Repository;
 use App\Services\DanhGiaService;
@@ -18,12 +18,12 @@ use Illuminate\Support\Facades\Auth;
 class CBLQuanLyController extends Controller
 {
 
-    protected $mauTieuChi_Repository, $hocKy_Repository, $danhGiaChiTiet_Repository;
+    protected $mauTieuChi_Repository, $dotDanhGia_Repository, $danhGiaChiTiet_Repository;
     private $danhGiaService, $sv_Repository, $daotaoAPI, $tieuChiService;
 
     public function __construct(
         DM_MauTieuChi_Repository           $mauTieuChi_Repository,
-        DM_HocKy_Repository                $hocKy_Repository,
+        DM_DotDanhGia_Repository                $dotDanhGia_Repository,
         DanhGiaChiTiet_Repository          $danhGiaChiTiet_Repository,
         DanhGiaService                     $danhGiaService,
         SV_Repository                      $sv_Repository,
@@ -34,34 +34,35 @@ class CBLQuanLyController extends Controller
         $this->danhGiaService = $danhGiaService;
         $this->sv_Repository = $sv_Repository;
         $this->daotaoAPI = $daotaoAPI;
-        $this->hocKy_Repository = $hocKy_Repository;
+        $this->dotDanhGia_Repository = $dotDanhGia_Repository;
         $this->tieuChiService = $tieuChiService;
         $this->danhGiaChiTiet_Repository = $danhGiaChiTiet_Repository;
     }
 
     public function getDSDanhGia() {
-        $user = Auth::user();
-        $hocKyId = $user[Constant::SESSION_KEY['HocKyHienTai_Id']];
-        $hocKy = $this->hocKy_Repository->find($hocKyId);
-        if (empty($hocKy)  || !$hocKy->PhatHanh) abort(404, "Đợt đánh giá chưa sẵn sàng, mời bạn chuyển sang học kỳ khác");
-        $result = $this->hocKy_Repository->getDSDanhGiaByLopAndHocKy($user->chucVu->lopHoc->id, $hocKy->id);
-        return response()->json($result, 200);
+        $sv = session('sv');
+        $dotDanhGia = $this->dotDanhGia_Repository->getHienHanh();
+        if (empty($dotDanhGia) || empty($dotDanhGia->hocKy)) abort(404, "Đợt đánh giá chưa sẵn sàng, mời bạn chuyển sang học kỳ khác");
+        $result = $this->dotDanhGia_Repository->getDSDanhGiaByLopAndHocKy($sv->lopsh_id, $dotDanhGia->id);
+        return response()->json([
+            'DotDanhGia_Id' => $dotDanhGia->id,
+            'LopHoc_Id' => $sv->lopsh_id,
+            'sinhViens' => $result 
+        ], 200);
     }
 
     public function sinhVienGetDotDanhGiaHienTai($id) {
-//        return Auth::user();
         $user = Auth::user();
-        $hocKyId = $user[Constant::SESSION_KEY['HocKyHienTai_Id']];
         $sv = $this->sv_Repository->findSVByIdOrMaSv($id, 'user');
-        if (empty($sv) || $sv->LopHoc_Id != $user->chucVu->LopHoc_Id) abort(404, "Không tìm thấy sinh viên");
-        $hocKy = $this->hocKy_Repository->find($hocKyId);
-        if (empty($hocKy) || !$hocKy->PhatHanh) abort(404, "Đợt đánh giá chưa sẵn sàng, mời bạn chuyển sang học kỳ khác");
-        $tieuChiCT = $this->mauTieuChi_Repository->getTieuChiChiTietOfMau($hocKy->MauTieuChi_Id);
-        $diem = $this->danhGiaChiTiet_Repository->getDiemSV($hocKy->id, $sv->MaSV);
-        $diemHocTap = $this->daotaoAPI->getDiemSV($hocKy->idDaoTao, $hocKy->TenHocKy, $sv->MaSV);
+        if (empty($sv)) abort(404, "Không tìm thấy sinh viên");
+        $dotDanhGia = $this->dotDanhGia_Repository->getHienHanh();
+        if (empty($dotDanhGia) || empty($dotDanhGia->hocKy)) abort(404, "Đợt đánh giá chưa sẵn sàng, mời bạn chuyển sang học kỳ khác");
+        $tieuChiCT = $this->mauTieuChi_Repository->getTieuChiChiTietOfMau($dotDanhGia->MauTieuChi_Id);
+        $diem = $this->danhGiaChiTiet_Repository->getDiemSV($dotDanhGia->id, $sv->masv);
+        $diemHocTap = $this->daotaoAPI->getDiemSV($dotDanhGia->hocKy->id, $dotDanhGia->hocKy->hocky, $sv->masv);
         $newTieuChi = $this->danhGiaService->mergeTieuChiAndDanhGia($tieuChiCT, $diem, $this->tieuChiService->diemHocTap($diemHocTap));
         return response()->json([
-            'hocKy' => $hocKy,
+            'hocKy' => $dotDanhGia,
             'tieuChi' => $newTieuChi,
             'sinhVien' => $sv,
             'danhGia' => $diem
@@ -69,22 +70,18 @@ class CBLQuanLyController extends Controller
     }
 
     public function sinhVienDanhGiaDotDanhGiaHienTai(Request $request, $id) {
-//        return Auth::user();
         $input = $request->all();
-        $user = Auth::user();
-        $hocKyId = $user[Constant::SESSION_KEY['HocKyHienTai_Id']];
         $sv = $this->sv_Repository->findSVByIdOrMaSv($id, 'user');
-        if (empty($sv) || $sv->LopHoc_Id != $user->chucVu->LopHoc_Id) abort(404, "Không tìm thấy sinh viên");
-        $hocKy = $this->hocKy_Repository->find($hocKyId);
-        if (empty($hocKy) || !$hocKy->PhatHanh) abort(404, "Đợt đánh giá chưa sẵn sàng, mời bạn chuyển sang học kỳ khác");
-        $tieuChiCT = $this->mauTieuChi_Repository->getTieuChiChiTietOfMau($hocKy->mauTieuChi->id, false);
-
-        $diemHocTap = $this->daotaoAPI->getDiemSV($hocKy->idDaoTao, $hocKy->TenHocKy, $sv->MaSV);
+        if (empty($sv)) abort(404, "Không tìm thấy sinh viên");
+        $dotDanhGia = $this->dotDanhGia_Repository->getHienHanh();
+        if (empty($dotDanhGia) || empty($dotDanhGia->hocKy)) abort(404, "Đợt đánh giá chưa sẵn sàng, mời bạn chuyển sang học kỳ khác");
+        if ($dotDanhGia->Khoa) abort(403, "Đợt đánh giá đã đóng");
+        $tieuChiCT = $this->mauTieuChi_Repository->getTieuChiChiTietOfMau($dotDanhGia->MauTieuChi_Id, false);
+        $diemHocTap = $this->daotaoAPI->getDiemSV($dotDanhGia->hocKy->id, $dotDanhGia->hocKy->hocky, $sv->masv);
         $validate = $this->danhGiaService->validateDanhGia($input, $tieuChiCT, $this->tieuChiService->diemHocTap($diemHocTap));
-//        $tieuChiCT = $this->mauTieuChi_Repository->getTieuChiChiTietOfMau($dotDanhGia->mauTieuChi->id);
         if (!$validate[0]) return response()->json($validate[1], 422);
-        $this->danhGiaChiTiet_Repository->updateDanhGiaChiTiet($hocKy->id, $sv->MaSV, [
-            'CanBoLopDanhGia' => json_encode($input),
+        $this->danhGiaChiTiet_Repository->updateDanhGiaChiTiet($dotDanhGia->id, $sv->masv, [
+            'CanBoLopDanhGia' => json_encode($validate[3]),
             'TongSoDiem' => $validate[2]
         ]);
         return $validate;

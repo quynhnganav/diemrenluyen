@@ -6,6 +6,7 @@ import LayoutWrapper from "../../../components/LayoutWrapper";
 import * as DM_HocKyAPI from "../../../API/DM_HocKyAPI";
 import * as DM_MauTieuChiAPI from "../../../API/DM_MauTieuChiAPI";
 import ModalViewChiTiet from "../../../components/ModalViewChiTiet";
+import ModalForm from "./ModalForm";
 
 const { Option } = Select
 
@@ -15,6 +16,7 @@ const DM_HocKy = () => {
     const [loading, setLoading] = useState(false)
 
     const refModalViewChiTiet = useRef(null)
+    const refModal = useRef(null)
 
     useEffect(() => {
         loadMauTieuChi()
@@ -23,7 +25,7 @@ const DM_HocKy = () => {
 
     const loadData = () => {
         setLoading(true)
-        DM_HocKyAPI.getAllHocKy().then((res) => {
+        DM_HocKyAPI.getAllDotDanhGia().then((res) => {
             setDotDanhGias(res?.data || [])
         }).finally(() => setLoading(false))
     }
@@ -36,19 +38,8 @@ const DM_HocKy = () => {
             })
     }, [])
 
-    const onSync = useCallback(() => {
-        setLoading(true)
-        DM_HocKyAPI.syncDataHocKy().then((res) => {
-            notification.success({
-                message: 'Cập nhật thành công'
-            })
-        })
-            .catch((err) => {
-                notification.error({
-                    message: 'Lỗi khi cập nhật'
-                })
-            })
-            .finally(() => setLoading(false))
+    const onCreate = useCallback(() => {
+        refModal?.current?.showModal()
     }, [])
 
     const updateGrid = useCallback((item) => {
@@ -57,42 +48,14 @@ const DM_HocKy = () => {
 
     const updateHienHanh = useCallback((id) => {
         setLoading(true)
-        DM_HocKyAPI.updateHienHanh(id)
-            .then(res => {
-                loadData()
-            })
-            .catch(err => {
-                notification.error({
-                    message: err?.response?.data?.message
-                })
-                setLoading(false)
-            })
-    }, [])
-
-    const onPhatHanh = useCallback((hocKy_Id) => {
-        setLoading(true)
-        DM_HocKyAPI.update(hocKy_Id, {
-            phatHanh: true
-        }).then(res => {
-            updateGrid(res?.data)
-        }).catch(error => {
-            notification.error({
-                message: error?.response?.data?.message
-            })
-        }).finally(() => setLoading(false))
+        DM_HocKyAPI.updateHienHanh(id).then(loadData).finally(() => setLoading(false))
     }, [])
 
     const onUpdateMauTieuChi = useCallback((hocKy_Id, mauTieuChi_Id) => {
         setLoading(true)
-        DM_HocKyAPI.update(hocKy_Id, {
+        DM_HocKyAPI.updateDotDanhGia(hocKy_Id, {
             mauTieuChi_Id
-        }).then(res => {
-            updateGrid(res?.data)
-        }).catch(error => {
-            notification.error({
-                message: error?.response?.data?.message
-            })
-        }).finally(() => setLoading(false))
+        }).then(loadData).finally(() => setLoading(false))
     }, [])
 
     const onViewTieuChi = useCallback((item) => {
@@ -113,28 +76,12 @@ const DM_HocKy = () => {
                     </Tooltip>
             },
             {
-                title: 'Tên học kỳ',
-                dataIndex: 'TenHocKy',
-                className: 'cell-center',
-                width: 100,
-                key: 'TenHocKy'
-            },
-            {
                 title: 'Năm học',
                 dataIndex: 'NamBatDau',
                 width: 120,
-                key: 'NamBatDau',
+                key: 'hocKy',
                 className: 'cell-center',
-                render: (text, record) => `${record?.NamBatDau} - ${record?.NamKetThuc}`
-
-            },
-            {
-                title: 'ĐT hiện hành',
-                dataIndex: 'DaoTaoHienHanh',
-                className: 'cell-center',
-                width: 100,
-                key: 'DaoTaoHienHanh',
-                render: text => <Checkbox disabled checked={text} />
+                render: (text, record) => record?.hocKy ? `Học kỳ ${record?.hocKy?.hocky} (${record?.hocKy?.nambatdau} - ${record?.hocKy?.namketthuc})`: ''
             },
             {
                 title: 'ĐRL hiện hành',
@@ -143,7 +90,6 @@ const DM_HocKy = () => {
                 className: 'cell-center',
                 width: 100,
                 render: text => <Checkbox checked={text} />
-                // render: (text) => text ? 'Đang đồng bộ' : 'Đã đồng bộ'
             },
             {
                 title: 'Mẫu tiêu chí',
@@ -171,27 +117,12 @@ const DM_HocKy = () => {
                 )
             },
             {
-                title: 'Phát hành',
-                dataIndex: 'PhatHanh',
-                key: 'PhatHanh',
-                className: 'cell-center',
-                width: 150,
-                render: (t) => t ? "Đã phát hành" : "Chưa phát hành"
-            },
-            {
                 title: '',
                 dataIndex: 'action',
                 key: 'action',
                 width: 300,
                 render: (text, record) => (
                     <Space size='middle'>
-                        <Button
-                            type='primary'
-                            onClick={() => onPhatHanh(record?.id)}
-                            disabled={record.PhatHanh}
-                        >
-                            Phát hành
-                        </Button>
                         <Button
                             type='primary'
                             onClick={() => onViewTieuChi(record?.mauTieuChi)}
@@ -210,7 +141,7 @@ const DM_HocKy = () => {
                 )
             }
         ]
-    ), [mauTieuChi, onPhatHanh, onUpdateMauTieuChi])
+    ), [mauTieuChi, onUpdateMauTieuChi])
 
     return (
         <LayoutWrapper className='dot-danh-gia-wrapper' >
@@ -218,7 +149,7 @@ const DM_HocKy = () => {
                 <Col span={24}>
                     <Row>
                         <Col>
-                            <Button type='primary' onClick={onSync} disabled={loading} >Cập nhật</Button>
+                            <Button type='primary' onClick={onCreate} disabled={loading}>Thêm mới</Button>
                         </Col>
                     </Row>
                 </Col>
@@ -238,6 +169,9 @@ const DM_HocKy = () => {
             </Row>
             <ModalViewChiTiet
                 ref={refModalViewChiTiet}
+            />
+            <ModalForm 
+                ref={refModal}
             />
         </LayoutWrapper>
     )

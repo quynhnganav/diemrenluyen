@@ -29,4 +29,14 @@ class UserController extends Controller
         }, 'roles'], 'isAdmin desc, id asc', [], $search);
         return $users;
     }
+
+    public function changeRuleSV(Request $request, $id) {
+        $roles = $request->roles;
+        $user = $this->user_Repository->find($id);
+        $user->roles()->detach();
+        $user->assignRole($roles);
+        return response()->json([
+            'message' => "Thành công"
+        ], 200);
+    }
 }

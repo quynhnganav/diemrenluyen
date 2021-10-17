@@ -3,10 +3,10 @@
 namespace App\Repositories\User;
 
 use App\Models\User;
-use App\Repositories\BaseRepository;
+use App\Repositories\BaseReadRepository;
 use Illuminate\Support\Str;
 
-class User_Repository extends BaseRepository implements User_RepositoryInterface
+class User_Repository extends BaseReadRepository implements User_RepositoryInterface
 {
 
     public function getModel()
