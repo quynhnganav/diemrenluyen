@@ -48,14 +48,19 @@ const DM_HocKy = () => {
 
     const updateHienHanh = useCallback((id) => {
         setLoading(true)
-        DM_HocKyAPI.updateHienHanh(id).then(loadData).finally(() => setLoading(false))
+        DM_HocKyAPI.updateHienHanh(id).then(loadData).catch(() => setLoading(false))
+    }, [])
+
+    const updateKhoa = useCallback((id) => {
+        setLoading(true)
+        DM_HocKyAPI.updateKhoa(id).then(loadData).catch(() => setLoading(false))
     }, [])
 
     const onUpdateMauTieuChi = useCallback((hocKy_Id, mauTieuChi_Id) => {
         setLoading(true)
         DM_HocKyAPI.updateDotDanhGia(hocKy_Id, {
             mauTieuChi_Id
-        }).then(loadData).finally(() => setLoading(false))
+        }).then(loadData).catch(() => setLoading(false))
     }, [])
 
     const onViewTieuChi = useCallback((item) => {
@@ -137,6 +142,12 @@ const DM_HocKy = () => {
                         >
                             Hiện hành
                         </Button>
+                        <Button
+                            type='primary'
+                            onClick={() => updateKhoa(record?.id)}
+                        >
+                            {record?.Khoa ? 'Bỏ khóa' : 'Khóa'}
+                        </Button>
                     </Space>
                 )
             }
@@ -172,6 +183,8 @@ const DM_HocKy = () => {
             />
             <ModalForm 
                 ref={refModal}
+                callback={loadData}
+                dotDanhGia={dotDanhGia}
             />
         </LayoutWrapper>
     )

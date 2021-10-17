@@ -10,7 +10,8 @@ import * as DM_MauTieuChiAPI from "../../../../API/DM_MauTieuChiAPI";
 const { Option } = Select
 
 const ModalForm = forwardRef(({
-    callback
+    callback,
+    dotDanhGia
 }, ref) => {
 
     const [visible, setVisible] = useState(false)
@@ -112,6 +113,8 @@ const ModalForm = forwardRef(({
         form?.submit()
     }, [])
 
+    const hocKyDaTao = dotDanhGia?.map(d => d.HocKy_Id) || []
+
     return (
         <Modal
             visible={visible}
@@ -148,7 +151,7 @@ const ModalForm = forwardRef(({
                     >
                         {
                             hocKys?.map(h => (
-                                <Option value={h?.namhoc_key} key={h?.namhoc_key}>
+                                <Option value={h?.namhoc_key} key={h?.namhoc_key} disabled={hocKyDaTao.includes(h?.namhoc_key)}>
                                     {`Học kỳ ${h?.hocky} (${h?.nambatdau} - ${h?.namketthuc}) ${h?.hienhanh ? '(Hiện hành)' : ''}`}
                                 </Option>
                             ))

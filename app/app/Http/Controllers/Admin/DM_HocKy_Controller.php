@@ -34,6 +34,18 @@ class DM_HocKy_Controller extends Controller
         return response()->json(json_decode($hocKys), 200);
     }
 
+    public function updateKhoa($id)
+    {
+        $dotDanhGia = $this->dotDanhGia_Repository->find($id);
+        if (empty($dotDanhGia)) abort(404, "Không tồn tại");
+        $this->dotDanhGia_Repository->update($id, [
+            "Khoa" => !$dotDanhGia->Khoa
+        ]);
+        return response()->json([
+            "message" => "Thành công"
+        ], 200);
+    }
+
     public function getHocKy()
     {
         return table_namhoc_hocky::orderBy('namhoc_key', 'desc')->get();
@@ -47,8 +59,8 @@ class DM_HocKy_Controller extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'HocKy_Id' => 'required|exists:table_namhoc_hocky,namhoc_key|unique:DM_DotDanhGia,HocKy_Id,NULL,id,deleted_at,NULL',
-            'MauTieuChi_Id' => 'exists:DM_MauTieuChi,id,PhatHanh,1,deleted_at,NULL',
+            'HocKy_Id' => 'required|exists:table_namhoc_hocky,namhoc_key|unique:table_DRL_DM_DotDanhGia,HocKy_Id,NULL,id,deleted_at,NULL',
+            'MauTieuChi_Id' => 'exists:table_DRL_DM_MauTieuChi,id,PhatHanh,1,deleted_at,NULL',
         ]);
         $dotDanhGia = $this->dotDanhGia_Repository->create([
             'HocKy_Id' => $request->HocKy_Id,
