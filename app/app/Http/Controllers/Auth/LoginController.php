@@ -73,7 +73,7 @@ class LoginController extends Controller
         }
 
         $email = $user->getEmail();
-        // $email = 'natuan@vku.udn.vn';
+        $email = 'natuan@vku.udn.vn';
 
         $sv = SV::where('email', $email)->first();
         if (!empty($sv)) {
