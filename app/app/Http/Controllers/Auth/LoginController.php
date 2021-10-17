@@ -72,7 +72,10 @@ class LoginController extends Controller
             return redirect()->route('sv.login');
         }
 
-        $sv = SV::where('email', 'natuan@vku.udn.vn')->first();
+        $email = $user->getEmail();
+        $email = 'natuan@vku.udn.vn';
+
+        $sv = SV::where('email', $email)->first();
         if (!empty($sv)) {
             $user = User::where('username', $sv->masv)->first();
             if (empty($user)) return redirect()->route('sv.login');
@@ -85,7 +88,7 @@ class LoginController extends Controller
             return redirect()->route('sv.danh-gia.index');
         }
         
-        $gv = GV::where('email', 'natuan@vku.udn.vn')->where('is_gv', 1)->first();
+        $gv = GV::where('email', $email)->where('is_gv', 1)->first();
         if (!empty($gv) && $gv->is_gv) {
             $user = User::where('username', $gv->username)->first();
             if (empty($user)) return redirect()->route('sv.login');

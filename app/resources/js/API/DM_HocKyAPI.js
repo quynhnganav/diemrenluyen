@@ -26,6 +26,11 @@ const updateHienHanh = (id) => {
     return axios.put(route);
 }
 
+const updateKhoa = (id) => {
+    const route = `/admin/DM_DotDanhGia/api/khoa/${id}`;
+    return axios.put(route);
+}
+
 
 
 export {
@@ -33,5 +38,6 @@ export {
     createDotDanhGia,
     updateDotDanhGia,
     getAllDotDanhGia,
-    updateHienHanh
+    updateHienHanh,
+    updateKhoa
 }

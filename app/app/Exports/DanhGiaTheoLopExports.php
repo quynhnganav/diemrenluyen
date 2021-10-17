@@ -79,7 +79,7 @@ class DanhGiaTheoLopExports implements
         $sheet->setCellValue('D2', 'Độc lập - Tự do - Hạnh phúc');
         $sheet->setCellValue('A4', 'BẢNG TỔNG HỢP KẾT QUẢ RÈN LUYỆN CỦA SINH VIÊN');
         $sheet->setCellValue('A5', "HỌC KỲ {$tenHocKy} NĂM HỌC {$this->hocKy->nambatdau} - {$this->hocKy->namketthuc}");
-        $sheet->setCellValue('A6', "Lớp: {$this->lop->tenlop} Khóa: 2018");
+        $sheet->setCellValue('A6', "Lớp: {$this->lop->tenlop} {$this->lop->khoaK}");
         $sheet->setCellValue('A7', "STT");
         $sheet->setCellValue('B7', "Họ và");
         $sheet->setCellValue('C7', "Tên");

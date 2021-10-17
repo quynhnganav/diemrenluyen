@@ -78,7 +78,7 @@ Route::get('/admin', function () {
     if (Auth::check()) {
         return redirect()->route('admin.DM_DiemRenLuyen.index');
     }
-    return view('auth.login');
+    return view('auth.gv.login');
 })->name('admin.login');
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'gv'])->group(function () {
@@ -100,6 +100,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'gv'])->group(functi
 
     Route::get('DM_DotDanhGia/api', 'Admin\DM_HocKy_Controller@getData');
     Route::get('DM_DotDanhGia/api/hocky', 'Admin\DM_HocKy_Controller@getHocKy');
+    Route::put('DM_DotDanhGia/api/khoa/{id}', 'Admin\DM_HocKy_Controller@updateKhoa');
     Route::put('DM_DotDanhGia/api/update-hienhanh/{id}', 'Admin\DM_HocKy_Controller@updateHienHanh');
 
     Route::get('DM_DotDanhGia/api/sync-data', 'Admin\DM_HocKy_Controller@syncHocKy');
