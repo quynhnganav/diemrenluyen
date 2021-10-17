@@ -4,6 +4,7 @@
             <div>
                 <i class='fa fa-bars' style='font-size: 26px; cursor: pointer' onClick='openSider()'> </i>
             </div>
+            <div><span>Học kỳ 1 năm 2021 - 2022</span></div>
             <div class='nav-right position-relative'>
                 <div onClick='openDropdown()'>
                     <img class='rounded-circle' src='/images/logo.png' />
