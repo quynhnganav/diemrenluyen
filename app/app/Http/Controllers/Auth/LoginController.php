@@ -69,7 +69,7 @@ class LoginController extends Controller
         try {
             $user = Socialite::driver($driver)->user();
         } catch (\Exception $e) {
-            return redirect()->route('login');
+            return redirect()->route('sv.login');
         }
 
         $sv = SV::where('email', 'natuan@vku.udn.vn')->first();

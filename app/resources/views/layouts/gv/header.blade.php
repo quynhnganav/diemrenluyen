@@ -18,10 +18,10 @@
                         <div class='dropdown-arrow'></div>
                         <div class='user-dropdown-content bg-white '
                         style='padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);'>
-                            {{-- <a href='/' class='dropdown-tag'>
-                                <span><i class='fa fa-sign-out'></i></span>
-                                <span>Logout</span>
-                            </a> --}}
+                        <a href='/' class='dropdown-tag'>
+                            <span><i class='fa fa-sign-out'></i></span>
+                            <span>Logout</span>
+                        </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">

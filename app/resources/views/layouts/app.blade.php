@@ -38,6 +38,7 @@
         function dropdown() {
             console.log('avatar-dropdown')
         }
+        
     </script>
 </body>
 </html>
