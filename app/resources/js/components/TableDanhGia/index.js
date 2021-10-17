@@ -174,7 +174,7 @@ const TableDanhGia = forwardRef(({
         },
     ]), [state])
 
-    console.log(state.tieuChis)
+    // console.log(state.tieuChis)
 
     return (
         <>

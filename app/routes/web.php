@@ -22,6 +22,7 @@ Route::get('redirect/{driver}', 'Auth\LoginController@redirectToProvider')
     ->name('login.provider')
     ->where('driver', implode('|', config('auth.socialite.drivers')));
 Route::get('/callback/{driver}', 'Auth\LoginController@handleProviderCallback');
+Route::post('auth/logout', 'Auth\LoginController@logout')->middleware('auth')->name('logout.custom');
 
 Route::get('doi-hoc-ky/{idHocKy}', 'Auth\AuthController@changeHocKy')
     ->name('doiHocKy')->middleware('auth');
@@ -30,11 +31,12 @@ Route::get('doi-hoc-ky/{idHocKy}', 'Auth\AuthController@changeHocKy')
 Route::prefix('common')->name('common.')->group(function () {
     Route::get('diem-ren-luyen/api/thong-ke', 'CommonController@thongKeTheoLop')->middleware(['auth']);
     Route::get('diem-ren-luyen/api/bao-cao-excel', 'CommonController@baoCaoExcelTheoLop')->middleware(['auth']);
-    Route::get('roles-user', 'CommonController@roles')->middleware(['auth', 'role:super_admin']);
+    // Route::get('roles-user', 'CommonController@roles')->middleware(['auth', 'role:super_admin']);
 });
 
 Route::get('/sv', function () {
     if (Auth::check()) {
+        return Auth::user();
         return redirect()->route('sv.danh-gia.index');
     }
     return view('auth.sv.login');
@@ -122,8 +124,7 @@ Auth::routes([
     'register' => false,
     'verify' => false,
     'reset' => false,
-    'confirm' => false,
-    'login' => false,
+    'confirm' => false
 ]);
 
 Route::get('/home', 'HomeController@index')->middleware('auth')->name('home');

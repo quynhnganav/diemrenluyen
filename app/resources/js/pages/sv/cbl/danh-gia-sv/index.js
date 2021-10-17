@@ -123,8 +123,6 @@ const SVDanhGia = () => {
 
     const trangThai = current?.TrangThai ? current?.TrangThai == '0' ? '' : `(${current?.TrangThai})` : state?.sinhVien?.TrangThai ? state?.sinhVien?.TrangThai == '0' ? '' : `(${state?.sinhVien?.TrangThai})` : ''
 
-    console.log(dsSinhViens)
-
     return (
         <LayoutWrapper className='danh-gia-page'>
             <Row className='bg-white p-3 content'>

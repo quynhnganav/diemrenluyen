@@ -66,7 +66,6 @@ const SVDanhGia = () => {
                 })
             })
             .catch(err => {
-                console.log(err?.response)
                 if (err?.response?.status == 422) {
                     const data = err?.response?.data || []
                     const errors = data.map((d) => ({

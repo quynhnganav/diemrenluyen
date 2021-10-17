@@ -29,14 +29,13 @@
                     "></div>
                         <div class='user-dropdown-content bg-white '
                         style='box-shadow: rgb(0 0 0 / 20%) 0px 2px 10px; border-radius: 4px; '>
-                        <a href='/' class='dropdown-tag w-100 d-flex' style="padding: 7px 15px">
-                            <span><i class='fa fa-sign-out'></i></span>
-                            <span class="ps-2">Logout</span>
-                        </a>
-                            {{-- <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
-                            </a> --}}
+                            <a  href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();"
+                                class='dropdown-tag w-100 d-flex' style="padding: 7px 15px">
+                                <span><i class='fa fa-sign-out'></i></span>
+                                <span class="ps-2">Logout</span>
+                            </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>

@@ -55,7 +55,7 @@
 
 @section('js')
     <script type="text/javascript">
-    function openDropdown() {
+        function openDropdown() {
             document.getElementById("drop-down").classList.toggle('d-none');
         }
     </script>
